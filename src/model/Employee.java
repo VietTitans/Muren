@@ -13,6 +13,11 @@ public Employee(String fName, String lName, String phoneNo, String email, Addres
 	this.employeeId = employeeId;
 	
 }
+public Employee(String fName, String lName, String phoneNo, String email, Address address,EmployeeType employeeType) {
+	super(fName, lName, phoneNo, email, address);
+	this.employeeType = employeeType;
+	
+}
 
 
 public int getEmployeeId() {

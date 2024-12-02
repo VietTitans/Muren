@@ -7,7 +7,9 @@ private int customerId;
 		super(fName, lName, phoneNo, email, address);
 		this.customerId=customerId; 
 	}
-
+	public Customer(String fName, String lName, String phoneNo, String email, Address address ) {
+		super(fName, lName, phoneNo, email, address);
+	}
 	public int getCustomerId() {
 		return customerId;
 	}

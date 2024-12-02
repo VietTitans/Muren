@@ -9,6 +9,11 @@ private String businessName;
 		this.cvrNo= cvrNo; 
 		this.businessName= businessName; 
 	}
+	public BusinessCustomer(String fName, String lName, String phoneNo, String email, Address address, String cvrNo, String businessName) {
+		super(fName, lName, phoneNo, email, address);
+		this.cvrNo= cvrNo; 
+		this.businessName= businessName; 
+	}
 
 	public String getCvrNo() {
 		return cvrNo;
