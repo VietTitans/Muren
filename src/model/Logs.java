@@ -8,9 +8,15 @@ public abstract class Logs {
 	private LocalDateTime timeStamp;
 	
 	public Logs(Employee employee) {
-		super();
 		this.employee = employee;
 		timeStamp = LocalDateTime.now();
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+	public LocalDateTime getTimeStamp() {
+		return timeStamp;
 	}
 
 }
