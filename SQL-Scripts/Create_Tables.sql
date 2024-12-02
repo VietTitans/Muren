@@ -7,10 +7,15 @@ CREATE TABLE Address(
 AddressId int IDENTITY(1,1) PRIMARY KEY,
 StreetName varchar(30) NOT NULL,
 BuildingNo varchar(10) NOT NULL,
-FloorNumber INT, 
+FloorNo INT, 
 Country varchar(50) NOT NULL,
 Zipcode int NOT NULL,
 FOREIGN KEY(Zipcode) REFERENCES Zipcodes(Zipcode)
+);
+
+CREATE TABLE EmployeeType(
+EmployeeTypeNo INT IDENTITY (1,1) PRIMARY KEY, 
+EmployeeTypeName varchar(20),
 );
 CREATE TABLE Person(
 PersonId int IDENTITY(1,1) PRIMARY KEY,
@@ -36,19 +41,20 @@ FOREIGN KEY(CustomerNo) REFERENCES Customer(CustomerNo),
 CREATE TABLE Employee(
 EmployeeId int IDENTITY(1,1) PRIMARY KEY,
 cpr varchar(10)NOT NULL,
-EmployeeType varchar(20)NOT NULL,
+EmployeeTypeNo INT NOT NULL,
 PersonId int NOT NULL,
+FOREIGN KEY (EmployeeTypeNo) REFERENCES EmployeeType(EmployeeTypeNo),
 FOREIGN KEY (PersonId) REFERENCES Person(PersonId),
 
 );
 
 CREATE TABLE Material(
 ProductNo int PRIMARY KEY, 
-productName varchar(30) NOT NULL,
+ProductName varchar(30) NOT NULL,
 )
 
 CREATE TABLE MaterialDescription(
-Descrip varchar(100) not null, 
+Description varchar(100) not null, 
 MaterialDescriptionTimeStamp DATETIME NOT NULL,		
 ProductNo int NOT NULL, 
 FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
@@ -81,6 +87,7 @@ ReservationDate DATETIME NOT NULL,
 Quantity int NOT NULL, 
 StockMaterialId INT NOT NULL, 
 Foreign Key (StockMaterialId) REFERENCES StockMaterial(StockMaterialId),
+PRIMARY KEY(StockMaterialId , ReservationDate),
 );
 
 CREATE TABLE Orders(
@@ -96,9 +103,14 @@ FOREIGN KEY(CustomerNo) REFERENCES Customer(CustomerNo),
 
 CREATE TABLE OFFER(
 OfferId INT IDENTITY(1,1) PRIMARY KEY,
+ValidToDate DATE NOT NULL, 
+DateCreated DATE NOT NULL, 
+IsAccepted BIT NOT NULL, 
 EmployeeId INT NOT NULL,
 CustomerNo INT NOT NULL,
 EstimateHours TIME NOT NULL,
+FOREIGN KEY(EmployeeId) REFERENCES Employee(EmployeeId),
+FOREIGN KEY(CustomerNo) REFERENCES Customer(CustomerNo),
 );
 
 CREATE TABLE Orderline(
@@ -139,7 +151,7 @@ FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
 );
 
 CREATE TABLE MaterialLogs(
-MaterialLogId INT IDENTITY(1,1) NOT NULL, 
+MaterialLogId INT IDENTITY(1,1) PRIMARY KEY, 
 Quantity INT NOT NULL, 
 ProductNo INT NOT NULL, 
 LogId INT NOT NULL,
@@ -168,14 +180,15 @@ CREATE TABLE Vans(
 VanId INT IDENTITY(1,1) PRIMARY KEY,
 VanLicenseplate varchar(20) NOT NULL,
 InventoryId INT NOT NULL,
+EmployeeId INT NOT NULL,
 FOREIGN KEY (InventoryId) REFERENCES Inventory(InventoryId),
+FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
 );
 CREATE TABLE MaterialQuantity(
 StockMaterialId INT NOT NULL, 
 InventoryId INT NOT NULL, 
-Quantity INT NOT NULL, 
-
+Quantity INT NOT NULL,
 FOREIGN KEY (InventoryId) REFERENCES Inventory(InventoryId),
 FOREIGN KEY (stockMaterialId) REFERENCES StockMaterial(StockMaterialId),
-
+PRIMARY KEY(StockMaterialId , InventoryId),
 );
