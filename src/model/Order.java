@@ -57,15 +57,17 @@ public class Order {
 				// TODO make an UnknownEmployeeTypeException
 				break;
 			}
-			sum = sum + (hourrate * hl.getHoursWorked());
+			sum += (hourrate * hl.getHoursWorked());
 		}
 		return sum;
 	}
 	
 	public double calculateTotalMaterialPrice() {
-		
-		
-		return 0;
+		double sum = 0;
+		for (MaterialLog ml : materialLogs) {
+			sum =+ ml.getQuantity() * ml.getMaterial().getSalesPriceNow();
+		}
+		return sum;
 	}
 	
 	public Employee getOrderMadeBy() {
