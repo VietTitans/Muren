@@ -4,21 +4,22 @@ import java.time.LocalDateTime;
 
 public class MaterialDescription {
 
-	private LocalDateTime timeStamp;
+	private LocalDateTime materialDescriptionTimeStamp;
 	private String description;
+	
+	
+	public MaterialDescription(String description) {
+		materialDescriptionTimeStamp = LocalDateTime.now();
+		this.description = description;
+	}
 	
 	/* 
 	 Added a second constructor, with the purpose of being able to create a 
 	 MaterialDescription object both at the current time and at a chosen time.
 	 */
 	
-	public MaterialDescription(String description) {
-		timeStamp = LocalDateTime.now();
-		this.description = description;
-	}
-	
-	public MaterialDescription(LocalDateTime timeStamp, String description) {
-		this.timeStamp = timeStamp;
+	public MaterialDescription(LocalDateTime materialDescriptionTimeStamp, String description) {
+		this.materialDescriptionTimeStamp = materialDescriptionTimeStamp;
 		this.description = description;
 	}
 	
@@ -27,7 +28,7 @@ public class MaterialDescription {
 	}
 	
 	public LocalDateTime getTimeStamp() {
-		return timeStamp;
+		return materialDescriptionTimeStamp;
 	}
 	
 }

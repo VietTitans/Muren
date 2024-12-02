@@ -6,30 +6,30 @@ public class Price {
 	/*
 	 * timeStamp 
 	 */
-	private LocalDateTime timeStamp;
-	private double price;
+	private LocalDateTime priceTimeStamp;
+	private double preVATValue;
 	
 	
-	public Price(double price) {
-		timeStamp = LocalDateTime.now();
-		this.price = price;
+	public Price(double preVATValue) {
+		priceTimeStamp = LocalDateTime.now();
+		this.preVATValue = preVATValue;
 	}
 	
 	/* 
 	 Added a second constructor, with the purpose of being able to create a price object both at the current time
 	 and at a chosen time.
 	 */
-	public Price(LocalDateTime timeStamp, double price) {
-		this.timeStamp = timeStamp;
-		this.price = price;
+	public Price(LocalDateTime priceTimeStamp, double preVATValue) {
+		this.priceTimeStamp = priceTimeStamp;
+		this.preVATValue = preVATValue;
 	}
 	
-	public double getPrice() {
-		return price;
+	public double getPreVATValue() {
+		return preVATValue;
 	}
 	
 	public LocalDateTime getTimeStamp() {
-		return timeStamp;
+		return priceTimeStamp;
 	}
 	
 }
