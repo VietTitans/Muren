@@ -15,7 +15,6 @@ public class LogController{
 	private MaterialLogDBIF materialLogInterface;
 	
 	public LogController() {
-		this.logController = new LogController();
 		this.orderController = new OrderController();
 		this.hourLogInterface = new HourLogDB();
 		this.materialLogInterface = new MaterialLogDB();
@@ -37,12 +36,10 @@ public class LogController{
 
 	public MaterialLog addMaterialToLog(int employeeId, int productNo, int quantity) {
 		EmployeeController employeeController = new EmployeeController(); 
-		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
-		
 		MaterialController materialController = new MaterialController();
+		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
 		Material materialFound = materialController.findMaterialByMaterialNo(productNo);
 		MaterialLog currentMaterialLog = new MaterialLog(foundEmployee, materialFound, quantity);
-		
 		return currentMaterialLog;
 	}
 	
@@ -51,18 +48,17 @@ public class LogController{
 		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
 		currentHourLog.getHoursWorked();
 		HourLog currentHourLog = new HourLog(foundEmployee, hours);
-		
 		return currentHourLog;
 	}
 	
-	public HourLog saveHourLog(HourLog hourlog, int orderId) {
-//		HourLog hourLog = hourLogInterface.saveHourLog();
+	public HourLog saveHourLog(HourLog hourLog, int orderId) {
+		currentHourLog = hourLogInterface.saveHourLog(hourLog, orderId);
 		return currentHourLog;
 	}
 
 	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) {
-//		MaterialLog materialLog = materialLogInterface.saveMaterialLog();
-		return currentMaterialLog;
+		 currentMaterialLog = materialLogInterface.saveMaterialLog(materialLog, orderId);
+		 return currentMaterialLog;
 	}
 	
 
