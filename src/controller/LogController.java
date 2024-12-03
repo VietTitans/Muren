@@ -1,5 +1,7 @@
 package controller;
+import db.HourLogDB;
 import db.HourLogDBIF;
+import db.MaterialLogDB;
 import db.MaterialLogDBIF;
 import model.Employee;
 import model.HourLog;
@@ -13,7 +15,7 @@ public class LogController{
 	private HourLogDBIF hourLogInterface;
 	private MaterialLogDBIF materialLogInterface;
 	
-	public LogController() {
+	public LogController() throws DataAccessException {
 		this.orderController = new OrderController();
 		this.hourLogInterface = new HourLogDB();
 		this.materialLogInterface = new MaterialLogDB();
@@ -46,12 +48,12 @@ public class LogController{
 		return currentHourLog;
 	}
 	
-	public HourLog saveHourLog(HourLog hourLog, int orderId) {
+	public HourLog saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
 		currentHourLog = hourLogInterface.saveHourLog(hourLog, orderId);
 		return currentHourLog;
 	}
 
-	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) {
+	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
 		 currentMaterialLog = materialLogInterface.saveMaterialLog(materialLog, orderId);
 		 return currentMaterialLog;
 	}
