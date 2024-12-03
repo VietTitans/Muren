@@ -1,9 +1,15 @@
 package controller;
 
-public class MaterialController {
+import model.Material;
 
+public class MaterialController {
+	private MaterialDBIF materialDBIF;
+	
 	public MaterialController() {
-		// TODO Auto-generated constructor stub
+		materialDBIF = new MaterialDBIF;
 	}
 
+public Material findMaterialByMaterialNo(int materialNo) {
+	return materialDBIF.findMaterialByMaterialNo(materialNo);
+	}
 }
