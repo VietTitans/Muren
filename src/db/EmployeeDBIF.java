@@ -1,7 +1,8 @@
 package db;
 import controller.GeneralException;
+import model.Employee;
 
 public interface EmployeeDBIF {
 
-Employee findEmployeeByEmployeeId(int employeeId) throws GeneralException;
+	public Employee findEmployeeByEmployeeId(int employeeId) throws GeneralException;
 }
