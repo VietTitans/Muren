@@ -33,20 +33,16 @@ public class LogController{
 		return currentMaterialLog;
 	}
 
-	public MaterialLog addMaterialToLog(int employeeId, int productNo, int quantity) {
-		EmployeeController employeeController = new EmployeeController(); 
+	public MaterialLog addMaterialToLog(Employee employee, int productNo, int quantity) {
 		MaterialController materialController = new MaterialController();
-		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
 		Material materialFound = materialController.findMaterialByMaterialNo(productNo);
-		MaterialLog currentMaterialLog = new MaterialLog(foundEmployee, materialFound, quantity);
+		MaterialLog currentMaterialLog = new MaterialLog(employee, materialFound, quantity);
 		return currentMaterialLog;
 	}
 	
-	public HourLog addEmployeeToHourLog(int employeeId, double hours) {
-		EmployeeController employeeController = new EmployeeController(); 
-		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
+	public HourLog addEmployeeToHourLog(Employee employee, double hours) {
 		currentHourLog.getHoursWorked();
-		HourLog currentHourLog = new HourLog(foundEmployee, hours);
+		HourLog currentHourLog = new HourLog(employee, hours);
 		return currentHourLog;
 	}
 	
