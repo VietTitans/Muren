@@ -6,6 +6,10 @@ public abstract class Person {
 	private String phoneNo; 
 	private String email; 
 	private Address address;
+	
+	public Person() {
+		
+	}
 	public Person(String fName, String lName, String phoneNo, String email, Address address) {
 		this.fName = fName;
 		this.lName = lName;

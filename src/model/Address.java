@@ -8,6 +8,12 @@ private String zipCode;
 private String city; 
 private String country;
 
+
+
+
+public Address() {
+	
+}
 public Address(String streetName, String buildingNo, int floor, String zipCode, String city, String country) {
 	this.streetName = streetName;
 	this.buildingNo = buildingNo;
