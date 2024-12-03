@@ -6,16 +6,19 @@ import model.HourLog;
 import model.Material;
 import model.MaterialLog;
 
-public class LogController implements MaterialLogDBIF, HourLogDBIF{
+public class LogController{
 	private LogController logController;
 	private OrderController orderController;
 	private MaterialLog currentMaterialLog;
 	private HourLog currentHourLog;
 	private HourLogDBIF hourLogInterface;
+	private MaterialLogDBIF materialLogInterface;
 	
 	public LogController() {
 		this.logController = new LogController();
 		this.orderController = new OrderController();
+		this.hourLogInterface = new HourLogDB();
+		this.materialLogInterface = new MaterialLogDB();
 	}
 	
 	public HourLog createHourLog() {
@@ -38,8 +41,9 @@ public class LogController implements MaterialLogDBIF, HourLogDBIF{
 		
 		MaterialController materialController = new MaterialController();
 		Material materialFound = materialController.findMaterialByMaterialNo(productNo);
-		MaterialLog materialLog = new MaterialLog(foundEmployee, materialFound, quantity);
-		return materialLog;
+		MaterialLog currentMaterialLog = new MaterialLog(foundEmployee, materialFound, quantity);
+		
+		return currentMaterialLog;
 	}
 	
 	public HourLog addEmployeeToHourLog(int employeeId, double hours) {
@@ -47,19 +51,18 @@ public class LogController implements MaterialLogDBIF, HourLogDBIF{
 		Employee foundEmployee = employeeController.findEmployeeByEmployeeId(employeeId);
 		currentHourLog.getHoursWorked();
 		HourLog currentHourLog = new HourLog(foundEmployee, hours);
+		
 		return currentHourLog;
 	}
 	
-	@Override
-	public HourLog saveHourLog(HourLog hourLog, int orderId) {
-		
-		return null;
+	public HourLog saveHourLog(HourLog hourlog, int orderId) {
+//		HourLog hourLog = hourLogInterface.saveHourLog();
+		return currentHourLog;
 	}
 
-	@Override
 	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) {
-		
-		return null;
+//		MaterialLog materialLog = materialLogInterface.saveMaterialLog();
+		return currentMaterialLog;
 	}
 	
 
