@@ -5,15 +5,16 @@ import db.CustomerDBIF;
 import model.Customer;
 
 public class CustomerController {
-
+it
 	private CustomerDBIF customerInterface;
 	public CustomerController() throws GeneralException {
 		customerInterface = new customerDB();
 	}
 	
 	
-	public Customer findCustomerByPhoneNo(PhoneNo)  {
-		Customer foundCustomer = personInterface.findCustomerByPhoneNo(PhoneNo);
+	public Customer findCustomerByPhoneNo(String phoneNo)  {
+		Customer foundCustomer = customerInterface.findCustomerByPhoneNo(phoneNo);
 		return foundCustomer;
 	}
+
 }

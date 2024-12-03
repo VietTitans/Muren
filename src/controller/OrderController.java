@@ -52,8 +52,10 @@ public class OrderController {
 		currentOrder.addHourLogToOrder(newLog);		
 	}
 	
-	public void saveOrder() {
+	public void saveOrder() throws GeneralException {
 		orderInterface.saveOrder(currentOrder);
+		
+		
 	}
 
 }
