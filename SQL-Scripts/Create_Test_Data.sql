@@ -19,19 +19,23 @@ VALUES
 -- Insert data into EmployeeType
 INSERT INTO EmployeeType (EmployeeTypeName)
 VALUES
-('Manager'),
-('Technician'),
-('Salesperson'),
-('Driver');
+('Apprentice'),
+('Journeyman'),
+('Owner');
+
 
 -- Insert data into Person
 INSERT INTO Person (FirstName, LastName, PhoneNo, Email, AddressId)
 VALUES
-('John', 'Doe', '123-456-7890', 'john.doe@example.com', 1),
-('Jane', 'Smith', '987-654-3210', 'jane.smith@example.com', 2),
-('Emily', 'Brown', '555-123-4567', 'emily.brown@example.com', 3),
-('Michael', 'Johnson', '444-555-6666', 'michael.johnson@example.com', 4),
-('Sarah', 'Davis', '111-222-3333', 'sarah.davis@example.com', 5);
+('John', 'Doe', '12345678', 'john.doe@example.com', 1),
+('Jane', 'Smith', '22222222', 'jane.smith@example.com', 2),
+('Emily', 'Brown', '71024388', 'emily.brown@example.com', 3),
+('Michael', 'Johnson', '20318107', 'michael.johnson@example.com', 4),
+('Sarah', 'Davis', '47530941', 'sarah.davis@example.com', 5),
+('Aaron', 'Smith', '88551906', 'aaron.smith@example.com', 6),
+('Jeremy', 'Jones', '78123194', 'jeremy.jones@example.com', 7),
+('William', 'Lee', '19532742', 'willaim.lee@example.com', 8),
+('Michael', 'Scott', '91629532', 'michael.scott@example.com', 9);
 
 -- Insert data into Customer
 INSERT INTO Customer (PersonId)
@@ -40,43 +44,42 @@ VALUES
 (2),
 (3),
 (4),
-(5);
+(5),
+(6);
 
 -- Insert data into BusinessCustomer
 INSERT INTO BusinessCustomer (CVR, BusinessName, CustomerNo)
 VALUES
-(100001, 'Tech Corp', 1),
-(100002, 'Health Ltd', 2),
-(100003, 'Retail Co', 3),
-(100004, 'Logistics LLC', 4),
-(100005, 'Edu Ventures', 5);
+(100001, 'Tech Corp', 4),
+(100002, 'Health Ltd', 5),
+(100003, 'Retail Co', 6);
+
 
 -- Insert data into Employee
 INSERT INTO Employee (CPR, EmployeeTypeNo, PersonId)
 VALUES
-('1234567890', 1, 1),
-('2345678901', 2, 2),
-('3456789012', 3, 3),
-('4567890123', 4, 4),
-('5678901234', 2, 5);
+('1234567890', 1, 7),
+('2345678901', 2, 8),
+('3456789012', 3, 9);
+
 
 -- Insert data into Material
 INSERT INTO Material (ProductNo, ProductName)
 VALUES
-(1001, 'Laptop'),
-(1002, 'Monitor'),
-(1003, 'Keyboard'),
-(1004, 'Mouse'),
-(1005, 'Printer');
+(1001, 'Cement'),
+(1002, 'Mursten'),
+(1003, 'Spartel'),
+(1004, 'Klinker'),
+(1005, 'Mørtel');
 
 -- Insert data into MaterialDescription
 INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, ProductNo)
 VALUES
-('High-performance laptop', GETDATE(), 1001),
-('4K UHD monitor', GETDATE(), 1002),
-('Mechanical keyboard', GETDATE(), 1003),
-('Wireless mouse', GETDATE(), 1004),
-('All-in-one printer', GETDATE(), 1005);
+('Dette er cement', GETDATE(), 1001),
+('Dette er mursten', GETDATE(), 1002),
+('Dette er spartel', GETDATE(), 1003),
+('Dette er klinker', GETDATE(), 1004),
+('Dette er mørtel', GETDATE(), 1005);
 
 -- Insert data into PurchasePrice
 INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, ProductNo)
@@ -97,13 +100,13 @@ VALUES
 (200.00, GETDATE(), 1005);
 
 -- Insert data into StockMaterial
-INSERT INTO StockMaterial (ProductNo)
+INSERT INTO StockMaterial (ProductNo, MinStock, MaxStock, Quantity)
 VALUES
-(1001),
-(1002),
-(1003),
-(1004),
-(1005);
+(1001, 15, 75, 50 ),
+(1002, 60, 150, 100),
+(1003, 10, 40, 35),
+(1004, 100, 1000, 750),
+(1005, 90, 450, 310);
 
 -- Insert data into StockReservation
 INSERT INTO StockReservation (ReservationDate, Quantity, StockMaterialId)
@@ -113,6 +116,10 @@ VALUES
 (GETDATE(), 15, 3),
 (GETDATE(), 20, 4),
 (GETDATE(), 8, 5);
+
+
+/*Har rettet til og med her*/
+
 
 -- Insert data into Orders
 INSERT INTO Orders (StartDate, Deadline, EmployeeId, CustomerNo, IsFinished)

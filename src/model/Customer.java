@@ -10,6 +10,9 @@ private int customerId;
 	public Customer(String fName, String lName, String phoneNo, String email, Address address ) {
 		super(fName, lName, phoneNo, email, address);
 	}
+	public Customer() {
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}
