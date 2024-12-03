@@ -1,10 +1,11 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+
 
 public class TestMaterial {
 
@@ -14,7 +15,7 @@ public class TestMaterial {
 	
 	
 	@BeforeAll
-	static void setUp() {
+	public static void setUp() {
 		
 	salesPrice = new Price(20);
 	purchasePrice = new Price(17);
@@ -23,7 +24,7 @@ public class TestMaterial {
 	}
 	
 	@Test
-	void testMaterialConstructor() {
+	public void testMaterialConstructor() {
 		//Arrange
 		
 		
@@ -37,7 +38,7 @@ public class TestMaterial {
 	}
 	
 	@Test
-	void testGetProductNo() {
+	public void testGetProductNo() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
@@ -51,7 +52,7 @@ public class TestMaterial {
 	}
 	
 	@Test
-	void testGetProductName() {
+	public void testGetProductName() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
@@ -66,7 +67,7 @@ public class TestMaterial {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	void testGetSalesPriceNow() {
+	public void testGetSalesPriceNow() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
@@ -82,7 +83,7 @@ public class TestMaterial {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	void testGetpurchasePriceNow() {
+	public void testGetpurchasePriceNow() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
@@ -96,7 +97,7 @@ public class TestMaterial {
 	}
 	
 	@Test
-	void testGetMaterialDescriptionNow() {
+	public void testGetMaterialDescriptionNow() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
