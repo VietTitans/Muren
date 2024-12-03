@@ -80,6 +80,9 @@ PRIMARY KEY (ProductNo , SalesPriceTimeStamp),
 CREATE TABLE StockMaterial( 
 StockMaterialId int IDENTITY(1,1) PRIMARY KEY, 
 ProductNo INT NOT NULL, 
+MinStock INT NOT NULL,
+MaxStock INT NOT NULL,
+Quantity INT NOT NULL,
 FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
 );
 CREATE TABLE StockReservation(

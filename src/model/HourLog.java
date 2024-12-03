@@ -4,7 +4,7 @@ public class HourLog extends Logs {
 
 	private double hoursWorked;
 
-	public HourLog(Employee employee, int hours) {
+	public HourLog(Employee employee, double hours) {
 		super(employee);
 		hoursWorked = hours;
 	}

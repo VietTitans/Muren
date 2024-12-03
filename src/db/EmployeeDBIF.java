@@ -1,8 +1,9 @@
 package db;
+import controller.DataAccessException;
 import controller.GeneralException;
 import model.Employee;
 
 public interface EmployeeDBIF {
 
-	public Employee findEmployeeByEmployeeId(int employeeId) throws GeneralException;
+Employee findEmployeeByEmployeeId(String employeeId, boolean fullAsserstion) throws GeneralException, DataAccessException;
 }

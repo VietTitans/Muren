@@ -7,13 +7,13 @@ import model.Customer;
 public class CustomerController {
 	private CustomerDBIF customerInterface;
 
-	public CustomerController() throws GeneralException {
-		customerInterface = new customerDB();
+	public CustomerController() throws DataAccessException {
+		customerInterface = new CustomerDB();
 	}
 	
 	
-	public Customer findCustomerByPhoneNo(String phoneNo)  {
-		Customer foundCustomer = customerInterface.findCustomerByPhoneNo(phoneNo);
+	public Customer findCustomerByPhoneNo(String phoneNo, boolean fullAssertion) throws DataAccessException  {
+		Customer foundCustomer = customerInterface.findCustomerByPhoneNo(phoneNo, fullAssertion);
 		return foundCustomer;
 	}
 
