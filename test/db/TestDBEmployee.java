@@ -1,18 +1,16 @@
 package db;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.sql.SQLException;
 
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
 import controller.GeneralException;
 import model.Employee;
 
 class TestDBEmployee {
-private DBEmployee dbEmployee; 
+
 	
 	
 	
