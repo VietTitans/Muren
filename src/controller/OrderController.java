@@ -28,9 +28,9 @@ public class OrderController {
 		currentOrder = new Order(employee);	
 	}
 	
-	public Customer findAndAddCustomerByPhoneNo(String PhoneNo) throws GeneralException {
+	public Customer findAndAddCustomerByPhoneNo(String phoneNo) throws GeneralException {
 		CustomerController customerController = new CustomerController();
-		Customer foundCustomer =  customerController.findCustomerByPhoneNo(PhoneNo);
+		Customer foundCustomer =  customerController.findCustomerByPhoneNo(phoneNo);
 		currentOrder.addCustomerToOrder(foundCustomer);
 		return foundCustomer;
 	}

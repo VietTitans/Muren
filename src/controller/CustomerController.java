@@ -5,8 +5,8 @@ import db.CustomerDBIF;
 import model.Customer;
 
 public class CustomerController {
-it
 	private CustomerDBIF customerInterface;
+
 	public CustomerController() throws GeneralException {
 		customerInterface = new customerDB();
 	}
