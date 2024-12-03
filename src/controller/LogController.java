@@ -7,7 +7,6 @@ import model.Material;
 import model.MaterialLog;
 
 public class LogController{
-	private LogController logController;
 	private OrderController orderController;
 	private MaterialLog currentMaterialLog;
 	private HourLog currentHourLog;
