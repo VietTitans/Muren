@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -31,11 +32,11 @@ public class Material {
 		return productName;
 	}
 	
-	public double getSalesPriceNow() {
+	public BigDecimal getSalesPriceNow() {
 		return salesPrice.getPreVATValue();
 	}
 
-	public double getPurchasePriceNow() {
+	public BigDecimal getPurchasePriceNow() {
 		return purchasePrice.getPreVATValue();
 	}
 
