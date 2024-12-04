@@ -46,15 +46,18 @@ class TestCustomerDB {
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
 		//Arrange
-		Customer expectedResult = new Customer();
+		/*Customer expectedResult = new Customer();
 			expectedResult.setfName("John");
 			expectedResult.setlName("Doe");
 			expectedResult.setPhoneNo("12345678");
-			expectedResult.setEmail("john.doe@example.com");
+			expectedResult.setEmail("john.doe@example.com");*/
 		//Act
 		Customer result = customerDB.findCustomerByPhoneNo("12345678", false);
 		//Assert
-		assertEquals(expectedResult, result);
+		assertEquals("John", result.getfName());
+		assertEquals("Doe", result.getlName());
+		assertEquals("12345678", result.getPhoneNo());
+		assertEquals("john.doe@example.com", result.getEmail());
 		
 	}
 

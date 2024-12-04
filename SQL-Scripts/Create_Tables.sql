@@ -21,7 +21,7 @@ CREATE TABLE Person(
 PersonId int IDENTITY(1,1) PRIMARY KEY,
 FirstName varchar(30) NOT NULL,
 LastName varchar(30) NOT NULL,
-phoneNo varchar(30) NOT NULL,
+PhoneNo varchar(30) NOT NULL,
 Email varchar(100) NOT NULL,
 AddressId INT  NOT NULL,
 FOREIGN KEY (AddressId) REFERENCES Address(AddressId),
@@ -40,7 +40,7 @@ FOREIGN KEY(CustomerNo) REFERENCES Customer(CustomerNo),
 
 CREATE TABLE Employee(
 EmployeeId int IDENTITY(1,1) PRIMARY KEY,
-cpr varchar(10)NOT NULL,
+CPR varchar(10)NOT NULL,
 EmployeeTypeNo INT NOT NULL,
 PersonId int NOT NULL,
 FOREIGN KEY (EmployeeTypeNo) REFERENCES EmployeeType(EmployeeTypeNo),
@@ -62,7 +62,7 @@ PRIMARY KEY (ProductNo , MaterialDescriptionTimeStamp),
 );
 
 CREATE TABLE PurchasePrice(
-price SmallMoney NOT NULL, 
+Price SmallMoney NOT NULL, 
 PurchasePriceTimeStamp DATETIME NOT NULL, 
 ProductNo int NOT NULL,
 FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
@@ -70,7 +70,7 @@ PRIMARY KEY (ProductNo , PurchasePriceTimeStamp),
 
 );
 CREATE TABLE SalesPrice(
-price SmallMoney NOT NULL, 
+Price SmallMoney NOT NULL, 
 SalesPriceTimeStamp DATETIME NOT NULL, 
 ProductNo int NOT NULL,
 FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 

@@ -7,11 +7,14 @@ import db.MaterialDB;
 public class MaterialController {
 	private MaterialDBIF materialDBIF;
 	
-	public MaterialController() {
+	public MaterialController() throws DataAccessException {
 		materialDBIF = new MaterialDB();
 	}
-
+/*
+ * Skal ændres
+ * 
 public Material findMaterialByMaterialNo(int materialNo) {
 	return materialDBIF.findMaterialByMaterialNo(materialNo);
 	}
+*/ 
 }
