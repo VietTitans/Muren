@@ -16,7 +16,7 @@ import controller.DataAccessException;
 
 public class MaterialDB implements MaterialDBIF{
 
-	private static final String PS_SELECT_FROM_MATERIAL = " SELECT * FROM Material WHERE ProductNo = ?;";
+	private static final String PS_SELECT_FROM_MATERIAL = " SELECT * FROM Material WHERE ProductNo = ?;"; 
 	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE ProductNo = ?;";
 	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE ProductNo = ?;";
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE ProductNo = ?;";

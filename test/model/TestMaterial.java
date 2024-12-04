@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.math.BigDecimal;
+
 
 
 public class TestMaterial {
@@ -17,8 +19,8 @@ public class TestMaterial {
 	@BeforeAll
 	public static void setUp() {
 		
-	salesPrice = new Price(20);
-	purchasePrice = new Price(17);
+	salesPrice = new Price(new BigDecimal(20));
+	purchasePrice = new Price(new BigDecimal(17));
 	materialDescription = new MaterialDescription("This is cement");
 	
 	}
@@ -65,33 +67,35 @@ public class TestMaterial {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	@Test
 	public void testGetSalesPriceNow() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
 		//Act
-		double salesPrice = cement.getSalesPriceNow();
+		BigDecimal salesPrice = cement.getSalesPriceNow();
+		BigDecimal actualPrice = new BigDecimal(20);
 		
 		//Assert
 		
-		assertEquals(20, salesPrice);
+		assertEquals(actualPrice, salesPrice);
 		
 		
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	@Test
 	public void testGetpurchasePriceNow() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		
 		//Act
-		double purchasePrice = cement.getPurchasePriceNow();
+		BigDecimal purchasePrice = cement.getPurchasePriceNow();
+		BigDecimal actualPrice = new BigDecimal(17);
 		
 		//Assert
-		assertEquals(17, purchasePrice);
+		assertEquals(actualPrice, purchasePrice);
 		
 		
 	}
