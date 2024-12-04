@@ -26,6 +26,7 @@ class TestCustomerDB {
 
 	@AfterEach
 	void tearDown() throws Exception {
+		connection.disconnect();
 	}
 
 	@Test
