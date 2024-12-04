@@ -8,9 +8,9 @@ VALUES
 (85001, 'Phoenix'),
 (60091, 'USA'),
 (8000, 'Aarhus'),
-(1620, 'Copenhagen'),
-(2100, 'Copenhagen'),
-(2300, 'Copenhagen');
+(1620, 'Copenhagen S'),
+(2100, 'Copenhagen N'),
+(2300, 'Copenhagen NV');
 
 -- Insert data into Address
 INSERT INTO Address (StreetName, BuildingNo, FloorNo, Country, Zipcode)
@@ -57,8 +57,7 @@ VALUES
 -- Insert data into Customer
 INSERT INTO Customer (PersonId)
 VALUES
-(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),
-(11),(12),(13);
+(1),(2),(3),(4),(5),(6),(7),(8);
 
 -- Insert data into BusinessCustomer
 INSERT INTO BusinessCustomer (CVR, BusinessName, CustomerNo)
