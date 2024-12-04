@@ -13,4 +13,23 @@ public class Location extends Inventory{
 		this.address = address;
 		
 	}
+	
+	
+	@Override
+	public void addMaterialToInventory(Material material) {
+		materialsInInventory.put(material.getProductNo(), material);
+	}
+
+	@Override
+	public Material getMaterialByProductNo(int productNo) {
+		Material material = materialsInInventory.get(productNo);
+		return material;
+	}
+	
+	@Override
+	public HashMap<Integer, Material> getInventory(){
+		return materialsInInventory;
+	}
+	
+	
 }

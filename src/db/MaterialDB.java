@@ -28,6 +28,7 @@ public class MaterialDB implements MaterialDBIF{
 	
 	private Connection connection;
 	
+	
 	public MaterialDB() throws DataAccessException {
 		connection = DBConnection.getInstance().getConnection();
 		initPreparedStatements();
@@ -47,7 +48,7 @@ public class MaterialDB implements MaterialDBIF{
 	}
 	
 	
-	public Material findMaterialByProductNo(int productNo, boolean fullAssociation) throws DataAccessException {
+	public Material findMaterialByProductNo(int productNo, boolean fullAssertion) throws DataAccessException {
 		Material material = null;
 		Price salesPrice = null;
 		Price purchasePrice = null;
@@ -66,12 +67,12 @@ public class MaterialDB implements MaterialDBIF{
 			ResultSet rsPurchasePrice = psSelectProductNoPurchasePrice.executeQuery();
 			
 			if (rsDescription.next() && rsSalesPrice.next() && rsPurchasePrice.next()) {
-				materialDescription = buildObjectMaterialDescription(rsDescription, fullAssociation);
-				salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssociation);
-				purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssociation);
+				materialDescription = buildObjectMaterialDescription(rsDescription, fullAssertion);
+				salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssertion);
+				purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssertion);
 				
 				if(rsMaterial.next()) {
-					material = buildObjectMaterial(rsMaterial, fullAssociation, materialDescription, salesPrice, purchasePrice);
+					material = buildObjectMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice);
 				}
 			}
 			}catch (SQLException e) {
@@ -83,7 +84,7 @@ public class MaterialDB implements MaterialDBIF{
 		}
 	
 	
-	private Material buildObjectMaterial(ResultSet rs, boolean fullAssociation, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
+	private Material buildObjectMaterial(ResultSet rs, boolean fullAssertion, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
 		Material material = null;
 		
 		try {
@@ -99,7 +100,7 @@ public class MaterialDB implements MaterialDBIF{
 		return material;
 	}
 	
-	private MaterialDescription buildObjectMaterialDescription(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
+	private MaterialDescription buildObjectMaterialDescription(ResultSet rs, boolean fullAssertion) throws DataAccessException, SQLException {
 		MaterialDescription materialDescription = null;
 		
 		try {
@@ -115,7 +116,7 @@ public class MaterialDB implements MaterialDBIF{
 		return materialDescription;
 	}
 	
-	private Price buildObjectSalesPrice(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
+	private Price buildObjectSalesPrice(ResultSet rs, boolean fullAssertion) throws DataAccessException, SQLException {
 		Price salesPrice = null;
 		
 		try {
@@ -132,7 +133,7 @@ public class MaterialDB implements MaterialDBIF{
 	}
 	
 	
-	private Price buildObjectPurchasePrice(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
+	private Price buildObjectPurchasePrice(ResultSet rs, boolean fullAssertion) throws DataAccessException, SQLException {
 		Price purchasePrice = null;
 		
 		try {
