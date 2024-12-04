@@ -7,6 +7,10 @@ import model.Material;
 import model.MaterialLog;
 import model.Order;
 import db.OrderDBIF;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
 import db.OrderDB;
 
 public class OrderController {
@@ -17,7 +21,7 @@ public class OrderController {
 	private OrderDBIF orderInterface;
 
 	
-	public OrderController() {
+	public OrderController() throws DataAccessException, SQLException {
 		logController = new LogController();
 		employeeController = new EmployeeController();
 		materialController = new MaterialController();
@@ -28,28 +32,32 @@ public class OrderController {
 		currentOrder = new Order(employee);	
 	}
 	
-	public Customer findAndAddCustomerByPhoneNo(String phoneNo) throws GeneralException {
+	public Customer findAndAddCustomerByPhoneNo(String phoneNo) throws DataAccessException {
 		CustomerController customerController = new CustomerController();
-		Customer foundCustomer =  customerController.findCustomerByPhoneNo(phoneNo);
+		Customer foundCustomer =  customerController.findCustomerByPhoneNo(phoneNo, false);
 		currentOrder.addCustomerToOrder(foundCustomer);
 		return foundCustomer;
 	}
 	
-	public Material findAndAddMaterialByPhoneNo(int materialNo, int quantity) {
+	public Material findAndAddMaterialByPhoneNo(Employee employee, int materialNo, int quantity) {
 		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo);
-		MaterialLog newLog = logController.addMaterialToLog(foundMaterial, quantity);
+		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
+		if (employee != null && foundMaterial != null && quantity != 0){
 		currentOrder.addMaterialLogToOrder(newLog);
+	}
 		return foundMaterial;
 	}
 	
-	public Employee findEmployeeByEmployeeId(int employeeId) throws GeneralException {
-		Employee employee = employeeController.findEmployeeByEmployeeId(employeeId);
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
+		Employee employee = employeeController.findEmployeeByEmployeeId(employeeId, fullAssertion);
 		return employee;
 	}
 	
-	public void addWorkHours(Employee employee, double hours) {
-		HourLog newLog = logController.AddEmployeeToHourLog(employee, hours);
-		currentOrder.addHourLogToOrder(newLog);		
+	public void addWorkHours(Employee employee, BigDecimal hours) {
+		if(employee != null && hours != null) {
+		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
+		currentOrder.addHourLogToOrder(newLog);	
+		}
 	}
 	
 	public void saveOrder() throws GeneralException {

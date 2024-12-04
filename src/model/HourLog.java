@@ -1,18 +1,20 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class HourLog extends Logs {
 
-	private double hoursWorked;
+	private BigDecimal hoursWorked;
 
-	public HourLog(Employee employee, double hours) {
+	public HourLog(Employee employee, BigDecimal hours) {
 		super(employee);
 		hoursWorked = hours;
 	}
 	
-	public double getHoursWorked() {
+	public BigDecimal getHoursWorked() {
 		return hoursWorked;
 	}
-	public void setHoursWorked(double hoursWorked) {
+	public void setHoursWorked(BigDecimal hoursWorked) {
 		this.hoursWorked = hoursWorked;
 	}
 

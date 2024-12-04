@@ -5,5 +5,5 @@ import model.Employee;
 
 public interface EmployeeDBIF {
 
-Employee findEmployeeByEmployeeId(String employeeId, boolean fullAsserstion) throws GeneralException, DataAccessException;
+Employee findEmployeeByEmployeeId(int employeeId, boolean fullAsserstion) throws GeneralException, DataAccessException;
 }
