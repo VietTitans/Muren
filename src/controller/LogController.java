@@ -1,4 +1,6 @@
 package controller;
+import java.math.BigDecimal;
+
 import db.HourLogDB;
 import db.HourLogDBIF;
 import db.MaterialLogDB;
@@ -16,34 +18,15 @@ public class LogController{
 	private MaterialLogDBIF materialLogInterface;
 	
 	public LogController() throws DataAccessException {
-		this.orderController = new OrderController();
 		this.hourLogInterface = new HourLogDB();
-		this.materialLogInterface = new MaterialLogDB();
-	}
-	
-	public HourLog createHourLog() {
-		if (currentHourLog == null) {
-			this.currentHourLog = new HourLog(null, 0);
-		}
-		return currentHourLog;
-	}
-	
-	public MaterialLog createMaterialLog() {
-		if (currentMaterialLog == null) {
-			this.currentMaterialLog = new MaterialLog(null, null, 0);
-		}
-		return currentMaterialLog;
 	}
 
-	public MaterialLog addMaterialToLog(Employee employee, int productNo, int quantity) {
-		MaterialController materialController = new MaterialController();
-		Material materialFound = materialController.findMaterialByMaterialNo(productNo);
-		MaterialLog currentMaterialLog = new MaterialLog(employee, materialFound, quantity);
+	public MaterialLog addMaterialToLog(Employee employee, Material material, int quantity) {
+		MaterialLog currentMaterialLog = new MaterialLog(employee, material, quantity);
 		return currentMaterialLog;
 	}
 	
-	public HourLog addEmployeeToHourLog(Employee employee, double hours) {
-		currentHourLog.getHoursWorked();
+	public HourLog addEmployeeToHourLog(Employee employee, BigDecimal hours) {
 		HourLog currentHourLog = new HourLog(employee, hours);
 		return currentHourLog;
 	}

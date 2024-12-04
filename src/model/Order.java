@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.math.BigDecimal;
 public class Order {
 
 	private Employee OrderMadeBy;
@@ -33,39 +33,39 @@ public class Order {
 		this.customer = customer;
 	}
 	
-	public double calculateTotalOrderPrice() {
-		return calculateTotalHoursPrice() + calculateTotalMaterialPrice();
+	public BigDecimal calculateTotalOrderPrice() {
+		return calculateTotalHoursPrice().add(calculateTotalMaterialPrice());
 	}
 
 	
-	public double calculateTotalHoursPrice() {
-		double sum = 0;
-		double hourrate = 0;
+	public BigDecimal calculateTotalHoursPrice() {
+		BigDecimal sum = null;
+		BigDecimal hourrate = null;
 		for (HourLog hl : hourLogs) {
 			EmployeeType Type = hl.getEmployee().getEmployeeType();
 			switch(Type) {
 			case APPRENTICE:
-				hourrate = 250;
+				hourrate = BigDecimal.valueOf(250);
 				break;
 			case JOURNEYMAN:
-				hourrate = 400;
+				hourrate = BigDecimal.valueOf(400);
 				break;
 			case OWNER:
-				hourrate = 450;
+				hourrate = BigDecimal.valueOf(450);
 				break;
 			default:
 				// TODO make an UnknownEmployeeTypeException
 				break;
 			}
-			sum += (hourrate * hl.getHoursWorked());
+			sum = sum.add(hourrate.multiply(hl.getHoursWorked()));
 		}
 		return sum;
 	}
 	
-	public double calculateTotalMaterialPrice() {
-		double sum = 0;
+	public BigDecimal calculateTotalMaterialPrice() {
+		BigDecimal sum = null;
 		for (MaterialLog ml : materialLogs) {
-			sum =+ ml.getQuantity() * ml.getMaterial().getSalesPriceNow();
+			sum = sum.add(ml.getMaterial().getSalesPriceNow().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
 		}
 		return sum;
 	}

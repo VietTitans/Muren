@@ -9,7 +9,7 @@ import controller.GeneralException;
 import model.Address;
 import model.Employee;
 
-public class DBEmployee implements EmployeeDBIF {
+public class EmployeeDB implements EmployeeDBIF {
 
 private static final String FIND_EMPLOYEE = " select * FROM Employee,Person";
 private PreparedStatement findAllEmployees; 
@@ -18,7 +18,7 @@ private PreparedStatement findAddress;
 private static final String FIND_BY_EMPLOYEEID = FIND_EMPLOYEE + " where Employee.PersonId = Person.PersonId AND employeeId = ? ";
 private PreparedStatement find_by_id;
 	
-public DBEmployee() throws SQLException, DataAccessException {
+public EmployeeDB() throws SQLException, DataAccessException {
 	findAllEmployees = DBConnection.getInstance().getConnection().prepareStatement(FIND_EMPLOYEE);
 	findAddress = DBConnection.getInstance().getConnection().prepareStatement(FIND_ADDRESS);
 	find_by_id =  DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_EMPLOYEEID);
@@ -30,11 +30,11 @@ public DBEmployee() throws SQLException, DataAccessException {
 
 
 @Override
-public Employee findEmployeeByEmployeeId(String employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
+public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
 	Employee foundEmployee = new Employee(null, null,null,null,null,null);
 	
 	try {
-		find_by_id.setString(1,employeeId);
+		find_by_id.setString(1, String.valueOf(employeeId));
 		ResultSet resultSet = find_by_id.executeQuery();
 		
 		if(resultSet.next()) {

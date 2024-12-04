@@ -28,7 +28,7 @@ public class Location extends Inventory{
 	
 	@Override
 	public HashMap<Integer, Material> getInventory(){
-		return materialsInInventory;
+		return new HashMap<>(materialsInInventory); //returnere en klon af hashmappet, så det ikke kan modifies.
 	}
 	
 	
