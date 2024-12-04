@@ -20,7 +20,7 @@ class TestDBEmployee {
 	}
 	@Test
 	void testFindByEmployeeId() throws GeneralException, DataAccessException, SQLException {
-		DBEmployee dbEmployee = new DBEmployee();
+		EmployeeDB employeeDB = new EmployeeDB();
 		
 		Employee foundEmployee = new Employee();
 		foundEmployee = dbEmployee.findEmployeeByEmployeeId("1", false);
