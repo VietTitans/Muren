@@ -5,16 +5,30 @@ VALUES
 (90001, 'Los Angeles'),
 (60601, 'Chicago'),
 (77001, 'Houston'),
-(85001, 'Phoenix');
+(85001, 'Phoenix'),
+(60091, 'USA'),
+(8000, 'Aarhus'),
+(1620, 'Copenhagen'),
+(2100, 'Copenhagen'),
+(2300, 'Copenhagen');
 
 -- Insert data into Address
 INSERT INTO Address (StreetName, BuildingNo, FloorNo, Country, Zipcode)
 VALUES
-('Broadway', '10A', 3, 'USA', 10001),
-('Hollywood Blvd', '22B', 1, 'USA', 90001),
-('Magnificent Mile', '5C', 2, 'USA', 60601),
-('Main St', '7D', NULL, 'USA', 77001),
-('Central Ave', '15E', 4, 'USA', 85001);
+('Broadway', '10A', 3, 'USA', 60091),
+('Hollywood Blvd', '22B', 1, 'USA', 60091),
+('Magnificent Mile', '5C', 2, 'USA', 60091),
+('Main St', '7D', 0, 'USA', 60091),
+('Central Ave', '15E', 4, 'USA', 60091),
+('Maple Avenue', '101', 1, 'USA', 60091),
+('Pine Street', '202', 2, 'Phoenix', 85001),
+('Oak Road', '303', 3, 'New York', 10001),
+('Cedar Lane', '404', 4, 'New York', 10001),
+('Birch Boulevard', '505', 5, 'Chicago', 60601),
+('Nørregade', '12A', 2, 'Denmark', 8000),
+('Vesterbrogade', '45', 3, 'Denmark', 1620),
+('Øster Allé', '23B', 1, 'Denmark', 2100),
+('Amagerbrogade', '89', 4, 'Denmark', 2300);
 
 -- Insert data into EmployeeType
 INSERT INTO EmployeeType (EmployeeTypeName)
@@ -22,7 +36,6 @@ VALUES
 ('Apprentice'),
 ('Journeyman'),
 ('Owner');
-
 
 -- Insert data into Person
 INSERT INTO Person (FirstName, LastName, PhoneNo, Email, AddressId)
@@ -35,33 +48,33 @@ VALUES
 ('Aaron', 'Smith', '88551906', 'aaron.smith@example.com', 6),
 ('Jeremy', 'Jones', '78123194', 'jeremy.jones@example.com', 7),
 ('William', 'Lee', '19532742', 'willaim.lee@example.com', 8),
-('Michael', 'Scott', '91629532', 'michael.scott@example.com', 9);
+('Michael', 'Scott', '91629532', 'michael.scott@example.com', 9),
+('Frederik', 'Nielsen', '4512345678', 'frederik.nielsen@example.dk', 10),
+('Emma', 'Hansen', '4523456789', 'emma.hansen@example.dk', 11),
+('Mikkel', 'Jensen', '4534567890', 'mikkel.jensen@example.dk', 12),
+('Sofie', 'Andersen', '4545678901', 'sofie.andersen@example.dk', 13);
 
 -- Insert data into Customer
 INSERT INTO Customer (PersonId)
 VALUES
-(1),
-(2),
-(3),
-(4),
-(5),
-(6);
+(1),(2),(3),(4),(5),(6),(7),(8),(9),(10),
+(11),(12),(13);
 
 -- Insert data into BusinessCustomer
 INSERT INTO BusinessCustomer (CVR, BusinessName, CustomerNo)
 VALUES
-(100001, 'Tech Corp', 4),
-(100002, 'Health Ltd', 5),
-(100003, 'Retail Co', 6);
-
+(100001, 'Tech Corp', 6),
+(100002, 'Health Ltd', 7),
+(100003, 'Retail Co', 8);
 
 -- Insert data into Employee
 INSERT INTO Employee (CPR, EmployeeTypeNo, PersonId)
 VALUES
-('1234567890', 1, 7),
-('2345678901', 2, 8),
-('3456789012', 3, 9);
-
+('1234567890', 1, 9),
+('2345678901', 2, 10),
+('3456789012', 3, 11),
+('2213489012', 3, 12),
+('3453389012', 3, 13);
 
 -- Insert data into Material
 INSERT INTO Material (ProductNo, ProductName)
