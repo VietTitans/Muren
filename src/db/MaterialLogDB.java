@@ -12,16 +12,16 @@ import model.MaterialLog;
 
 public class MaterialLogDB implements MaterialLogDBIF {
 
-	private static final String INSERT_MATERIALLOG_INTO_LOG = " INSERT INTO Logs (OrderNo, EmployeeId, LogTimeStamp) VALUES (?, ?, ?);";
+	private static final String INSERT_MATERIALLOG_INTO_LOG = " INSERT INTO Logs (OrderNo, EmployeeId, LogTimeStamp) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoLogs;
-	private static final String INSERT_MATERIALLOG_INTO_MATERIALLOG = "INSERT INTO MaterialLogs(Quantity, ProductNo, LogId) VALUES (?, ?, ?);";
+	private static final String INSERT_MATERIALLOG_INTO_MATERIALLOG = " INSERT INTO MaterialLogs(Quantity, ProductNo, LogId) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
 	
 	public MaterialLogDB() throws DataAccessException {
 		// TODO Auto-generated constructor stub
 		try {
 		insertMaterialLogIntoLogs = DBConnection.getInstance().getConnection()
-				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG);
+				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 		insertMaterialLogIntoMaterialLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_MATERIALLOG);
 		} catch (SQLException e) {
@@ -33,17 +33,20 @@ public class MaterialLogDB implements MaterialLogDBIF {
 	@Override
 	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
 		try {
+			//Inserts data for the Logs table
 			insertMaterialLogIntoLogs.setInt(1, orderId);
 			int EmployeeId = materialLog.getEmployee().getEmployeeId();
 			insertMaterialLogIntoLogs.setInt(2, EmployeeId);
-			
 			Timestamp hourLogTime = Timestamp.valueOf(materialLog.getTimeStamp());
 			insertMaterialLogIntoLogs.setTimestamp(3, hourLogTime);
-			insertMaterialLogIntoLogs.executeUpdate();
 			
+			//Runs the update and returns LogId from new Log, to be used in MaterialsLogs
+			insertMaterialLogIntoLogs.executeUpdate();
 			ResultSet generatedLogId = insertMaterialLogIntoLogs.getGeneratedKeys();
+			
+			//If the insert was successfull Insert MaterialLogs into MaterialLogs table, with generated LogId
 				if (generatedLogId.next()) {
-					int materialLogKey = generatedLogId.getInt("LogId");
+					int materialLogKey = generatedLogId.getInt(1);
 					insertMaterialLogIntoLogs.close();
 					
 					int quantity = materialLog.getQuantity();

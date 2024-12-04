@@ -23,7 +23,7 @@ class TestDBEmployee {
 		EmployeeDB employeeDB = new EmployeeDB();
 		
 		Employee foundEmployee = new Employee();
-		foundEmployee = dbEmployee.findEmployeeByEmployeeId("1", false);
+		foundEmployee = EmployeeDB.findEmployeeByEmployeeId(1, false);
 		
 		System.out.println(foundEmployee.getfName());
 		System.out.println(foundEmployee.getlName());

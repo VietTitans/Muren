@@ -41,8 +41,8 @@ public class OrderController {
 	
 	public Material findAndAddMaterialByPhoneNo(Employee employee, int materialNo, int quantity) {
 		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo);
-		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		if (employee != null && foundMaterial != null && quantity != 0){
+		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		currentOrder.addMaterialLogToOrder(newLog);
 	}
 		return foundMaterial;
