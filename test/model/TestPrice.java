@@ -44,9 +44,10 @@ public class TestPrice {
 		
 		//Act
 		BigDecimal value = price.getPreVATValue();
+		BigDecimal actualValue = new BigDecimal(20);
 		
 		//Assert
-		assertEquals(20, value);
+		assertEquals(actualValue, value);
 		
 		
 	}
