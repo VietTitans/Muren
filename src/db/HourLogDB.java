@@ -20,7 +20,7 @@ public class HourLogDB implements HourLogDBIF {
 	public HourLogDB() throws DataAccessException {
 		try {
 	insertHourLogIntoLogs = DBConnection.getInstance().getConnection()
-			.prepareStatement(INSERT_HOURLOG_INTO_LOG);
+			.prepareStatement(INSERT_HOURLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 	insertHourLogIntoHourLogs = DBConnection.getInstance().getConnection()
 			.prepareStatement(INSERT_HOURLOG_INTO_HOURLOG);
 	}
@@ -42,7 +42,7 @@ public class HourLogDB implements HourLogDBIF {
 			
 			ResultSet generatedLogId = insertHourLogIntoLogs.getGeneratedKeys();
 				if (generatedLogId.next()) {
-					int hourLogKey = generatedLogId.getInt("LogId");
+					int hourLogKey = generatedLogId.getInt(1);
 					insertHourLogIntoHourLogs.setBigDecimal(1, hourLog.getHoursWorked());
 					
 					insertHourLogIntoLogs.close();
