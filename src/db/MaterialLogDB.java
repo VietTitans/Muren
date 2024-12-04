@@ -33,6 +33,7 @@ public class MaterialLogDB implements MaterialLogDBIF {
 	@Override
 	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
 		try {
+			//TRANSACTION? 
 			//Inserts data for the Logs table
 			insertMaterialLogIntoLogs.setInt(1, orderId);
 			int EmployeeId = materialLog.getEmployee().getEmployeeId();

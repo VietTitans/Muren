@@ -10,20 +10,19 @@ import model.MaterialLog;
 import model.Order;
 
 public class OrderDB implements OrderDBIF {
-	private static final String INSERT_ORDER_INTO_DATABASE = "INSERT INTO ORDERS (StartDate, Deadline, EmployeeId, CustomerNo, IsFinished) VALUES (?, ?, ?, ?, ?);";
+	private static final String INSERT_ORDER_INTO_DATABASE = " INSERT INTO ORDERS (StartDate, Deadline, EmployeeId, CustomerNo, IsFinished) VALUES (?, ?, ?, ?, ?);";
 	private PreparedStatement insertIntoDatabase;
-	private DBConnection dbConnection;
 	private MaterialLogDB materialLogDB;
 	private HourLogDB hourLogDB;
 
 	public OrderDB() throws DataAccessException, SQLException {
-		dbConnection = DBConnection.getInstance();
+		insertIntoDatabase = DBConnection.getInstance().getConnection().prepareStatement(INSERT_ORDER_INTO_DATABASE,java.sql.Statement.RETURN_GENERATED_KEYS);
 		materialLogDB = new MaterialLogDB();
 		hourLogDB = new HourLogDB();
 	}
 
 	@Override
-	public int saveOrder(Order currentOrder) {
+	public int saveOrder(Order currentOrder) throws DataAccessException {
 	int orderIdReturned = -1;
 	//Sets up values to be used in prepared statement 
 	java.sql.Date startDate = java.sql.Date.valueOf(currentOrder.getStartDate());
@@ -55,29 +54,30 @@ public class OrderDB implements OrderDBIF {
 			
 			//Gets the auto generated key from DB, So it can be used for Logs
 			ResultSet generatedKeys = insertIntoDatabase.getGeneratedKeys();
-			
+//			
 			if(generatedKeys.next()){
 				orderIdReturned = generatedKeys.getInt(1);
 			}
-			
+//			
 			insertIntoDatabase.close();
-			
-			//Saves the material and hour logs to DB by calling their DB classes 
+//			
+//			//Saves the material and hour logs to DB by calling their DB classes 
 			for(MaterialLog materialLog : currentOrder.getMaterialLogs()) {
-				
+//				
 				materialLogDB.saveMaterialLog(materialLog, orderIdReturned);
 			}
-			
+//			
 			for(HourLog hourLog : currentOrder.getHourLogs()) {
-				
+//				
 				hourLogDB.saveHourLog(hourLog, orderIdReturned);
 				}
 			
 			
-			
+			DBConnection.getInstance().commitTransaction();
 		} catch (DataAccessException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DBConnection.getInstance().rollbackTransaction();
 		}
 		return orderIdReturned;
 		
