@@ -45,7 +45,7 @@ class TestCustomerDB {
 	}
 	
 	@Test
-	void customerDoesntExists() throws DataAccessException {
+	void testCustomerDoesntExists() throws DataAccessException {
 		//Using NullPointerException to test for null
 		//Arrange
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
