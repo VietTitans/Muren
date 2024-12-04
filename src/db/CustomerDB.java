@@ -52,8 +52,9 @@ public class CustomerDB implements CustomerDBIF {
 		try {
 			customer.setfName(resultSet.getString("FirstName"));
 			customer.setlName(resultSet.getString("LastName"));
-			customer.setEmail(resultSet.getString("Email"));
 			customer.setPhoneNo(resultSet.getString("PhoneNo"));
+			customer.setEmail(resultSet.getString("Email"));
+//			customer.setAddress(resultSet.getObject("Adress"));
 			
 		if (fullAssertion = true) {
 			// TODO Finish Method when a method requires the use of an Address
@@ -62,6 +63,6 @@ public class CustomerDB implements CustomerDBIF {
 			throw new DataAccessException("Could not Build Object", e);
 		}
 		return customer;
-		
+	
 	}
 }
