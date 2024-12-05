@@ -31,7 +31,7 @@ public class MaterialLogDB implements MaterialLogDBIF {
 	}
 
 	@Override
-	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
+	public void saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
 		try {
 			//TRANSACTION? 
 			//Inserts data for the Logs table
@@ -60,7 +60,6 @@ public class MaterialLogDB implements MaterialLogDBIF {
 		} catch (SQLException e) {
 			throw new DataAccessException("MaterialLog could not be saved", e);
 		}
-		return materialLog;
 	}
 
 }
