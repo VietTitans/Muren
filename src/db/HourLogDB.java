@@ -30,7 +30,7 @@ public class HourLogDB implements HourLogDBIF {
 	}
 
 	@Override
-	public HourLog saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
+	public void saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
 		try {
 			insertHourLogIntoLogs.setInt(1, orderId);
 			int EmployeeId = hourLog.getEmployee().getEmployeeId();
@@ -44,17 +44,14 @@ public class HourLogDB implements HourLogDBIF {
 				if (generatedLogId.next()) {
 					int hourLogKey = generatedLogId.getInt(1);
 					insertHourLogIntoHourLogs.setBigDecimal(1, hourLog.getHoursWorked());
-					
 					insertHourLogIntoLogs.close();
 					insertHourLogIntoHourLogs.setInt(2, hourLogKey);
-
 					insertHourLogIntoHourLogs.executeUpdate();
 				}
 		
 		} catch (SQLException e){
 			throw new DataAccessException("HourLog Could Not be Saved", e);
 		}
-		return hourLog;
 	}
 
 }
