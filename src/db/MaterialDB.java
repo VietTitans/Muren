@@ -92,7 +92,7 @@ public class MaterialDB implements MaterialDBIF{
 			throw new DataAccessException("Cant find material", e);
 		}
 			
-	return material;
+		return material;
 	}
 	
 	private void findAndAddStockReservationByStockMaterialId(int stockMaterialId, StockMaterial stockMaterial) throws SQLException, DataAccessException {
