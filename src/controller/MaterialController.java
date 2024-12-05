@@ -10,11 +10,8 @@ public class MaterialController {
 	public MaterialController() throws DataAccessException {
 		materialDBIF = new MaterialDB();
 	}
-/*
- * Skal ændres
- * 
-public Material findMaterialByMaterialNo(int materialNo) {
-	return materialDBIF.findMaterialByMaterialNo(materialNo);
+ 
+public Material findMaterialByMaterialNo(int materialNo, boolean fullasserstion) throws DataAccessException {
+	return materialDBIF.findMaterialByProductNo(materialNo,fullasserstion);
 	}
-*/ 
 }
