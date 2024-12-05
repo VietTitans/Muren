@@ -32,8 +32,8 @@ public class CancelOrderDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public CancelOrderDialog(RegisterOrderV2 registerOrderFrame) {
-		this.registerOrderFrame = registerOrderFrame;
+	public CancelOrderDialog(RegisterOrderV2 object) {
+		this.registerOrderFrame = object;
 		setBounds(100, 100, 304, 106);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -53,7 +53,7 @@ public class CancelOrderDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						Orders ordersFrame = new Orders();
 						ordersFrame.setVisible(true);
-						registerOrderFrame.dispose();
+						object.dispose();
 						dispose();
 					}
 				});
@@ -63,6 +63,11 @@ public class CancelOrderDialog extends JDialog {
 			}
 			{
 				JButton nejButton = new JButton("Nej");
+				nejButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				nejButton.setActionCommand("Cancel");
 				buttonPane.add(nejButton);
 			}

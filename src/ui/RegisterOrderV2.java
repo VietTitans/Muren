@@ -224,10 +224,12 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CancelOrderDialog cancelOrderFrame = new CancelOrderDialog();
-				cancelOrderFrame.setVisible(true);
-				dispose();
+				CancelOrderDialog cancelOrderFrame;
+			
+					cancelOrderFrame = new CancelOrderDialog(RegisterOrderV2.this);
+					cancelOrderFrame.setVisible(true);
 			}
+			
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.WEST;
@@ -324,6 +326,8 @@ public class RegisterOrderV2 extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		
+
 	}
 
 }
