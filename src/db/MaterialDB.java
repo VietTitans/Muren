@@ -27,7 +27,6 @@ public class MaterialDB implements MaterialDBIF{
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE ProductNo = ?;";
 	private static final String PS_SELECT_FROM_Stock_Reservation = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
 	
-	
 	private PreparedStatement psSelectProductNoMaterial;
 	private PreparedStatement psSelectProductNoMaterialDescription;
 	private PreparedStatement psSelectProductNoSalesPrice;
@@ -36,12 +35,10 @@ public class MaterialDB implements MaterialDBIF{
 	
 	private Connection connection;
 	
-	
 	public MaterialDB() throws DataAccessException {
 		connection = DBConnection.getInstance().getConnection();
 		initPreparedStatements();
 	}
-	
 	
 	private void initPreparedStatements() throws DataAccessException {
 		try {
@@ -56,7 +53,6 @@ public class MaterialDB implements MaterialDBIF{
 			throw new DataAccessException("Could not prepare statement", e);
 		}
 	}
-	
 	
 	public Material findMaterialByProductNo(int productNo, boolean fullAssociation) throws DataAccessException {
 		Material material = null;
@@ -201,7 +197,6 @@ public class MaterialDB implements MaterialDBIF{
 		}
 		return purchasePrice;
 	}
-	
 	
 	
 	public StockReservation buildObjectStockReservation(ResultSet rs, boolean fullAssociation) throws SQLException {
