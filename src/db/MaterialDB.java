@@ -2,6 +2,7 @@ package db;
 
 import model.Material;
 import model.Price;
+import model.StockMaterial;
 import model.MaterialDescription;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,10 @@ import controller.DataAccessException;
 
 public class MaterialDB implements MaterialDBIF{
 
-	private static final String PS_SELECT_FROM_MATERIAL = " SELECT * FROM Material WHERE ProductNo = ?;"; 
+	private static final String PS_SELECT_FROM_MATERIAL = " SELECT Material.*, StockMaterial.Quantity, StockMaterial.MinStock, StockMaterial.MaxStock\r\n"
+			+ "FROM Material\r\n"
+			+ "LEFT JOIN StockMaterial ON Material.ProductNo = StockMaterial.ProductNo\r\n"
+			+ "WHERE Material.ProductNo = 1001;"; 
 	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE ProductNo = ?;";
 	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE ProductNo = ?;";
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE ProductNo = ?;";
@@ -71,8 +75,10 @@ public class MaterialDB implements MaterialDBIF{
 				salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssertion);
 				purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssertion);
 				
-				if(rsMaterial.next()) {
+				if(rsMaterial.next() || rsMaterial.wasNull()) {
 					material = buildObjectMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice);
+				} else if(rsMaterial.next() || rsMaterial.getInt("Quantity") > 0) {
+					material = buildObjectStockMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice);
 				}
 			}
 			}catch (SQLException e) {
@@ -99,6 +105,27 @@ public class MaterialDB implements MaterialDBIF{
 		
 		return material;
 	}
+	
+	
+	private Material buildObjectStockMaterial(ResultSet rs, boolean fullAssertion, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
+		Material material = null;
+		
+		try {
+			String productName = rs.getString("ProductName");
+			int productNo = rs.getInt("ProductNo");
+			int quantity = rs.getInt("Quantity");
+			int minStock = rs.getInt("MinStock");
+			int maxStock = rs.getInt("MaxStock");
+			
+			material = new StockMaterial(productNo, productName, materialDescription, salesPrice, purchasePrice, minStock, maxStock,quantity);
+			
+		} catch (SQLException e) {
+			throw new DataAccessException("Cannot convert from ResultSet", e);
+		}
+		
+		return material;
+	}
+	
 	
 	private MaterialDescription buildObjectMaterialDescription(ResultSet rs, boolean fullAssertion) throws DataAccessException, SQLException {
 		MaterialDescription materialDescription = null;
