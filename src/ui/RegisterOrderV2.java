@@ -20,9 +20,15 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import controller.DataAccessException;
+import controller.OrderController;
+import model.Customer;
+
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class RegisterOrderV2 extends JFrame {
@@ -35,6 +41,7 @@ public class RegisterOrderV2 extends JFrame {
 	private JTable table_1;
 	private JTable table;
 	private JTextField txtMngde;
+	private OrderController currentOrderController;
 
 	/**
 	 * Launch the application.
@@ -54,8 +61,12 @@ public class RegisterOrderV2 extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
+	 * @throws DataAccessException 
 	 */
-	public RegisterOrderV2() {
+	public RegisterOrderV2() throws DataAccessException, SQLException {
+		currentOrderController = new OrderController();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
@@ -88,20 +99,20 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(txtKundeTlf, gbc_txtKundeTlf);
 		txtKundeTlf.setColumns(10);
 		
-		JButton btnNewButton_2 = new JButton("Tilføj kunde");
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 2;
-		panel.add(btnNewButton_2, gbc_btnNewButton_2);
+		JButton addCustomerButton = new JButton("Tilføj kunde");
+		GridBagConstraints gbc_addCustomerButton = new GridBagConstraints();
+		gbc_addCustomerButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addCustomerButton.insets = new Insets(0, 0, 5, 0);
+		gbc_addCustomerButton.gridx = 1;
+		gbc_addCustomerButton.gridy = 2;
+		panel.add(addCustomerButton, gbc_addCustomerButton);
 		
-		JLabel lblNewLabel_1 = new JLabel("Kunde");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 3;
-		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel customerLabel = new JLabel("Kunde");
+		GridBagConstraints gbc_customerLabel = new GridBagConstraints();
+		gbc_customerLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_customerLabel.gridx = 1;
+		gbc_customerLabel.gridy = 3;
+		panel.add(customerLabel, gbc_customerLabel);
 		
 		txtProduktno = new JTextField();
 		txtProduktno.setHorizontalAlignment(SwingConstants.LEFT);
@@ -327,6 +338,18 @@ public class RegisterOrderV2 extends JFrame {
 			}
 		});
 		
+		addCustomerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
+					String name = "Navn: " + customer.getfName() + " " + customer.getlName();
+					customerLabel.setText(name);
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 
 	}
 
