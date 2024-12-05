@@ -5,12 +5,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.DataAccessException;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Orders extends JFrame {
@@ -61,9 +65,18 @@ public class Orders extends JFrame {
 		JButton btnNewButton = new JButton("Registrer ordre");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegisterOrderV2 registerOrderFrame = new RegisterOrderV2();
-				registerOrderFrame.setVisible(true);
-				dispose();
+				RegisterOrderV2 registerOrderFrame;
+				try {
+					registerOrderFrame = new RegisterOrderV2();
+					registerOrderFrame.setVisible(true);
+					dispose();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();

@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controller.DataAccessException;
+
 import controller.OrderController;
 import model.Customer;
 
@@ -30,6 +30,8 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class RegisterOrderV2 extends JFrame {
 
@@ -49,24 +51,20 @@ public class RegisterOrderV2 extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
 					RegisterOrderV2 frame = new RegisterOrderV2();
 					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				
 			}
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 * @throws SQLException 
-	 * @throws DataAccessException 
-	 */
-	public RegisterOrderV2() throws DataAccessException, SQLException {
+
+	public RegisterOrderV2() {
+		try {
 		currentOrderController = new OrderController();
-		
+		} catch (Exception e) {
+			
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
@@ -89,6 +87,22 @@ public class RegisterOrderV2 extends JFrame {
 		panel.setLayout(gbl_panel);
 		
 		txtKundeTlf = new JTextField();
+		txtKundeTlf.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtKundeTlf.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				String str = txtKundeTlf.getText();
+				int strLenght = str.length();
+				if(strLenght < 1) {
+					txtKundeTlf.setText("Kunde Tlf:");
+				} else {
+					
+				}
+			}
+		});
 		txtKundeTlf.setHorizontalAlignment(SwingConstants.LEFT);
 		txtKundeTlf.setText("Kunde Tlf:");
 		GridBagConstraints gbc_txtKundeTlf = new GridBagConstraints();
@@ -342,11 +356,21 @@ public class RegisterOrderV2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-					String name = "Navn: " + customer.getfName() + " " + customer.getlName();
-					customerLabel.setText(name);
-				} catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+						if (customer == null) {
+							CustomerNotFoundDialog customerNotFoundDialog;
+							
+							customerNotFoundDialog = new CustomerNotFoundDialog();
+							customerNotFoundDialog.setVisible(true);
+							
+						} else {
+			
+							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
+							customerLabel.setText(name);
+							txtKundeTlf.setText("Kunde Tlf:");
+							
+						}
+				} catch (Exception b) {
+		
 				}
 			}
 		});
