@@ -26,7 +26,7 @@ public class EmployeeDB implements EmployeeDBIF {
 	}
 
 	@Override
-	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation)
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) 
 			throws GeneralException, DataAccessException {
 		Employee foundEmployee = new Employee(null, null, null, null, null, null);
 
@@ -54,7 +54,7 @@ public class EmployeeDB implements EmployeeDBIF {
 			foundEmployee.setEmail(resultSet.getString("Email"));
 			foundEmployee.setAddress(null);
 			// Enum i dette tilfælge er et problem
-//		foundEmployee.setEmployeeType(resultSet.getString("EmployeeType"));
+			//foundEmployee.setEmployeeType(resultSet.getString("EmployeeType"));
 			foundEmployee.setCpr(resultSet.getString("cpr"));
 			foundEmployee.setEmployeeId(resultSet.getInt("EmployeeId"));
 
