@@ -11,30 +11,26 @@ import model.Material;
 import model.StockMaterial;
 
 public class TestMaterialDB {
-
-	
 	
 	static MaterialDB materialDB;
 	private DBConnection connection;
 	
-	
-	
 	@BeforeEach
 	void setUp() throws DataAccessException {
 		materialDB = new MaterialDB();
-		
+		connection = DBConnection.getInstance();
+		connection.getConnection();
 	}
 	
 	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() throws DataAccessException {
 		connection.disconnect();
 	}
 	
 	@Test
 	public void testFindMaterialByProductNo() throws DataAccessException {
 		//Arrange
-		
 		
 		//Act
 		Material material = materialDB.findMaterialByProductNo(1001, true);

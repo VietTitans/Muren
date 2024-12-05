@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +23,21 @@ import model.Price;
 
 class TestOrderDB {
 
+	static OrderDB orderDB;
+	private DBConnection connection;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		//Resets the database to a known state 
 		ResetDB.main(null);
+		orderDB = new OrderDB();
+		connection = DBConnection.getInstance();
+		connection.getConnection();
+	}
+	
+	@AfterEach
+	void tearDown() throws Exception {
+		connection.disconnect();
 	}
 
 	@Test
