@@ -30,7 +30,7 @@ public class StartScreen extends JFrame {
 					StartScreen frame = new StartScreen();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		});

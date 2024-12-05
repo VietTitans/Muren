@@ -70,13 +70,9 @@ public class Orders extends JFrame {
 					registerOrderFrame = new RegisterOrderV2();
 					registerOrderFrame.setVisible(true);
 					dispose();
-				} catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				} catch (Exception e1 ) {
+					//e.printStackTrace();
+				} 
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();

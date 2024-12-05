@@ -15,6 +15,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -32,6 +33,7 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Color;
 
 public class RegisterOrderV2 extends JFrame {
 
@@ -63,7 +65,8 @@ public class RegisterOrderV2 extends JFrame {
 		try {
 		currentOrderController = new OrderController();
 		} catch (Exception e) {
-			
+			 e.printStackTrace();  // Log the exception
+		      //  JOptionPane.showMessageDialog(this, "Failed to initialize OrderController.");
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -129,6 +132,22 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(customerLabel, gbc_customerLabel);
 		
 		txtProduktno = new JTextField();
+		txtProduktno.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtProduktno.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				String str = txtProduktno.getText();
+				int strLenght = str.length();
+				if(strLenght < 1) {
+					txtProduktno.setText("ProduktNo:");
+				} else {
+					
+				}
+			}
+		});
 		txtProduktno.setHorizontalAlignment(SwingConstants.LEFT);
 		txtProduktno.setText("ProduktNo:");
 		GridBagConstraints gbc_txtProduktno = new GridBagConstraints();
@@ -140,6 +159,22 @@ public class RegisterOrderV2 extends JFrame {
 		txtProduktno.setColumns(10);
 		
 		txtMngde = new JTextField();
+		txtMngde.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtMngde.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				String str = txtMngde.getText();
+				int strLenght = str.length();
+				if(strLenght < 1) {
+					txtMngde.setText("Mængde:");
+				} else {
+					
+				}
+			}
+		});
 		txtMngde.setText("Mængde:");
 		GridBagConstraints gbc_txtMngde = new GridBagConstraints();
 		gbc_txtMngde.insets = new Insets(0, 0, 5, 0);
@@ -150,6 +185,7 @@ public class RegisterOrderV2 extends JFrame {
 		txtMngde.setColumns(10);
 		
 		JButton btnNewButton_3 = new JButton("Tilføj materiale");
+		btnNewButton_3.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
 		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
@@ -158,6 +194,22 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(btnNewButton_3, gbc_btnNewButton_3);
 		
 		txtMedarbejderid = new JTextField();
+		txtMedarbejderid.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtMedarbejderid.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				String str = txtMedarbejderid.getText();
+				int strLenght = str.length();
+				if(strLenght < 1) {
+					txtMedarbejderid.setText("MedarbejderID:");
+				} else {
+					
+				}
+			}
+		});
 		txtMedarbejderid.setText("MedarbejderID:");
 		GridBagConstraints gbc_txtMedarbejderid = new GridBagConstraints();
 		gbc_txtMedarbejderid.insets = new Insets(0, 0, 5, 0);
@@ -168,6 +220,7 @@ public class RegisterOrderV2 extends JFrame {
 		txtMedarbejderid.setColumns(10);
 		
 		JButton btnNewButton_4 = new JButton("Tilføj medarbejder");
+		btnNewButton_4.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
 		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_4.gridx = 1;
@@ -175,6 +228,13 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(btnNewButton_4, gbc_btnNewButton_4);
 		
 		JButton btnNewButton_6 = new JButton("Fjern materiale");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(table_1);
+				removeMaterialFrame.setVisible(true);
+			}
+		});
+		btnNewButton_6.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 1;
@@ -182,6 +242,7 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(btnNewButton_6, gbc_btnNewButton_6);
 		
 		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
+		btnNewButton_5.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
 		gbc_btnNewButton_5.gridx = 1;
 		gbc_btnNewButton_5.gridy = 13;
@@ -249,9 +310,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CancelOrderDialog cancelOrderFrame;
-			
-					cancelOrderFrame = new CancelOrderDialog(RegisterOrderV2.this);
+				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(RegisterOrderV2.this);
 					cancelOrderFrame.setVisible(true);
 			}
 			
@@ -264,6 +323,7 @@ public class RegisterOrderV2 extends JFrame {
 		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		JButton btnNewButton = new JButton("Gem ordre");
+		btnNewButton.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton.gridx = 12;
@@ -306,9 +366,10 @@ public class RegisterOrderV2 extends JFrame {
 		scrollPane.setViewportView(table_1);
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
+				{1, 2, "ting","en ting man kan se", 4, 27, 124},
 			},
 			new String[] {
-				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:", "Stk pris:", "Total pris:"
+				"NR:", "ID:", "Name:", "Beskrivelse:", "Mængde:", "Stk pris:", "Total pris:"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -354,23 +415,23 @@ public class RegisterOrderV2 extends JFrame {
 		
 		addCustomerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				try {
 					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-						if (customer == null) {
-							CustomerNotFoundDialog customerNotFoundDialog;
-							
-							customerNotFoundDialog = new CustomerNotFoundDialog();
+					System.out.println("Customer object: " + customer);
+						if (customer.getfName() == null) {
+							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
 							customerNotFoundDialog.setVisible(true);
 							
-						} else {
-			
+						} 
+						else {
 							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
 							customerLabel.setText(name);
-							txtKundeTlf.setText("Kunde Tlf:");
-							
+							txtKundeTlf.setText("Kunde Tlf:");	
 						}
-				} catch (Exception b) {
-		
+				} 
+				catch (Exception b) {
+					b.printStackTrace();  // This will print the stack trace of the exception to the console
 				}
 			}
 		});
