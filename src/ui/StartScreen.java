@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class StartScreen extends JFrame {
 
@@ -39,7 +41,7 @@ public class StartScreen extends JFrame {
 	 */
 	public StartScreen() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -64,6 +66,13 @@ public class StartScreen extends JFrame {
 		panel.add(lblMainMenu, gbc_lblMainMenu);
 		
 		JButton btnNewButton = new JButton("Ordrer");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Orders ordersFrame = new Orders();
+				ordersFrame.setVisible(true);
+				dispose();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton.gridx = 1;

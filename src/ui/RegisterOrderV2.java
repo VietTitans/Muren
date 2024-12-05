@@ -19,6 +19,11 @@ import javax.swing.JScrollBar;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class RegisterOrderV2 extends JFrame {
 
@@ -29,6 +34,7 @@ public class RegisterOrderV2 extends JFrame {
 	private JTextField txtMedarbejderid;
 	private JTable table_1;
 	private JTable table;
+	private JTextField txtMngde;
 
 	/**
 	 * Launch the application.
@@ -51,7 +57,7 @@ public class RegisterOrderV2 extends JFrame {
 	 */
 	public RegisterOrderV2() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 638, 483);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -66,9 +72,9 @@ public class RegisterOrderV2 extends JFrame {
 		contentPane.add(panel, BorderLayout.WEST);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{30, 0, 0};
-		gbl_panel.rowHeights = new int[]{30, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowHeights = new int[]{30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 30, 0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		txtKundeTlf = new JTextField();
@@ -104,16 +110,26 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_txtProduktno.insets = new Insets(0, 0, 5, 0);
 		gbc_txtProduktno.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtProduktno.gridx = 1;
-		gbc_txtProduktno.gridy = 4;
+		gbc_txtProduktno.gridy = 5;
 		panel.add(txtProduktno, gbc_txtProduktno);
 		txtProduktno.setColumns(10);
+		
+		txtMngde = new JTextField();
+		txtMngde.setText("Mængde:");
+		GridBagConstraints gbc_txtMngde = new GridBagConstraints();
+		gbc_txtMngde.insets = new Insets(0, 0, 5, 0);
+		gbc_txtMngde.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtMngde.gridx = 1;
+		gbc_txtMngde.gridy = 6;
+		panel.add(txtMngde, gbc_txtMngde);
+		txtMngde.setColumns(10);
 		
 		JButton btnNewButton_3 = new JButton("Tilføj materiale");
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
 		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 5;
+		gbc_btnNewButton_3.gridy = 7;
 		panel.add(btnNewButton_3, gbc_btnNewButton_3);
 		
 		txtMedarbejderid = new JTextField();
@@ -122,15 +138,29 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_txtMedarbejderid.insets = new Insets(0, 0, 5, 0);
 		gbc_txtMedarbejderid.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtMedarbejderid.gridx = 1;
-		gbc_txtMedarbejderid.gridy = 6;
+		gbc_txtMedarbejderid.gridy = 9;
 		panel.add(txtMedarbejderid, gbc_txtMedarbejderid);
 		txtMedarbejderid.setColumns(10);
 		
 		JButton btnNewButton_4 = new JButton("Tilføj medarbejder");
 		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
+		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_4.gridx = 1;
-		gbc_btnNewButton_4.gridy = 7;
+		gbc_btnNewButton_4.gridy = 10;
 		panel.add(btnNewButton_4, gbc_btnNewButton_4);
+		
+		JButton btnNewButton_6 = new JButton("Fjern materiale");
+		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
+		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_6.gridx = 1;
+		gbc_btnNewButton_6.gridy = 12;
+		panel.add(btnNewButton_6, gbc_btnNewButton_6);
+		
+		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
+		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
+		gbc_btnNewButton_5.gridx = 1;
+		gbc_btnNewButton_5.gridy = 13;
+		panel.add(btnNewButton_5, gbc_btnNewButton_5);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -191,7 +221,14 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_lblNewLabel_8.gridy = 1;
 		panel_1.add(lblNewLabel_8, gbc_lblNewLabel_8);
 		
-		JButton btnNewButton_1 = new JButton("New button");
+		JButton btnNewButton_1 = new JButton("Annuler ordre");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Orders ordersFrame = new Orders();
+				ordersFrame.setVisible(true);
+				dispose();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
@@ -199,7 +236,7 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_btnNewButton_1.gridy = 1;
 		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("Gem ordre");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton.gridx = 12;
@@ -209,13 +246,13 @@ public class RegisterOrderV2 extends JFrame {
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{30, 100, 30, 100, 30, 0};
-		gbl_panel_3.rowHeights = new int[]{25, 329, 25, 0};
-		gbl_panel_3.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_3.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_3.columnWidths = new int[]{0, 100, 0, 100, 0, 0};
+		gbl_panel_3.rowHeights = new int[]{25, 329, 0};
+		gbl_panel_3.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_3.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
 		
-		JLabel lblNewLabel_9 = new JLabel("Materialer");
+		JLabel lblNewLabel_9 = new JLabel("Materialer:");
 		GridBagConstraints gbc_lblNewLabel_9 = new GridBagConstraints();
 		gbc_lblNewLabel_9.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_9.gridx = 1;
@@ -229,21 +266,64 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_3.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.gridx = 1;
+		gbc_scrollPane.gridy = 1;
+		panel_3.add(scrollPane, gbc_scrollPane);
+		
 		table_1 = new JTable();
-		GridBagConstraints gbc_table_1 = new GridBagConstraints();
-		gbc_table_1.insets = new Insets(0, 0, 5, 5);
-		gbc_table_1.fill = GridBagConstraints.BOTH;
-		gbc_table_1.gridx = 1;
-		gbc_table_1.gridy = 1;
-		panel_3.add(table_1, gbc_table_1);
+		scrollPane.setViewportView(table_1);
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:", "Stk pris:", "Total pris:"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, Integer.class, String.class, String.class, Integer.class, Double.class, Double.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		table_1.getColumnModel().getColumn(3).setPreferredWidth(90);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		gbc_scrollPane_1.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_1.gridx = 3;
+		gbc_scrollPane_1.gridy = 1;
+		panel_3.add(scrollPane_1, gbc_scrollPane_1);
 		
 		table = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.insets = new Insets(0, 0, 5, 5);
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 3;
-		gbc_table.gridy = 1;
-		panel_3.add(table, gbc_table);
+		scrollPane_1.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Nr:", "ID:", "Navn:", "Timer:"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Integer.class, Integer.class, String.class, Double.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 	}
 
 }

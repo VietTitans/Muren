@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Orders extends JFrame {
 
@@ -37,7 +39,7 @@ public class Orders extends JFrame {
 	 */
 	public Orders() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -57,6 +59,13 @@ public class Orders extends JFrame {
 		contentPane.add(lblNewLabel, gbc_lblNewLabel);
 		
 		JButton btnNewButton = new JButton("Registrer ordre");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterOrderV2 registerOrderFrame = new RegisterOrderV2();
+				registerOrderFrame.setVisible(true);
+				dispose();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 1;

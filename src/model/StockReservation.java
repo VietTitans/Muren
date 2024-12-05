@@ -6,18 +6,20 @@ public class StockReservation {
 
 	private int quantity;
 	private LocalDateTime reservationDate;
-	private int duration; /* Duration is there to show how many days before the reservation is needed, 
+	private static final int duration = 7; /* Duration is there to show how many days before the reservation is needed, 
 	that it will be valid from*/
-	private int availabilityLimit; /* availabilityLimit is there to show how long after the duration has been reached
-	that the reservation is still available */
+	private static final int availabilityLimit = 3; /* availabilityLimit is there to show how long after 
+	the reservation date has been reached that the reservation is still available */
 	private boolean isActive;
 	
-	public StockReservation(int quantity, LocalDateTime reservationDate, int duration, int availabilityLimit, boolean isActive) {
+	public StockReservation(int quantity, LocalDateTime reservationDate) {
 		this.quantity = quantity;
 		this.reservationDate = reservationDate;
-		this.duration = duration;
-		this.availabilityLimit = availabilityLimit;
-		this.isActive = isActive;
+		if(reservationDate.minusDays(duration).isEqual(LocalDateTime.now()) ||  reservationDate.minusDays(duration).isBefore(LocalDateTime.now())) {
+			isActive = true;
+		} else {
+			isActive = false;
+		}
 	}
 	
 	public int getQuantity() {
@@ -36,7 +38,7 @@ public class StockReservation {
 		return availabilityLimit;
 	}
 	
-	public boolean getActiveStatus() {
+	public boolean isActive() {
 		return isActive;
 	}
 	
