@@ -36,7 +36,7 @@ class TestOrderDB {
 	}
 	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() throws DataAccessException {
 		connection.disconnect();
 	}
 
