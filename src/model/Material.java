@@ -16,12 +16,10 @@ public class Material {
 	 * Constructor doesn't yet take into consideration if the productName and productNo is already taken.
 	 */
 	
-	public Material(int productNo, String productName, MaterialDescription materialDescription, Price purchasePrice, Price salesPrice) {
+	public Material(int productNo, String productName) {
 		this.productNo = productNo;
 		this.productName = productName;
-		this.materialDescription = materialDescription;
-		this.purchasePrice = purchasePrice;
-		this.salesPrice = salesPrice;
+		
 	}
 	
 	public int getProductNo() {
@@ -42,6 +40,25 @@ public class Material {
 
 	public String getMaterialDescriptionNow() {
 		return materialDescription.getDescription();
+	}
+	
+	
+	
+	/*
+	 * MaterialDescription and price setters are there to set a price for generic materials 
+	 * that we dont have in stock.
+	 */
+	
+	public void setMaterialDescription(String description) {
+		materialDescription = new MaterialDescription(description);
+	}
+	
+	public void setSalesPrice(BigDecimal preVATValue) {
+		salesPrice = new Price(preVATValue);
+	}
+	
+	public void setPurchasePrice(BigDecimal preVATValue) {
+		purchasePrice = new Price(preVATValue);
 	}
 	
 }
