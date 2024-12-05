@@ -39,8 +39,8 @@ public class OrderController {
 		return foundCustomer;
 	}
 	
-	public Material findAndAddMaterialByPhoneNo(Employee employee, int materialNo, int quantity) {
-		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo);
+	public Material findAndAddMaterialByMaterialNo(Employee employee, int materialNo, int quantity) throws DataAccessException {
+		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo, false);
 		if (employee != null && foundMaterial != null && quantity != 0){
 		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		currentOrder.addMaterialLogToOrder(newLog);
@@ -60,7 +60,7 @@ public class OrderController {
 		}
 	}
 	
-	public void saveOrder() throws GeneralException {
+	public void saveOrder() throws GeneralException, DataAccessException {
 		orderInterface.saveOrder(currentOrder);
 		
 		
