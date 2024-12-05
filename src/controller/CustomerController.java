@@ -12,8 +12,8 @@ public class CustomerController {
 	}
 	
 	
-	public Customer findCustomerByPhoneNo(String phoneNo, boolean fullAssertion) throws DataAccessException  {
-		Customer foundCustomer = customerInterface.findCustomerByPhoneNo(phoneNo, fullAssertion);
+	public Customer findCustomerByPhoneNo(String phoneNo, boolean fullAssociation) throws DataAccessException  {
+		Customer foundCustomer = customerInterface.findCustomerByPhoneNo(phoneNo, fullAssociation);
 		return foundCustomer;
 	}
 

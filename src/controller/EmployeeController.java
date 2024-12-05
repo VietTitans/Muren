@@ -14,7 +14,7 @@ public class EmployeeController {
 	public EmployeeController() throws DataAccessException, SQLException {
 		employeeDBIF = new EmployeeDB();
 	}
-public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
-	return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssertion);
+public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws GeneralException, DataAccessException {
+	return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssociation);
 }
 }

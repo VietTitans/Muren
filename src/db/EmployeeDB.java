@@ -30,7 +30,7 @@ public EmployeeDB() throws SQLException, DataAccessException {
 
 
 @Override
-public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
+public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws GeneralException, DataAccessException {
 	Employee foundEmployee = new Employee(null, null,null,null,null,null);
 	
 	try {
@@ -38,7 +38,7 @@ public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) 
 		ResultSet resultSet = find_by_id.executeQuery();
 		
 		if(resultSet.next()) {
-			foundEmployee  = buildObject(resultSet, fullAssertion);
+			foundEmployee  = buildObject(resultSet, fullAssociation);
 		}
 	} catch (SQLException e) {
 		throw new DataAccessException("Can't find Employee by EmployeeId",e);

@@ -48,8 +48,8 @@ public class OrderController {
 		return foundMaterial;
 	}
 	
-	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssertion) throws GeneralException, DataAccessException {
-		Employee employee = employeeController.findEmployeeByEmployeeId(employeeId, fullAssertion);
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws GeneralException, DataAccessException {
+		Employee employee = employeeController.findEmployeeByEmployeeId(employeeId, fullAssociation);
 		return employee;
 	}
 	
