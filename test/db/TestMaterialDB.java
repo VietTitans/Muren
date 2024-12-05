@@ -2,8 +2,8 @@ package db;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
@@ -13,9 +13,9 @@ import model.StockMaterial;
 public class TestMaterialDB {
 	
 	static MaterialDB materialDB;
-	private DBConnection connection;
+	static DBConnection connection;
 	
-	@BeforeEach
+	@BeforeAll
 	void setUp() throws DataAccessException {
 		materialDB = new MaterialDB();
 		connection = DBConnection.getInstance();
@@ -23,7 +23,7 @@ public class TestMaterialDB {
 	}
 	
 	
-	@AfterEach
+	@AfterAll
 	void tearDown() throws DataAccessException {
 		connection.disconnect();
 	}
@@ -46,9 +46,24 @@ public class TestMaterialDB {
 		assertNotNull(stockMaterial.getSalesPriceNow());
 		assertNotNull(stockMaterial.getPurchasePriceNow());
 		
-		
-		
 	}
+	
+	@Test
+	void testMaterialDoesntExists() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+	@Test
+	void testNegativeMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+	@Test
+	void testZeroMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+
 	
 	
 }
