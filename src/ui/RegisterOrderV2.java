@@ -224,8 +224,8 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Orders ordersFrame = new Orders();
-				ordersFrame.setVisible(true);
+				CancelOrderDialog cancelOrderFrame = new CancelOrderDialog();
+				cancelOrderFrame.setVisible(true);
 				dispose();
 			}
 		});
