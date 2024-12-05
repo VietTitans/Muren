@@ -14,7 +14,7 @@ public class StockMaterial extends Material {
 	public StockMaterial(int productNo, String productName, MaterialDescription materialDescription,
 			Price purchasePrice, Price salesPrice, int minStock, int maxStock, int quantity) {
 		
-		super(productNo, productName, materialDescription, purchasePrice, salesPrice);
+		super(productNo, productName);
 			
 		this.minStock = minStock;
 		this.maxStock = maxStock;

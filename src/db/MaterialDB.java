@@ -60,9 +60,6 @@ public class MaterialDB implements MaterialDBIF{
 	
 	public Material findMaterialByProductNo(int productNo, boolean fullAssertion) throws DataAccessException {
 		Material material = null;
-		Price salesPrice = null;
-		Price purchasePrice = null;
-		MaterialDescription materialDescription = null;
 		try {
 			psSelectProductNoMaterial.setInt(1,productNo);
 			ResultSet rsMaterial = psSelectProductNoMaterial.executeQuery();
@@ -76,32 +73,27 @@ public class MaterialDB implements MaterialDBIF{
 			psSelectProductNoPurchasePrice.setInt(1,productNo);
 			ResultSet rsPurchasePrice = psSelectProductNoPurchasePrice.executeQuery();
 			
-			if (rsDescription.next() && rsSalesPrice.next() && rsPurchasePrice.next()) {
-				materialDescription = buildObjectMaterialDescription(rsDescription, fullAssertion);
-				salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssertion);
-				purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssertion);
+			if(rsDescription.next() && rsSalesPrice.next() && rsPurchasePrice.next()){
+				MaterialDescription materialDescription = buildObjectMaterialDescription(rsDescription, fullAssertion);
+				Price salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssertion);
+				Price purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssertion);
 				
-				int quantity = rsMaterial.getInt("quantity");
+				material = buildObjectStockMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice);
 				
-				if(rsMaterial.next() || rsMaterial.wasNull() && materialDescription != null && salesPrice != null && purchasePrice != null) {
-					material = buildObjectMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice);
+				StockMaterial stockMaterial = (StockMaterial) material; /*Casts material to a StockMaterial,
+				 so the StockMaterial methods become available*/
 					
-				} else if(rsMaterial.next() || rsMaterial.getInt("Quantity") > 0 && materialDescription != null && salesPrice != null && purchasePrice != null) {
-					material = buildObjectStockMaterial(rsMaterial, fullAssertion, materialDescription, salesPrice, purchasePrice, quantity);
-					StockMaterial stockMaterial = (StockMaterial) material; /*Casts material to a StockMaterial,
-					 so the StockMaterial methods become available*/
-					
-					findAndAddStockReservationByStockMaterialId(rsMaterial.getInt("StockMaterialId"), stockMaterial);
-					
-				}
+				findAndAddStockReservationByStockMaterialId(rsMaterial.getInt("StockMaterialId"), stockMaterial);
+			} else {
+				material = buildObjectMaterial(rsMaterial, fullAssertion);
 			}
-			}catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataAccessException("Cant find material", e);
-			}
-			
-			return material;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataAccessException("Cant find material", e);
 		}
+			
+	return material;
+	}
 	
 	private void findAndAddStockReservationByStockMaterialId(int stockMaterialId, StockMaterial stockMaterial) throws SQLException, DataAccessException {
 		StockReservation stockReservation = null;
@@ -122,14 +114,14 @@ public class MaterialDB implements MaterialDBIF{
 	}
 	
 	
-	private Material buildObjectMaterial(ResultSet rs, boolean fullAssertion, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
+	private Material buildObjectMaterial(ResultSet rs, boolean fullAssertion) throws DataAccessException, SQLException {
 		Material material = null;
 		
 		try {
 			String productName = rs.getString("ProductName");
 			int productNo = rs.getInt("ProductNo");
 			
-			material = new Material(productNo, productName, materialDescription, salesPrice, purchasePrice);
+			material = new Material(productNo, productName);
 			
 		} catch (SQLException e) {
 			throw new DataAccessException("Cannot convert from ResultSet", e);
@@ -139,7 +131,7 @@ public class MaterialDB implements MaterialDBIF{
 	}
 	
 	
-	private Material buildObjectStockMaterial(ResultSet rs, boolean fullAssertion, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice, int quantity) throws DataAccessException, SQLException {
+	private Material buildObjectStockMaterial(ResultSet rs, boolean fullAssertion, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
 		Material material = null;
 		
 		try {
@@ -147,6 +139,7 @@ public class MaterialDB implements MaterialDBIF{
 			int productNo = rs.getInt("ProductNo");
 			int minStock = rs.getInt("MinStock");
 			int maxStock = rs.getInt("MaxStock");
+			int quantity = rs.getInt("quantity");
 			
 			material = new StockMaterial(productNo, productName, materialDescription, salesPrice, purchasePrice, minStock, maxStock, quantity);
 			
