@@ -70,20 +70,5 @@ public class TestStockMaterial {
 		assertEquals(10, stockMaterial.getAvailableAmount());
 	}
 	
-	@Test
-	void testOverMaxStockLimit() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	@Test
-	void testWithInStockLimit() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	@Test
-	void testUnderMinStockLimit() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
 	
 }
