@@ -32,15 +32,15 @@ public class Material {
 		return productName;
 	}
 	
-	public BigDecimal getSalesPriceNow() {
+	public BigDecimal getCurrentSalesPrice() {
 		return salesPrice.getPreVATValue();
 	}
 
-	public BigDecimal getPurchasePriceNow() {
+	public BigDecimal getCurrentPurchasePrice() {
 		return purchasePrice.getPreVATValue();
 	}
 
-	public String getMaterialDescriptionNow() {
+	public String getMaterialDescription() {
 		return materialDescription.getDescription();
 	}
 	

@@ -68,33 +68,33 @@ public class TestMaterial {
 	}
 	
 	@Test
-	public void testGetSalesPriceNow() {
+	public void testGetCurrentSalesPrice() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		//Act
-		BigDecimal salesPrice = cement.getSalesPriceNow();
+		BigDecimal salesPrice = cement.getCurrentSalesPrice();
 		BigDecimal actualPrice = new BigDecimal(20);
 		//Assert
 		assertEquals(actualPrice, salesPrice);
 	}
 	
 	@Test
-	public void testGetpurchasePriceNow() {
+	public void testGetCurrentPurchasePrice() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		//Act
-		BigDecimal purchasePrice = cement.getPurchasePriceNow();
+		BigDecimal purchasePrice = cement.getCurrentPurchasePrice();
 		BigDecimal actualPrice = new BigDecimal(17);
 		//Assert
 		assertEquals(actualPrice, purchasePrice);
 	}
 	
 	@Test
-	public void testGetMaterialDescriptionNow() {
+	public void testGetMaterialDescription() {
 		//Arrange
 		Material cement = new Material(123, "cement", materialDescription, purchasePrice, salesPrice);
 		//Act
-		String description = cement.getMaterialDescriptionNow();
+		String description = cement.getMaterialDescription();
 		//Assert
 		assertEquals("This is cement", description);
 	}
