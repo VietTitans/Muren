@@ -80,7 +80,7 @@ INSERT INTO Material (ProductNo, ProductName)
 VALUES
 (1001, 'Cement'),
 (1002, 'Mursten'),
-(1003, 'Spartel'),
+(1003, 'Fliser'),
 (1004, 'Klinker'),
 (1005, 'Mørtel');
 
@@ -89,9 +89,9 @@ INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, Prod
 VALUES
 ('Dette er cement', GETDATE(), 1001),
 ('Dette er mursten', GETDATE(), 1002),
-('Dette er spartel', GETDATE(), 1003),
-('Dette er klinker', GETDATE(), 1004),
-('Dette er mørtel', GETDATE(), 1005);
+('Dette er store blå fliser', GETDATE(), 1003),
+('Dette er marmor klinker', GETDATE(), 1004),
+('Dette er mørtel fra Aalborg cement', GETDATE(), 1005);
 
 -- Insert data into PurchasePrice
 INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, ProductNo)
@@ -115,22 +115,23 @@ VALUES
 INSERT INTO StockMaterial (ProductNo, MinStock, MaxStock, Quantity)
 VALUES
 (1001, 15, 75, 50 ),
-(1002, 60, 150, 100),
-(1003, 10, 40, 35),
-(1004, 100, 1000, 750),
-(1005, 90, 450, 310);
+(1002, 60, 150, 100);
+
 
 -- Insert data into StockReservation
 INSERT INTO StockReservation (ReservationDate, Quantity, StockMaterialId)
 VALUES
 (GETDATE(), 10, 1),
-(GETDATE(), 5, 2),
-(GETDATE(), 15, 3),
-(GETDATE(), 20, 4),
-(GETDATE(), 8, 5);
+(GETDATE(), 5, 2), 
+('2024-12-5', 15, 2);
 
 
-/*Har rettet til og med her*/
+--Insert data into GenericMaterial
+INSERT INTO GenericMaterial (ProductNo, ProductType)
+VALUES
+(1003, 'Indendørs'),
+(1004, 'Indendørs'),
+(1005, 'Udendørs');
 
 
 -- Insert data into Orders
@@ -234,7 +235,4 @@ VALUES
 INSERT INTO MaterialQuantity (StockMaterialId, InventoryId, Quantity)
 VALUES
 (1, 1, 20),
-(2, 2, 10),
-(3, 1, 15),
-(4, 2, 25),
-(5, 1, 5);
+(2, 2, 10);

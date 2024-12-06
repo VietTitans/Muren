@@ -9,6 +9,7 @@ SELECT * FROM MaterialDescription;
 SELECT * FROM PurchasePrice;
 SELECT * FROM SalesPrice;
 SELECT * FROM StockMaterial;
+SELECT * FROM GenericMaterial;
 SELECT * FROM StockReservation;
 SELECT * FROM Orders;
 SELECT * FROM Offer;

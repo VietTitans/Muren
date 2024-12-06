@@ -85,6 +85,14 @@ MaxStock INT NOT NULL,
 Quantity INT NOT NULL,
 FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
 );
+
+CREATE TABLE GenericMaterial( 
+GenericMaterialId int IDENTITY(1,1) PRIMARY KEY, 
+ProductNo INT NOT NULL, 
+ProductType varchar(20) NOT NULL,
+FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
+);
+
 CREATE TABLE StockReservation(
 ReservationDate DATETIME NOT NULL, 
 Quantity int NOT NULL, 
