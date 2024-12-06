@@ -19,7 +19,6 @@ class TestCustomerDB {
 		customerDB = new CustomerDB();
 		connection = DBConnection.getInstance();
 		connection.getConnection();
-		
 	}
 
 	@AfterAll
