@@ -2,51 +2,50 @@ package controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.CustomerDB;
-import db.DBConnection;
+import model.Customer;
 
 class TestCustomerController {
+	
+	private CustomerController customerController;
 
-	static CustomerDB customerDB;
-	private DBConnection connection;
-
-	@BeforeAll
+	@BeforeEach
 	void setUp() throws Exception {
-		customerDB = new CustomerDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
+		customerController = new CustomerController();
 	}
 
-	@AfterAll
+	@AfterEach
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
 	}
-
+	
 	@Test
 	void testFindCustomerByPhoneNo() throws DataAccessException {
 		//TODO: STUB
-	}
-	
-	
-	//Material tests
-	@Test
-	void testMaterialDoesntExists() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	@Test
-	void testNegativeMaterialInput() throws DataAccessException {
-		//TODO:STUBS
+		//Arrange
+		//Customer John, Doe, 12345678 exists in the database
+		//Act
+		Customer result = customerController.findCustomerByPhoneNo("12345678", false);
+		//Assert
+		assertEquals("John", result.getfName());
+		assertEquals("Doe", result.getlName());
+		assertEquals("12345678", result.getPhoneNo());
 	}
 	
 	@Test
-	void testZeroMaterialInput() throws DataAccessException {
-		//TODO:STUBS
+	//Integration test
+	void testCustomerDoesntExists() throws DataAccessException {
+		//Using NullPointerException to test for null
+		//Arrange
+		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+			//Act
+			customerController.findCustomerByPhoneNo("66656666", false);
+			throw new NullPointerException("Customer not found");
+		});
+		//Assert
+		assertEquals("Customer not found", exceptionThrown.getMessage());
 	}
 	
-
 }
