@@ -90,7 +90,7 @@ public class MaterialDB implements MaterialDBIF{
 			
 		return material;
 	}
-	
+	//TODO: Remove StockMaterial parameter? 
 	private void findAndAddStockReservationByStockMaterialId(int stockMaterialId, StockMaterial stockMaterial) throws SQLException, DataAccessException {
 		StockReservation stockReservation = null;
 		try {
@@ -116,9 +116,7 @@ public class MaterialDB implements MaterialDBIF{
 		try {
 			String productName = rs.getString("ProductName");
 			int productNo = rs.getInt("ProductNo");
-			
 			material = new Material(productNo, productName);
-			
 		} catch (SQLException e) {
 			throw new DataAccessException("Cannot convert from ResultSet", e);
 		}
