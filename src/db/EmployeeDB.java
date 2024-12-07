@@ -28,7 +28,7 @@ public class EmployeeDB implements EmployeeDBIF {
 	@Override
 	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) 
 			throws GeneralException, DataAccessException {
-		Employee foundEmployee = new Employee(null, null, null, null, null, null);
+		Employee foundEmployee = new Employee();
 
 		try {
 			find_by_id.setString(1, String.valueOf(employeeId));

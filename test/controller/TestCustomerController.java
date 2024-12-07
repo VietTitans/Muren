@@ -38,7 +38,7 @@ class TestCustomerController {
 	
 	@Test
 	//Integration test
-	void testCustomerDoesntExists() throws DataAccessException {
+	void testCustomerDoesntExists() throws NullPointerException {
 		//Using NullPointerException to test for null
 		//Arrange
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {

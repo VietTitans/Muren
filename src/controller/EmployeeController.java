@@ -10,11 +10,12 @@ import db.EmployeeDB;
 public class EmployeeController {
 	private EmployeeDBIF employeeDBIF;
 
-
 	public EmployeeController() throws DataAccessException, SQLException {
 		employeeDBIF = new EmployeeDB();
 	}
-public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws GeneralException, DataAccessException {
-	return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssociation);
-}
+
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation)
+			throws GeneralException, DataAccessException {
+		return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssociation);
+	}
 }
