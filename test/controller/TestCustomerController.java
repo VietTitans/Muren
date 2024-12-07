@@ -29,9 +29,12 @@ class TestCustomerController {
 		//Act
 		Customer result = customerController.findCustomerByPhoneNo("12345678", false);
 		//Assert
-		assertEquals("John", result.getfName());
-		assertEquals("Doe", result.getlName());
-		assertEquals("12345678", result.getPhoneNo());
+		String expectedFName = "John";
+		String expectedLName = "Doe";
+		String expectedPhoneNo = "12345678";
+		assertEquals(expectedFName, result.getfName());
+		assertEquals(expectedLName, result.getlName());
+		assertEquals(expectedPhoneNo, result.getPhoneNo());
 	}
 	
 	@Test
