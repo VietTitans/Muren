@@ -34,7 +34,7 @@ class TestMaterialLogDB {
 
 	
 	@Test
-	void testSaveHourLog() throws DataAccessException {
+	void testSaveMaterialLog() throws DataAccessException {
 		//Arrange
 		Employee employee = new Employee();
 		Material material = new Material(1, "Spand");
@@ -49,14 +49,14 @@ class TestMaterialLogDB {
 	}
 	
 	@Test
-	void testSaveHourLogDoesntExist() throws DataAccessException {
+	void testMaterialLogDoesntExist() throws DataAccessException {
 		//Using NullPointerException to test for null
 		//Arrange
 		int orderId = 665;
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
 			//Act 
 			//TODO: Implement getMaterialLog()
-			materialLogDB.getHourLog(orderId);
+			materialLogDB.getMaterialLog(orderId);
 			throw new IllegalArgumentException("Material log not found");
 		});
 		//Assert
