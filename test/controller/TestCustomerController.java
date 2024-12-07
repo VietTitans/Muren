@@ -23,7 +23,6 @@ class TestCustomerController {
 	
 	@Test
 	void testFindCustomerByPhoneNo() throws DataAccessException {
-		//TODO: STUB
 		//Arrange
 		//Customer John, Doe, 12345678 exists in the database
 		//Act
