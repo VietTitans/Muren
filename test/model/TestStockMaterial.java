@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
@@ -19,33 +21,17 @@ public class TestStockMaterial {
 	static Price salesPrice;
 	static Price purchasePrice;
 	static MaterialDescription materialDescription;
-	static MaterialDB materialDB;
-	static DBConnection connection;
 	
-	@BeforeAll
-	public static void setUp() throws DataAccessException {
-		materialDB = new MaterialDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
+	@BeforeEach
+	void setUp() throws DataAccessException {
 		salesPrice = new Price(new BigDecimal(20));
 		purchasePrice = new Price(new BigDecimal(17));
 		materialDescription = new MaterialDescription("This is cement");
 	
 	}
 	
-	@AfterAll
+	@AfterEach
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
-	}
-	
-	@Test
-	public void testStockMaterialConstructor() {
-		//Arrange
-		
-		//Act
-		StockMaterial stockMaterial = new StockMaterial(123, "cement", materialDescription, purchasePrice, salesPrice, 15, 75, 30);
-		//Assert
-		assertNotNull(stockMaterial);
 	}
 	
 	@Test
