@@ -30,5 +30,23 @@ class TestCustomerController {
 	void testFindCustomerByPhoneNo() throws DataAccessException {
 		//TODO: STUB
 	}
+	
+	
+	//Material tests
+	@Test
+	void testMaterialDoesntExists() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+	@Test
+	void testNegativeMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+	@Test
+	void testZeroMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
 
 }
