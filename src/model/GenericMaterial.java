@@ -13,6 +13,11 @@ public class GenericMaterial extends Material{
 
 	}
 	
+	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, String materialType) {
+		super(materialNo, productName, materialDescription);
+		this.materialType = materialType;
+	}
+	
 	//Getters
 	
 	@Override

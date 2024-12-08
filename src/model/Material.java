@@ -35,6 +35,13 @@ public abstract class Material {
 		
 	}
 	
+	public Material(int materialNo, String productName, MaterialDescription materialDescription) {
+		this.materialNo = materialNo;
+		this.productName = productName;
+		this.materialDescription = materialDescription;
+		
+		
+	}
 	
 	//Getters
 	
