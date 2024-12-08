@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Period;
 
 
 public class StockMaterial extends Material {
@@ -15,9 +14,9 @@ public class StockMaterial extends Material {
 	private int availableAmount;
 	
 	public StockMaterial(int materialNo, String productName, MaterialDescription materialDescription, 
-			Price salesPrice, Price purchasePrice, int minStock, int maxStock, int quantity) {
+			ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, int minStock, int maxStock, int quantity) {
 		
-		super(materialNo, productName, materialDescription, salesPrice, purchasePrice);
+		super(materialNo, productName, materialDescription, salesPrices, purchasePrices);
 			
 		this.minStock = minStock;
 		this.maxStock = maxStock;
@@ -25,7 +24,6 @@ public class StockMaterial extends Material {
 		availableAmount = quantity;
 		stockReservations = new ArrayList<>();
 	}
-	
 	public void addStockReservation(StockReservation stockReservation) {		
 		stockReservations.add(stockReservation);
 		updateAvailableAmount(stockReservation);	
@@ -111,8 +109,20 @@ public class StockMaterial extends Material {
 	}
 	
 	@Override
+	public void addSalesPriceToSalesPrices(Price salesPrice) {
+		super.addSalesPriceToSalesPricesSubClasses(salesPrice);
+		
+	}
+	
+	@Override
 	public void setCurrentPurchasePrice(BigDecimal newValue) {
 		super.setCurrentPurchasePriceSubClasses(newValue);	
+	}
+	
+	@Override
+	public void addPurchasePriceToPurchasePrices(Price purchasePrice) {
+		super.addPurchasePriceToPurchasePricesSubClasses(purchasePrice);
+		
 	}
 	
 	@Override

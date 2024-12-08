@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 
 public abstract class Material {
@@ -10,6 +11,8 @@ public abstract class Material {
 	private MaterialDescription materialDescription;
 	private Price purchasePrice;
 	private Price salesPrice;
+	private ArrayList<Price> salesPrices;
+	private ArrayList<Price> purchasePrices;
 	
 	public Material(int materialNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) {
 		this.materialNo = materialNo;
@@ -20,23 +23,18 @@ public abstract class Material {
 		
 	}
 
-	public Material(int materialNo, String productName, MaterialDescription materialDescription) {
+	public Material(int materialNo, String productName, MaterialDescription materialDescription, 
+	ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) {
 		this.materialNo = materialNo;
 		this.productName = productName;
 		this.materialDescription = materialDescription;
+		this.salesPrices = salesPrices;
+		this.purchasePrices = purchasePrices;
+		salesPrice = salesPrices.get(0);
+		purchasePrice = purchasePrices.get(0);
+		
 	}
 	
-	/*
-	 * Protected methods are for use in the subclass only.
-	 * 
-	 * Where the abstract methods tells us what methods the subclasses should have,
-	 * the protected method gets the fields down to the subclasses so they can use them, 
-	 * but without making them public so all the other classes can access them.
-	 * 
-	 * in short, it gives better encapsulation.
-	 * 
-	 * 
-	 */
 	
 	//Getters
 	
@@ -86,15 +84,29 @@ public abstract class Material {
 	public abstract void setCurrentSalesPrice(BigDecimal newValue);
 	
 	protected void setCurrentSalesPriceSubClasses(BigDecimal newValue) {
-		salesPrice = new Price(newValue);
+		salesPrices.add(0, new Price(newValue));
+		salesPrice = salesPrices.get(0);
 	}
+	
+	public abstract void addSalesPriceToSalesPrices(Price salesPrice);
+	
+	protected void addSalesPriceToSalesPricesSubClasses(Price salesPrice) {
+		salesPrices.add(salesPrice);
+	}	
 	
 	public abstract void setCurrentPurchasePrice(BigDecimal newValue);
 	
-	protected void setCurrentPurchasePriceSubClasses(BigDecimal newValue) {
-		purchasePrice = new Price(newValue);
+	protected void setCurrentPurchasePriceSubClasses(BigDecimal newValue) {	
+		purchasePrices.add(0, new Price(newValue));
+		purchasePrice = purchasePrices.get(0);
+	
 	}
 	
+	public abstract void addPurchasePriceToPurchasePrices(Price purchasePrice);
+	
+	protected void addPurchasePriceToPurchasePricesSubClasses(Price purchasePrice) {
+		
+	}
 	
 	public abstract void setMaterialDescription(String newDescription);
 	
