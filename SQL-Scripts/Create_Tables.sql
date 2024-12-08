@@ -49,48 +49,48 @@ FOREIGN KEY (PersonId) REFERENCES Person(PersonId),
 );
 
 CREATE TABLE Material(
-ProductNo int PRIMARY KEY, 
+MaterialNo int PRIMARY KEY, 
 ProductName varchar(30) NOT NULL,
 )
 
 CREATE TABLE MaterialDescription(
 Description varchar(100) not null, 
 MaterialDescriptionTimeStamp DATETIME NOT NULL,		
-ProductNo int NOT NULL, 
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
-PRIMARY KEY (ProductNo , MaterialDescriptionTimeStamp),
+MaterialNo int NOT NULL, 
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo), 
+PRIMARY KEY (MaterialNo , MaterialDescriptionTimeStamp),
 );
 
 CREATE TABLE PurchasePrice(
 Price SmallMoney NOT NULL, 
 PurchasePriceTimeStamp DATETIME NOT NULL, 
-ProductNo int NOT NULL,
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
-PRIMARY KEY (ProductNo , PurchasePriceTimeStamp),
+MaterialNo int NOT NULL,
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo), 
+PRIMARY KEY (MaterialNo , PurchasePriceTimeStamp),
 
 );
 CREATE TABLE SalesPrice(
 Price SmallMoney NOT NULL, 
 SalesPriceTimeStamp DATETIME NOT NULL, 
-ProductNo int NOT NULL,
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
-PRIMARY KEY (ProductNo , SalesPriceTimeStamp),
+MaterialNo int NOT NULL,
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo), 
+PRIMARY KEY (MaterialNo , SalesPriceTimeStamp),
 );
 
 CREATE TABLE StockMaterial( 
 StockMaterialId int IDENTITY(1,1) PRIMARY KEY, 
-ProductNo INT NOT NULL, 
+MaterialNo INT NOT NULL, 
 MinStock INT NOT NULL,
 MaxStock INT NOT NULL,
 Quantity INT NOT NULL,
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo), 
 );
 
 CREATE TABLE GenericMaterial( 
 GenericMaterialId int IDENTITY(1,1) PRIMARY KEY, 
-ProductNo INT NOT NULL, 
+MaterialNo INT NOT NULL, 
 ProductType varchar(20) NOT NULL,
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo), 
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo), 
 );
 
 CREATE TABLE StockReservation(
@@ -126,9 +126,9 @@ FOREIGN KEY(CustomerNo) REFERENCES Customer(CustomerNo),
 
 CREATE TABLE Orderline(
 OrderlineId INT IDENTITY(1,1) PRIMARY KEY, 
-ProductNo INT NOT NULL, 
+MaterialNo INT NOT NULL, 
 Quantity INT NOT NULL,
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo),
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo),
 );
 
 CREATE TABLE OfferOrderline(
@@ -164,10 +164,10 @@ FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
 CREATE TABLE MaterialLogs(
 MaterialLogId INT IDENTITY(1,1) PRIMARY KEY, 
 Quantity INT NOT NULL, 
-ProductNo INT NOT NULL, 
+MaterialNo INT NOT NULL, 
 LogId INT NOT NULL,
 FOREIGN KEY (LogId) REFERENCES Logs(LogId),
-FOREIGN KEY (ProductNo) REFERENCES Material(ProductNo),
+FOREIGN KEY (MaterialNo) REFERENCES Material(MaterialNo),
 );
 CREATE TABLE HourLogs(
 HourlogId INT IDENTITY(1,1) PRIMARY KEY, 

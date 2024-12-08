@@ -76,7 +76,7 @@ VALUES
 ('3453389012', 3, 13);
 
 -- Insert data into Material
-INSERT INTO Material (ProductNo, ProductName)
+INSERT INTO Material (MaterialNo, ProductName)
 VALUES
 (1001, 'Cement'),
 (1002, 'Mursten'),
@@ -85,7 +85,7 @@ VALUES
 (1005, 'Mørtel');
 
 -- Insert data into MaterialDescription
-INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, ProductNo)
+INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, MaterialNo)
 VALUES
 ('Dette er cement', GETDATE(), 1001),
 ('Dette er mursten', GETDATE(), 1002),
@@ -94,7 +94,7 @@ VALUES
 ('Dette er mørtel fra Aalborg cement', GETDATE(), 1005);
 
 -- Insert data into PurchasePrice
-INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, ProductNo)
+INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, MaterialNo)
 VALUES
 (1200.00, GETDATE(), 1001),
 (300.00, GETDATE(), 1002),
@@ -103,7 +103,7 @@ VALUES
 (150.00, GETDATE(), 1005);
 
 -- Insert data into SalesPrice
-INSERT INTO SalesPrice (Price, SalesPriceTimeStamp, ProductNo)
+INSERT INTO SalesPrice (Price, SalesPriceTimeStamp, MaterialNo)
 VALUES
 (1500.00, GETDATE(), 1001),
 (400.00, GETDATE(), 1002),
@@ -112,7 +112,7 @@ VALUES
 (200.00, GETDATE(), 1005);
 
 -- Insert data into StockMaterial
-INSERT INTO StockMaterial (ProductNo, MinStock, MaxStock, Quantity)
+INSERT INTO StockMaterial (MaterialNo, MinStock, MaxStock, Quantity)
 VALUES
 (1001, 15, 75, 50 ),
 (1002, 60, 150, 100);
@@ -127,7 +127,7 @@ VALUES
 
 
 --Insert data into GenericMaterial
-INSERT INTO GenericMaterial (ProductNo, ProductType)
+INSERT INTO GenericMaterial (MaterialNo, ProductType)
 VALUES
 (1003, 'Indendørs'),
 (1004, 'Indendørs'),
@@ -153,7 +153,7 @@ VALUES
 (DATEADD(DAY, 15, GETDATE()), GETDATE(), 1, 5, 5, '8:00');
 
 -- Insert data into Orderline
-INSERT INTO Orderline (ProductNo, Quantity)
+INSERT INTO Orderline (MaterialNo, Quantity)
 VALUES
 (1001, 2),
 (1002, 4),
@@ -198,7 +198,7 @@ VALUES
 (5, 5, GETDATE());
 
 -- Insert data into MaterialLogs
-INSERT INTO MaterialLogs (Quantity, ProductNo, LogId)
+INSERT INTO MaterialLogs (Quantity, MaterialNo, LogId)
 VALUES
 (5, 1001, 1),
 (3, 1002, 2),
