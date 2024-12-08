@@ -15,19 +15,15 @@ import model.HourLog;
 class TestHourLogDB {
 
 	static HourLogDB hourLogDB;
-	private DBConnection connection;
 
 	@BeforeAll
 	void setUp() throws Exception {
 		hourLogDB = new HourLogDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
 		
 	}
 
 	@AfterAll
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
 	}
 
 	@Test

@@ -17,19 +17,14 @@ import model.MaterialLog;
 class TestMaterialLogDB {
 
 	static MaterialLogDB materialLogDB;
-	private DBConnection connection;
 
 	@BeforeAll
 	void setUp() throws Exception {
 		materialLogDB = new MaterialLogDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
-		
 	}
 
 	@AfterAll
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
 	}
 
 	
