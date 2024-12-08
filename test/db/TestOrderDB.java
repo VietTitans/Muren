@@ -26,19 +26,6 @@ import model.Price;
 class TestOrderDB {
 
 	static OrderDB orderDB;
-	private DBConnection connection;
-
-	@BeforeAll
-	void setUp() throws Exception {
-		orderDB = new OrderDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
-	}
-
-	@AfterAll
-	void tearDown() throws DataAccessException {
-		connection.disconnect();
-	}
 
 	@BeforeEach
 	void setUpBeforeEach() throws Exception {

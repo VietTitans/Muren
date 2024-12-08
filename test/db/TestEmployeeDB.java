@@ -15,20 +15,16 @@ import model.Employee;
 class TestEmployeeDB {
 	
 	static EmployeeDB employeeDB; 
-	private DBConnection connection;
 
 	@BeforeEach
 	void setup() throws SQLException, DataAccessException {
 		//Resets the database to a known state 
 		ResetDB.main(null);
 		employeeDB = new EmployeeDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
 	}
 	
 	@AfterEach
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
 	}
 	
 	@Test

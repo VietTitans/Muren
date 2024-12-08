@@ -25,6 +25,8 @@ public class OrderController {
 		logController = new LogController();
 		employeeController = new EmployeeController();
 		materialController = new MaterialController();
+		currentOrder = new Order(null);
+		
 	}
 	
 	

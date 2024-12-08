@@ -11,24 +11,13 @@ import model.Customer;
 
 class TestCustomerDB {
 
-	static CustomerDB customerDB;
-	private DBConnection connection;
 
-	@BeforeAll
-	void setUp() throws Exception {
-		customerDB = new CustomerDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
-	}
 
-	@AfterAll
-	void tearDown() throws DataAccessException {
-		connection.disconnect();
-	}
 
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
 		//Arrange
+		CustomerDB customerDB = new CustomerDB();
 		Customer expectedResult = new Customer();
 			expectedResult.setfName("John");
 			expectedResult.setlName("Doe");
