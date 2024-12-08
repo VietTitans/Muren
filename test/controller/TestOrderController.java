@@ -16,6 +16,8 @@ class TestOrderController {
 	void tearDown() throws Exception {
 	}
 
+	
+	//Inventory: Boundry testing
 	@Test
 	void testOverMaxStockLimit() throws DataAccessException {
 		//TODO:STUBS
@@ -30,5 +32,22 @@ class TestOrderController {
 	void testUnderMinStockLimit() throws DataAccessException {
 		//TODO:STUBS
 	}
+	
+	
+	//Material input: Boundry testing
+	@Test
+	void testZeroMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
+	@Test
+	void testValidMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
 
+	@Test
+	void testNegativeMaterialInput() throws DataAccessException {
+		//TODO:STUBS
+	}
+	
 }

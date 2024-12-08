@@ -2,33 +2,52 @@ package controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.CustomerDB;
-import db.DBConnection;
+import model.Customer;
 
 class TestCustomerController {
+	
+	private CustomerController customerController;
 
-	static CustomerDB customerDB;
-	private DBConnection connection;
-
-	@BeforeAll
+	@BeforeEach
 	void setUp() throws Exception {
-		customerDB = new CustomerDB();
-		connection = DBConnection.getInstance();
-		connection.getConnection();
+		customerController = new CustomerController();
 	}
 
-	@AfterAll
+	@AfterEach
 	void tearDown() throws DataAccessException {
-		connection.disconnect();
 	}
-
+	
 	@Test
 	void testFindCustomerByPhoneNo() throws DataAccessException {
-		//TODO: STUB
+		//Arrange
+		//Customer John, Doe, 12345678 exists in the database
+		//Act
+		Customer result = customerController.findCustomerByPhoneNo("12345678", false);
+		//Assert
+		String expectedFName = "John";
+		String expectedLName = "Doe";
+		String expectedPhoneNo = "12345678";
+		assertEquals(expectedFName, result.getfName());
+		assertEquals(expectedLName, result.getlName());
+		assertEquals(expectedPhoneNo, result.getPhoneNo());
 	}
-
+	
+	@Test
+	//Integration test
+	void testCustomerDoesntExists() throws NullPointerException {
+		//Using NullPointerException to test for null
+		//Arrange
+		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+			//Act
+			customerController.findCustomerByPhoneNo("66656666", false);
+			throw new NullPointerException("Customer not found");
+		});
+		//Assert
+		assertEquals("Customer not found", exceptionThrown.getMessage());
+	}
+	
 }

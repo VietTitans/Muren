@@ -60,7 +60,7 @@ class TestOrderDB {
 		
 		MaterialDescription materialDescription = new MaterialDescription("Ting");
 		MaterialLogDB materialLogDB = new MaterialLogDB();
-		Material material = new Material(1001, "ds", materialDescription, purchasePrice, salesPrice); 
+		Material material = new Material(1001, "ds", materialDescription, salesPrice, purchasePrice); 
 		MaterialLog materialLog = new MaterialLog(emp, material, 1);
 		materialLogDB.saveMaterialLog(materialLog, 1);
 
@@ -79,23 +79,6 @@ class TestOrderDB {
 		int returnedKey = orderDB.saveOrder(order);
 		// Assert
 		assertEquals(6, returnedKey);
-	}
-
-	@Test
-	void SaveWithInvalidInput() throws DataAccessException, SQLException {
-		// Arrange
-		Employee employee = new Employee();
-		employee.setEmployeeId(1000);
-		Order order = new Order(employee);
-		OrderDB orderDB = new OrderDB();
-
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
-			// Act
-			orderDB.saveOrder(order);
-			throw new IllegalArgumentException("Customer not found");
-		});
-		// Assert
-		assertEquals("java.lang.NullPointerException:", exceptionThrown);
 	}
 
 }

@@ -10,7 +10,7 @@ import controller.DataAccessException;
 import model.HourLog;
 import model.MaterialLog;
 
-public class MaterialLogDB implements MaterialLogDBIF {
+public class MaterialLogDB  implements MaterialLogDBIF {
 
 	private static final String INSERT_MATERIALLOG_INTO_LOG = " INSERT INTO Logs (OrderNo, EmployeeId, LogTimeStamp) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoLogs;
@@ -18,7 +18,6 @@ public class MaterialLogDB implements MaterialLogDBIF {
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
 	
 	public MaterialLogDB() throws DataAccessException {
-		// TODO Auto-generated constructor stub
 		try {
 		insertMaterialLogIntoLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);

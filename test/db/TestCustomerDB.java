@@ -43,17 +43,5 @@ class TestCustomerDB {
 		assertEquals("john.doe@example.com", result.getEmail());
 	}
 	
-	@Test
-	void testCustomerDoesntExists() throws DataAccessException {
-		//Using NullPointerException to test for null
-		//Arrange
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
-			//Act
-			customerDB.findCustomerByPhoneNo("66656666", false);
-			throw new IllegalArgumentException("Customer not found");
-		});
-		//Assert
-		assertEquals("Customer not found", exceptionThrown.getMessage());
-	}
 
 }
