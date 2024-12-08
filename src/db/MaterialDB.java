@@ -3,10 +3,12 @@ package db;
 import model.Material;
 import model.Price;
 import model.StockMaterial;
+import model.GenericMaterial;
 import model.StockReservation;
 import model.MaterialDescription;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,21 +18,22 @@ import java.sql.Timestamp;
 
 import controller.DataAccessException;
 
-public class MaterialDB implements MaterialDBIF{
+public class MaterialDB {
 
-	private static final String PS_SELECT_FROM_MATERIAL = " SELECT Material.*, StockMaterial.Quantity, StockMaterial.MinStock, StockMaterial.MaxStock, StockMaterial.StockMaterialId\r\n"
+	private static final String PS_SELECT_FROM_MATERIAL = "SELECT StockMaterial.*, GenericMaterial.*, Material.ProductName\r\n"
 			+ "FROM Material\r\n"
-			+ "LEFT JOIN StockMaterial ON Material.ProductNo = StockMaterial.ProductNo\r\n"
-			+ "WHERE Material.ProductNo = 1001;"; 
-	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE ProductNo = ?;";
-	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE ProductNo = ?;";
-	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE ProductNo = ?;";
+			+ "FULL JOIN StockMaterial ON Material.MaterialNo = StockMaterial.MaterialNo\r\n"
+			+ "FULL JOIN GenericMaterial ON Material.MaterialNo = GenericMaterial.MaterialNo\r\n"
+			+ "WHERE Material.MaterialNo = ?;"; 
+	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE MaterialNo = ?;";
+	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE MaterialNo = ?;";
+	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE MaterialNo = ?;";
 	private static final String PS_SELECT_FROM_Stock_Reservation = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
 	
-	private PreparedStatement psSelectProductNoMaterial;
-	private PreparedStatement psSelectProductNoMaterialDescription;
-	private PreparedStatement psSelectProductNoSalesPrice;
-	private PreparedStatement psSelectProductNoPurchasePrice;
+	private PreparedStatement psSelectMaterialNoMaterial;
+	private PreparedStatement psSelectMaterialNoMaterialDescription;
+	private PreparedStatement psSelectMaterialNoSalesPrice;
+	private PreparedStatement psSelectMaterialNoPurchasePrice;
 	private PreparedStatement psSelectStockMaterialIdStockReservation;
 	
 	private Connection connection;
@@ -42,10 +45,10 @@ public class MaterialDB implements MaterialDBIF{
 	
 	private void initPreparedStatements() throws DataAccessException {
 		try {
-			psSelectProductNoMaterial = connection.prepareStatement(PS_SELECT_FROM_MATERIAL);
-			psSelectProductNoMaterialDescription = connection.prepareStatement(PS_SELECT_FROM_MATERIAL_DESCRIPTION);
-			psSelectProductNoSalesPrice = connection.prepareStatement(PS_SELECT_FROM_SALES_PRICE);
-			psSelectProductNoPurchasePrice = connection.prepareStatement(PS_SELECT_FROM_PURCHASE_PRICE);
+			psSelectMaterialNoMaterial = connection.prepareStatement(PS_SELECT_FROM_MATERIAL);
+			psSelectMaterialNoMaterialDescription = connection.prepareStatement(PS_SELECT_FROM_MATERIAL_DESCRIPTION);
+			psSelectMaterialNoSalesPrice = connection.prepareStatement(PS_SELECT_FROM_SALES_PRICE);
+			psSelectMaterialNoPurchasePrice = connection.prepareStatement(PS_SELECT_FROM_PURCHASE_PRICE);
 			psSelectStockMaterialIdStockReservation = connection.prepareStatement(PS_SELECT_FROM_Stock_Reservation);
 			
 		} catch (SQLException e) {
@@ -54,157 +57,145 @@ public class MaterialDB implements MaterialDBIF{
 		}
 	}
 	
-	public Material findMaterialByProductNo(int productNo, boolean fullAssociation) throws DataAccessException {
+	public Material findMaterialByMaterialNo(int materialNo) throws DataAccessException {
 		Material material = null;
+		MaterialDescription materialDescription = null;
+		ArrayList<Price> salesPrices = new ArrayList<>();
+		ArrayList<Price> purchasePrices = new ArrayList<>();
 		try {
-			psSelectProductNoMaterial.setInt(1,productNo);
-			ResultSet rsMaterial = psSelectProductNoMaterial.executeQuery();
+			psSelectMaterialNoMaterial.setInt(1,materialNo);
+			ResultSet rsMaterial = psSelectMaterialNoMaterial.executeQuery();
 			
-			psSelectProductNoMaterialDescription.setInt(1,productNo);
-			ResultSet rsDescription = psSelectProductNoMaterialDescription.executeQuery();
+			psSelectMaterialNoMaterialDescription.setInt(1,materialNo);
+			ResultSet rsDescription = psSelectMaterialNoMaterialDescription.executeQuery();
 			
-			psSelectProductNoSalesPrice.setInt(1,productNo);
-			ResultSet rsSalesPrice = psSelectProductNoSalesPrice.executeQuery();
+			psSelectMaterialNoSalesPrice.setInt(1,materialNo);
+			ResultSet rsSalesPrice = psSelectMaterialNoSalesPrice.executeQuery();
 			
-			psSelectProductNoPurchasePrice.setInt(1,productNo);
-			ResultSet rsPurchasePrice = psSelectProductNoPurchasePrice.executeQuery();
+			psSelectMaterialNoPurchasePrice.setInt(1,materialNo);
+			ResultSet rsPurchasePrice = psSelectMaterialNoPurchasePrice.executeQuery();
 			
-			if(rsDescription.next() && rsSalesPrice.next() && rsPurchasePrice.next()){
-				MaterialDescription materialDescription = buildObjectMaterialDescription(rsDescription, fullAssociation);
-				Price salesPrice = buildObjectSalesPrice(rsSalesPrice, fullAssociation);
-				Price purchasePrice = buildObjectPurchasePrice(rsSalesPrice, fullAssociation);
-				
-				material = buildObjectStockMaterial(rsMaterial, fullAssociation, materialDescription, salesPrice, purchasePrice);
-				
-				StockMaterial stockMaterial = (StockMaterial) material; /*Casts material to a StockMaterial,
-				 so the StockMaterial methods become available*/
-					
-				findAndAddStockReservationByStockMaterialId(rsMaterial.getInt("StockMaterialId"), stockMaterial);
-			} else {
-				material = buildObjectMaterial(rsMaterial, fullAssociation);
+			if(rsSalesPrice.isBeforeFirst() || rsPurchasePrice.isBeforeFirst()) {	
+				while(rsSalesPrice.next()) {
+					Price salesPrice = buildObjectSalesPrice(rsSalesPrice);
+					salesPrices.add(salesPrice);					
+				}
+				while(rsPurchasePrice.next()) {
+					Price purchasePrice = buildObjectPurchasePrice(rsPurchasePrice);
+					salesPrices.add(purchasePrice);					
+				}
 			}
-		} catch (SQLException e) {
+			if(rsDescription.next()) {
+				materialDescription = buildObjectMaterialDescription(rsDescription);
+				
+			}
+			if(rsMaterial.getString("GenericMaterialId") != null) {
+				material = buildObjectGenericMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
+				
+			} else if(rsMaterial.getString("StockMaterialId") != null) {
+				material = buildObjectStockMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
+				
+			}
+		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException("Cant find material", e);
 		}
-			
-		return material;
-	}
-	//TODO: Remove StockMaterial parameter? 
-	private void findAndAddStockReservationByStockMaterialId(int stockMaterialId, StockMaterial stockMaterial) throws SQLException, DataAccessException {
-		StockReservation stockReservation = null;
-		try {
-		psSelectProductNoMaterial.setInt(1,stockMaterialId);
-		ResultSet rsStockReservation = psSelectProductNoMaterial.executeQuery();
 		
-		while(rsStockReservation.next()) {
-			stockReservation = buildObjectStockReservation(rsStockReservation, true);
-			if(stockReservation != null) {
-			stockMaterial.addStockReservation(stockReservation);
-			}
-		}
-		} catch(SQLException e) {
-			e.printStackTrace();
-			throw new DataAccessException("Cant find StockReservation", e);
-		}
-	}
-	
-	
-	private Material buildObjectMaterial(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
-		Material material = null;
-		
-		try {
-			String productName = rs.getString("ProductName");
-			int productNo = rs.getInt("ProductNo");
-			material = new Material(productNo, productName);
-		} catch (SQLException e) {
-			throw new DataAccessException("Cannot convert from ResultSet", e);
-		}
 		
 		return material;
 	}
-	
-	
-	private Material buildObjectStockMaterial(ResultSet rs, boolean fullAssociation, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) throws DataAccessException, SQLException {
-		Material material = null;
-		
-		try {
-			String productName = rs.getString("ProductName");
-			int productNo = rs.getInt("ProductNo");
-			int minStock = rs.getInt("MinStock");
-			int maxStock = rs.getInt("MaxStock");
-			int quantity = rs.getInt("quantity");
-			
-			material = new StockMaterial(productNo, productName, materialDescription, salesPrice, purchasePrice, minStock, maxStock, quantity);
-			
-		} catch (SQLException e) {
-			throw new DataAccessException("Cannot convert from ResultSet", e);
-		}
-		
-		return material;
-	}
-	
-	
-	private MaterialDescription buildObjectMaterialDescription(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
+
+	private MaterialDescription buildObjectMaterialDescription(ResultSet rs) throws DataAccessException {
 		MaterialDescription materialDescription = null;
-		
 		try {
-		String description = rs.getString("Description");
-		Timestamp timeStamp = rs.getTimestamp("MaterialDescriptionTimeStamp");
-		LocalDateTime date = timeStamp.toLocalDateTime();
-		
-		materialDescription = new MaterialDescription(date, description);
-		
+			Timestamp timeStamp = rs.getTimestamp("MaterialDescriptionTimeStamp");
+			LocalDateTime date = timeStamp.toLocalDateTime();
+			String description = rs.getString("Description");
+			materialDescription = new MaterialDescription(date, description);
 		}catch (SQLException e) {
-			throw new DataAccessException("Cannot convert from ResultSet", e);
+			e.printStackTrace();
+			throw new DataAccessException("Cant create MaterialDescription", e);
 		}
 		return materialDescription;
 	}
-	
-	
-	
-	private Price buildObjectSalesPrice(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
-		Price salesPrice = null;
-		
+
+	private StockMaterial buildObjectStockMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
+		StockMaterial stockMaterial = null;
 		try {
-		BigDecimal value = rs.getBigDecimal("Price");
-		Timestamp timeStamp = rs.getTimestamp("SalesPriceTimeStamp");
-		LocalDateTime date = timeStamp.toLocalDateTime();
-		
-		salesPrice = new Price(date, value);
-		
+			stockMaterial = new StockMaterial(rs.getInt("ProductNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
+			
+			psSelectMaterialNoMaterial.setInt(1,rs.getInt("stockMaterialId"));
+			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
+			
+			if(rsStockReservation.isBeforeFirst()) {
+				while(rsStockReservation.next()) {
+					StockReservation stockReservation = buildObjectStockReservation(rsStockReservation);
+					stockMaterial.addStockReservation(stockReservation);
+				}
+			}
+			
 		}catch (SQLException e) {
-			throw new DataAccessException("Cannot convert from ResultSet", e);
+			e.printStackTrace();
+			throw new DataAccessException("Cant create StockMaterial", e);
 		}
-		return salesPrice;
+		
+		return stockMaterial;
 	}
 	
-	
-	private Price buildObjectPurchasePrice(ResultSet rs, boolean fullAssociation) throws DataAccessException, SQLException {
-		Price purchasePrice = null;
-		
+
+	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
+		GenericMaterial genericMaterial = null;
 		try {
-		BigDecimal value = rs.getBigDecimal("Price");
-		Timestamp timeStamp = rs.getTimestamp("PurchasePriceTimeStamp");
-		LocalDateTime date = timeStamp.toLocalDateTime();
-		
-		purchasePrice = new Price(date, value);
-		
+			genericMaterial = new GenericMaterial(rs.getInt("ProductNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getString("ProductType"));
+			
 		}catch (SQLException e) {
-			throw new DataAccessException("Cannot convert from ResultSet", e);
+			e.printStackTrace();
+			throw new DataAccessException("Cant create GenericMaterial", e);
 		}
-		return purchasePrice;
+		return genericMaterial;
 	}
-	
-	
-	public StockReservation buildObjectStockReservation(ResultSet rs, boolean fullAssociation) throws SQLException {
+
+	private Price buildObjectPurchasePrice(ResultSet rs) throws DataAccessException, SQLException {
+		Price price = null;
+			try {
+				Timestamp timeStamp = rs.getTimestamp("PurchasePriceTimeStamp");
+				LocalDateTime date = timeStamp.toLocalDateTime();
+				BigDecimal preVATValue = rs.getBigDecimal("Price");
+				price = new Price(date, preVATValue);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DataAccessException("Cant find purchasePrice", e);
+			}
+		 
+		return price;
+	}
+
+	private Price buildObjectSalesPrice(ResultSet rs) throws SQLException, DataAccessException {
+		Price price = null;		
+			try {
+			Timestamp timeStamp = rs.getTimestamp("SalesPriceTimeStamp");
+			LocalDateTime date = timeStamp.toLocalDateTime();
+			BigDecimal preVATValue = rs.getBigDecimal("Price");
+			price = new Price(date, preVATValue);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new DataAccessException("Cant find salesPrice", e);
+			}
+		
+		return price;
+	}
+
+	private StockReservation buildObjectStockReservation(ResultSet rs) throws DataAccessException {
 		StockReservation stockReservation = null;
-		
-		int quantity = rs.getInt("Quantity");
-		Timestamp timeStamp = rs.getTimestamp("ReservationDate");
-		LocalDateTime date = timeStamp.toLocalDateTime();
-		
-		stockReservation = new StockReservation(quantity, date);
+		try {
+			Timestamp timeStamp = rs.getTimestamp("ReservationDate");
+			LocalDateTime date = timeStamp.toLocalDateTime();
+			stockReservation = new StockReservation(rs.getInt("Quantity"), date);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataAccessException("Cant find StockReservationPrice", e);
+		}
 		return stockReservation;
 	}
 	

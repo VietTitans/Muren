@@ -1,22 +1,19 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class GenericMaterial extends Material{
 
 	private String materialType;
 
 
-	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice, String materialType) {
-		super(materialNo, productName, materialDescription, salesPrice, purchasePrice);
+	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, String materialType) {
+		super(materialNo, productName, materialDescription, salesPrices, purchasePrices);
 		this.materialType = materialType;
 
 	}
 	
-	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, String materialType) {
-		super(materialNo, productName, materialDescription);
-		this.materialType = materialType;
-	}
 	
 	//Getters
 	
