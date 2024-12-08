@@ -12,10 +12,10 @@ public class StockMaterial extends Material {
 	private ArrayList<StockReservation> stockReservations;
 	private int availableAmount;
 	
-	public StockMaterial(int productNo, String productName, MaterialDescription materialDescription, 
+	public StockMaterial(int materialNo, String productName, MaterialDescription materialDescription, 
 			Price salesPrice, Price purchasePrice, int minStock, int maxStock, int quantity) {
 		
-		super(productNo, productName, materialDescription, salesPrice, purchasePrice);
+		super(materialNo, productName, materialDescription, salesPrice, purchasePrice);
 			
 		this.minStock = minStock;
 		this.maxStock = maxStock;
@@ -57,8 +57,8 @@ public class StockMaterial extends Material {
 	}
 
 	@Override
-	public int getProductNo() {
-		return super.getProductNoSubClasses();
+	public int getMaterialNo() {
+		return super.getMaterialNoSubClasses();
 	}
 
 	@Override

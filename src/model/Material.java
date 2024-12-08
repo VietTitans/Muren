@@ -5,14 +5,14 @@ import java.math.BigDecimal;
 
 public abstract class Material {
 	
-	private int productNo;
+	private int materialNo;
 	private String productName;
 	private MaterialDescription materialDescription;
 	private Price purchasePrice;
 	private Price salesPrice;
 	
-	public Material(int productNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) {
-		this.productNo = productNo;
+	public Material(int materialNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) {
+		this.materialNo = materialNo;
 		this.productName = productName;
 		this.materialDescription = materialDescription;
 		this.salesPrice = salesPrice;
@@ -20,8 +20,8 @@ public abstract class Material {
 		
 	}
 
-	public Material(int productNo, String productName, MaterialDescription materialDescription) {
-		this.productNo = productNo;
+	public Material(int materialNo, String productName, MaterialDescription materialDescription) {
+		this.materialNo = materialNo;
 		this.productName = productName;
 		this.materialDescription = materialDescription;
 	}
@@ -40,10 +40,10 @@ public abstract class Material {
 	
 	//Getters
 	
-	public abstract int getProductNo();
+	public abstract int getMaterialNo();
 	
-	protected int getProductNoSubClasses() {
-		return productNo;
+	protected int getMaterialNoSubClasses() {
+		return materialNo;
 	}
 	
 	public abstract String getProductName();

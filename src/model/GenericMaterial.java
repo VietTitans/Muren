@@ -7,8 +7,8 @@ public class GenericMaterial extends Material{
 	private String materialType;
 
 
-	public GenericMaterial(int productNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice, String materialType) {
-		super(productNo, productName, materialDescription, salesPrice, purchasePrice);
+	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice, String materialType) {
+		super(materialNo, productName, materialDescription, salesPrice, purchasePrice);
 		this.materialType = materialType;
 
 	}
@@ -16,8 +16,8 @@ public class GenericMaterial extends Material{
 	//Getters
 	
 	@Override
-	public int getProductNo() {
-		return super.getProductNoSubClasses();
+	public int getMaterialNo() {
+		return super.getMaterialNoSubClasses();
 	}
 
 	@Override
