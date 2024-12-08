@@ -42,8 +42,9 @@ public class MaterialDB implements MaterialDBIF {
 //	private PreparedStatement findStockMaterial;
 //	private PreparedStatement findGenericMaterial;
 //	
-	private Connection connection;
 	
+	private Connection connection;
+	//Grund til brug af instans her? Hvis ja instantiate i contructor 
 	public MaterialDB() throws DataAccessException {
 		try {
 //			findStockMaterial = DBConnection.getInstance().getConnection()
@@ -52,9 +53,10 @@ public class MaterialDB implements MaterialDBIF {
 //			.prepareStatement(SELECT_GENERICMATERIAL_BY_MATERIALNO);
 		initPreparedStatements();
 		}
-		catch (SQLException e){
+		catch (DataAccessException e){ //Ændret fra SQL-Exception til DataAccessException for at matche "throws" 
 			throw new DataAccessException("Statement could not be prepared", e);
 		}
+	} //Indsat manglede } så contructor var aldrig lukket 
 	
 	private void initPreparedStatements() throws DataAccessException{
 		try {
@@ -95,6 +97,8 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoPurchasePrice.setInt(1,materialNo);
 			ResultSet rsPurchasePrice = psSelectMaterialNoPurchasePrice.executeQuery();
 			
+			//Årsag til vi bruger || som beskriver eller?
+			// Hvis en af disse result sets er tomme skaber det måske problemer 
 			if(rsSalesPrice.isBeforeFirst() || rsPurchasePrice.isBeforeFirst()) {	
 				while(rsSalesPrice.next()) {
 					Price salesPrice = buildObjectSalesPrice(rsSalesPrice);

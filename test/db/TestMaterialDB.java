@@ -15,6 +15,7 @@ public class TestMaterialDB {
 	static MaterialDB materialDB;
 	static DBConnection connection;
 	
+	//Connection behøves ikke laves som instans 
 	@BeforeAll
 	void setUp() throws DataAccessException {
 		materialDB = new MaterialDB();
@@ -25,6 +26,7 @@ public class TestMaterialDB {
 	@AfterAll
 	void tearDown() throws DataAccessException {
 		connection.disconnect();
+		//Måske samme som tidligere udfordringer med disconnect?
 	}
 	
 	
@@ -33,6 +35,7 @@ public class TestMaterialDB {
 		//Arrange
 		//No action
 		//Act
+		//forkert metode navn findMaterialByMaterialNo
 		Material material = materialDB.findMaterialByProductNo(1001, true);
 		StockMaterial stockMaterial = (StockMaterial) material;
 		//Assert
@@ -60,7 +63,9 @@ public class TestMaterialDB {
 	public void testMaterialDoesntExists() throws DataAccessException {
 		//Using NullPointerException to test for null
 		//Arrange
+		
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+			//forkert metode navn findMaterialByMaterialNo
 			//Act
 			materialDB.findMaterialByProductNo(6761137, true); //Searching for an invalid product
 			throw new IllegalArgumentException("Material not found");
@@ -76,6 +81,7 @@ public class TestMaterialDB {
 		//Arrange
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
 			//Act
+			//Metoden under findes ikke?
 			materialDB.findAndAddStockReservationByStockMaterialId(613237, 1001); 
 			throw new IllegalArgumentException("Material not found");
 		});
