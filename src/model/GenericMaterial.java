@@ -60,15 +60,30 @@ public class GenericMaterial extends Material{
 		super.setCurrentSalesPriceSubClasses(newValue);
 	}
 
+	@Override
+	public void addSalesPriceToSalesPrices(Price salesPrice) {
+		super.addSalesPriceToSalesPricesSubClasses(salesPrice);
+		
+	}
 	
 	@Override
 	public void setCurrentPurchasePrice(BigDecimal newValue) {
 		super.setCurrentPurchasePriceSubClasses(newValue);
-		}
+	}
+	
+	@Override
+	public void addPurchasePriceToPurchasePrices(Price purchasePrice) {
+		super.addPurchasePriceToPurchasePricesSubClasses(purchasePrice);
+		
+	}
 
 	public void setMaterialType(String newType) {
 		materialType = newType;
 	}
+
+	
+
+	
 
 
 
