@@ -13,15 +13,8 @@ public abstract class Material {
 	private Price salesPrice;
 	private ArrayList<Price> salesPrices;
 	private ArrayList<Price> purchasePrices;
+			
 	
-	public Material(int materialNo, String productName, MaterialDescription materialDescription, Price salesPrice, Price purchasePrice) {
-		this.materialNo = materialNo;
-		this.productName = productName;
-		this.materialDescription = materialDescription;
-		this.salesPrice = salesPrice;
-		this.purchasePrice = purchasePrice;
-		
-	}
 
 	public Material(int materialNo, String productName, MaterialDescription materialDescription, 
 	ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) {
