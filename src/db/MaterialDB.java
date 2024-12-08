@@ -30,20 +30,33 @@ public class MaterialDB implements MaterialDBIF {
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE MaterialNo = ?;";
 	private static final String PS_SELECT_FROM_Stock_Reservation = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
 	
+//	private static final String SELECT_STOCKMATERIAL_BY_MATERIALNO = "SELECT * FROM StockMaterial WHERE MaterialNo = ?";
+//	private static final String SELECT_GENERICMATERIAL_BY_MATERIALNO = "SELECT * FROM GenericMaterial WHERE MaterialNo = ?";
+	
 	private PreparedStatement psSelectMaterialNoMaterial;
 	private PreparedStatement psSelectMaterialNoMaterialDescription;
 	private PreparedStatement psSelectMaterialNoSalesPrice;
 	private PreparedStatement psSelectMaterialNoPurchasePrice;
 	private PreparedStatement psSelectStockMaterialIdStockReservation;
 	
+//	private PreparedStatement findStockMaterial;
+//	private PreparedStatement findGenericMaterial;
+//	
 	private Connection connection;
 	
 	public MaterialDB() throws DataAccessException {
-		connection = DBConnection.getInstance().getConnection();
+		try {
+//			findStockMaterial = DBConnection.getInstance().getConnection()
+//					.prepareStatement(SELECT_STOCKMATERIAL_BY_MATERIALNO);
+//			findGenericMaterial = DBConnection.getInstance().getConnection()
+//			.prepareStatement(SELECT_GENERICMATERIAL_BY_MATERIALNO);
 		initPreparedStatements();
-	}
+		}
+		catch (SQLException e){
+			throw new DataAccessException("Statement could not be prepared", e);
+		}
 	
-	private void initPreparedStatements() throws DataAccessException {
+	private void initPreparedStatements() throws DataAccessException{
 		try {
 			psSelectMaterialNoMaterial = connection.prepareStatement(PS_SELECT_FROM_MATERIAL);
 			psSelectMaterialNoMaterialDescription = connection.prepareStatement(PS_SELECT_FROM_MATERIAL_DESCRIPTION);
@@ -58,7 +71,14 @@ public class MaterialDB implements MaterialDBIF {
 	}
 	@Override
 	public Material findMaterialByMaterialNo(int materialNo, boolean fullAssertion) throws DataAccessException {
-		Material material = null;
+		Material foundMaterial = null;
+//		StockMaterial foundStockMaterial = null;
+//		
+//		findStockMaterial.setInt(1, materialNo);
+//		ResultSet resultSet = findStockMaterial.executeQuery();
+//		if(resultSet.next()) {
+//			foundStockMaterial = buildObject(resultSet, false);
+//		}
 		MaterialDescription materialDescription = null;
 		ArrayList<Price> salesPrices = new ArrayList<>();
 		ArrayList<Price> purchasePrices = new ArrayList<>();
@@ -90,10 +110,10 @@ public class MaterialDB implements MaterialDBIF {
 				
 			}
 			if(rsMaterial.getString("GenericMaterialId") != null) {
-				material = buildObjectGenericMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
+				foundMaterial = buildObjectGenericMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
 				
 			} else if(rsMaterial.getString("StockMaterialId") != null) {
-				material = buildObjectStockMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
+				foundMaterial = buildObjectStockMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
 				
 			}
 		}catch (SQLException e) {
@@ -102,8 +122,9 @@ public class MaterialDB implements MaterialDBIF {
 		}
 		
 		
-		return material;
+		return foundMaterial;
 	}
+
 
 	private MaterialDescription buildObjectMaterialDescription(ResultSet rs) throws DataAccessException {
 		MaterialDescription materialDescription = null;
