@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 
 
 public class StockMaterial extends Material {
@@ -32,6 +34,23 @@ public class StockMaterial extends Material {
 	
 	public void updateAvailableAmount(StockReservation stockReservation) {
 		availableAmount = availableAmount - stockReservation.getQuantity();
+	}
+	public int calculatedAvailableAmount() {
+		int currentlyReserved = 0;
+		
+		for (StockReservation reservation : stockReservations) {
+			
+			LocalDate earliestDayOfReservation = reservation.getReservationDate().minusDays(reservation.getDuration()).toLocalDate();
+			LocalDate lastDayOfReservation = reservation.getReservationDate().plusDays(reservation.getDuration()).toLocalDate();
+			
+			if(LocalDate.now().isAfter(earliestDayOfReservation) && LocalDate.now().isBefore(lastDayOfReservation)) {
+				reservation.setActiveStatus(true);
+				currentlyReserved =+ reservation.getQuantity();
+				
+			}
+		}
+		
+		return quantity -currentlyReserved;
 	}
 	
 	//Getters

@@ -9,6 +9,7 @@ import model.Employee;
 import model.HourLog;
 import model.Material;
 import model.MaterialLog;
+import model.StockMaterial;
 
 public class LogController{
 	private OrderController orderController;
@@ -22,7 +23,17 @@ public class LogController{
 	}
 
 	public MaterialLog addMaterialToLog(Employee employee, Material material, int quantity) {
-		MaterialLog currentMaterialLog = new MaterialLog(employee, material, quantity);
+		MaterialLog currentMaterialLog = null;
+		if(material instanceof StockMaterial){
+			//Typecast Material To access subclass methods  
+			StockMaterial stockMaterial = (StockMaterial) material;
+			if(stockMaterial.calculatedAvailableAmount() >= quantity) {
+				currentMaterialLog = new MaterialLog(employee,stockMaterial,quantity);
+			}
+			else {
+				currentMaterialLog = new MaterialLog(employee,material,quantity);
+			}
+		}
 		return currentMaterialLog;
 	}
 	

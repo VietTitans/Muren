@@ -24,6 +24,8 @@ public class OrderDB implements OrderDBIF {
 
 	@Override
 	public int saveOrder(Order currentOrder) throws DataAccessException {
+		DBConnection.getInstance().startTransaction();
+		
 		int orderIdReturned = -1;
 		// Sets up values to be used in prepared statement
 		java.sql.Date startDate = java.sql.Date.valueOf(currentOrder.getStartDate());
