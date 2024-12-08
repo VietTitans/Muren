@@ -56,5 +56,24 @@ public class TestStockMaterial {
 		assertEquals(10, stockMaterial.getAvailableAmount());
 	}
 	
+	@Test
+	public void testCalculatedAvailableAmount() {
+		//TODO: STUBS
+		//Arrange
+		//StockReservation, cement with 
+		//Act
+		//Assert
+		
+	}
+	
+//	//Consider to implement this?
+//	@Test
+//	public void testFindStockReservation() {
+//		//TODO: STUBS
+//		//Arrange
+//		//Act
+//		//Assert
+//	}
+//	
 	
 }
