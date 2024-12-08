@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +23,7 @@ import model.MaterialDescription;
 import model.MaterialLog;
 import model.Order;
 import model.Price;
+import model.StockMaterial;
 
 class TestOrderDB {
 
@@ -44,10 +46,14 @@ class TestOrderDB {
 		
 		Price purchasePrice = new Price(BigDecimal.valueOf(1.00));
 		Price salesPrice = new Price(BigDecimal.valueOf(2.00));
+		ArrayList<Price> purchasePrices = new ArrayList<>();
+		purchasePrices.add(purchasePrice);
+		ArrayList<Price> salesPrices = new ArrayList<>();
+		salesPrices.add(salesPrice);
 		
 		MaterialDescription materialDescription = new MaterialDescription("Ting");
 		MaterialLogDB materialLogDB = new MaterialLogDB();
-		Material material = new Material(1001, "ds", materialDescription, salesPrice, purchasePrice); 
+		StockMaterial material = new StockMaterial(1001, null, materialDescription, salesPrices, purchasePrices, 0, 0, 0);
 		MaterialLog materialLog = new MaterialLog(emp, material, 1);
 		materialLogDB.saveMaterialLog(materialLog, 1);
 

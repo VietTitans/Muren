@@ -14,7 +14,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 
 	private static final String INSERT_MATERIALLOG_INTO_LOG = " INSERT INTO Logs (OrderNo, EmployeeId, LogTimeStamp) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoLogs;
-	private static final String INSERT_MATERIALLOG_INTO_MATERIALLOG = " INSERT INTO MaterialLogs(Quantity, ProductNo, LogId) VALUES (?, ?, ?); ";
+	private static final String INSERT_MATERIALLOG_INTO_MATERIALLOG = " INSERT INTO MaterialLogs(Quantity, MaterialNo, LogId) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
 	
 	public MaterialLogDB() throws DataAccessException {
@@ -51,7 +51,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 					
 					int quantity = materialLog.getQuantity();
 					insertMaterialLogIntoMaterialLogs.setInt(1, quantity);
-					int productNo = materialLog.getMaterial().getProductNo();
+					int productNo = materialLog.getMaterial().getMaterialNo();
 					insertMaterialLogIntoMaterialLogs.setInt(2, productNo);
 					insertMaterialLogIntoMaterialLogs.setInt(3, materialLogKey);
 					insertMaterialLogIntoMaterialLogs.executeUpdate();
