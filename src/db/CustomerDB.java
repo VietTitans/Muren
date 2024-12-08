@@ -30,7 +30,7 @@ public class CustomerDB implements CustomerDBIF {
 
 	@Override
 	public Customer findCustomerByPhoneNo(String phoneNo, boolean fullAssociation) throws DataAccessException {
-		Customer foundCustomer = new Customer();
+		Customer foundCustomer = null;
 		try {
 			findByPhoneNo.setString(1, phoneNo);
 			ResultSet resultSet = findByPhoneNo.executeQuery();
