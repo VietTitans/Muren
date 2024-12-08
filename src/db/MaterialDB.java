@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 
 import controller.DataAccessException;
 
-public class MaterialDB {
+public class MaterialDB implements MaterialDBIF {
 
 	private static final String PS_SELECT_FROM_MATERIAL = "SELECT StockMaterial.*, GenericMaterial.*, Material.ProductName\r\n"
 			+ "FROM Material\r\n"
@@ -56,8 +56,8 @@ public class MaterialDB {
 			throw new DataAccessException("Could not prepare statement", e);
 		}
 	}
-	
-	public Material findMaterialByMaterialNo(int materialNo) throws DataAccessException {
+	@Override
+	public Material findMaterialByMaterialNo(int materialNo, boolean fullAssertion) throws DataAccessException {
 		Material material = null;
 		MaterialDescription materialDescription = null;
 		ArrayList<Price> salesPrices = new ArrayList<>();
@@ -198,6 +198,6 @@ public class MaterialDB {
 		}
 		return stockReservation;
 	}
-	
+
 	
 }
