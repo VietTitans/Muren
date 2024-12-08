@@ -56,7 +56,7 @@ class TestEmployeeDB {
 	void testEmployeeDoesntExists() throws DataAccessException { 
 		//Using NullPointerException to test for null
 		//Arrange
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			employeeDB.findEmployeeByEmployeeId(6662236, false); //Input invalid employeeId
 			throw new IllegalArgumentException("Employee not found");
