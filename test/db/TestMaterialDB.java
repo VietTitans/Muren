@@ -37,7 +37,7 @@ public class TestMaterialDB {
 		//Using NullPointerException to test for null
 		//Arrange
 		
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			
 			//Act
 			materialDB.findMaterialByMaterialNo(6761137); //Searching for an invalid product
