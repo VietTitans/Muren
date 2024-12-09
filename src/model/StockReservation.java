@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class StockReservation {
@@ -39,13 +40,15 @@ public class StockReservation {
 	}
 	
 	public boolean isActive() {
+		LocalDate earliestDayOfReservation = getReservationDate().minusDays(getDuration()).toLocalDate();
+		LocalDate lastDayOfReservation = getReservationDate().plusDays(getDuration()).toLocalDate();
+		if(LocalDate.now().isAfter(earliestDayOfReservation) && LocalDate.now().isBefore(lastDayOfReservation)) {
+			isActive = true;
+		} else {
+			isActive = false;
+		}
 		return isActive;
 	}
-	
-	public void setActiveStatus(boolean newStatus) {
-		isActive = newStatus;
-	}
-	//Lav update IsActive method.
 	
 	
 }

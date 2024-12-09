@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.time.LocalDate;
+
 
 
 public class StockMaterial extends Material {
@@ -26,27 +26,15 @@ public class StockMaterial extends Material {
 	
 	public void addStockReservation(StockReservation stockReservation) {		
 		stockReservations.add(stockReservation);
-		updateAvailableAmount(stockReservation);	
 	}
 	
-	
-	public void updateAvailableAmount(StockReservation stockReservation) {
-		availableAmount = availableAmount - stockReservation.getQuantity();
-	}
-	
-	//Update metoden
+
 	public int calculatedAvailableAmount() {
 		int currentlyReserved = 0;
 		
 		for (StockReservation reservation : stockReservations) {
-			//Move to stock reservation method
-			LocalDate earliestDayOfReservation = reservation.getReservationDate().minusDays(reservation.getDuration()).toLocalDate();
-			LocalDate lastDayOfReservation = reservation.getReservationDate().plusDays(reservation.getDuration()).toLocalDate();
-			
-			if(LocalDate.now().isAfter(earliestDayOfReservation) && LocalDate.now().isBefore(lastDayOfReservation)) {
-				
+			if(reservation.isActive() == true) {
 				currentlyReserved =+ reservation.getQuantity();
-				
 			}
 		}
 		
