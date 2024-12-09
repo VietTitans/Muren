@@ -99,14 +99,16 @@ public class MaterialDB implements MaterialDBIF {
 			ResultSet rsPurchasePrice = psSelectMaterialNoPurchasePrice.executeQuery();
 			
 			if(rsMaterial.next()) {
-				if(rsSalesPrice.isBeforeFirst() && rsPurchasePrice.isBeforeFirst()) {	
+				if(rsSalesPrice.isBeforeFirst()) {	
 					while(rsSalesPrice.next()) {
 						Price salesPrice = buildObjectSalesPrice(rsSalesPrice);
 						salesPrices.add(salesPrice);					
 					}
+				}
+				if(rsPurchasePrice.isBeforeFirst()) {
 					while(rsPurchasePrice.next()) {
 						Price purchasePrice = buildObjectPurchasePrice(rsPurchasePrice);
-						salesPrices.add(purchasePrice);					
+						purchasePrices.add(purchasePrice);					
 					}
 				} 
 				
@@ -154,7 +156,7 @@ public class MaterialDB implements MaterialDBIF {
 		try {
 			stockMaterial = new StockMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
 			
-			psSelectMaterialNoMaterial.setInt(1,stockMaterialId);
+			psSelectStockMaterialIdStockReservation.setInt(1,stockMaterialId);
 			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
 			System.out.println("hej");
 			

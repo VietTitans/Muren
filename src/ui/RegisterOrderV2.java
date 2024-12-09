@@ -27,11 +27,15 @@ import controller.OrderController;
 import model.Customer;
 import model.Employee;
 import model.Material;
+import model.MaterialDescription;
+import model.Price;
+import model.StockMaterial;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -439,20 +443,36 @@ public class RegisterOrderV2 extends JFrame {
 
 		addMaterialBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Employee employee = new Employee();
-				int materialNo = Integer.parseInt(txtProduktno.getText());
+				
+				ArrayList<Price> salesPrices = new ArrayList<>();
+				BigDecimal priceValue = new BigDecimal(10);
+				Price salesPrice = new Price(priceValue);
+				salesPrices.add(salesPrice);
+				
+				ArrayList<Price> purchasePrices = new ArrayList<>();
+				BigDecimal purchasePriceValue = new BigDecimal(5);
+				Price purchasePrice = new Price(purchasePriceValue);
+				purchasePrices.add(purchasePrice);
+				
+				MaterialDescription materialDescription = new MaterialDescription("en ting");
+				
+				StockMaterial material = new StockMaterial(10, "ting", materialDescription, salesPrices, purchasePrices, 1, 100, 55);
+//				Employee employee = new Employee();
+//				int materialNo = Integer.parseInt(txtProduktno.getText());
 				int amountNo = Integer.parseInt(txtMngde.getText());
-				try {
-					Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
+				
+				
+				//try {
+					//Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
 						if (material.getProductName() == null) {
 							MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
 							materialNotFoundDialog.setVisible(true);
 						}
 						else {
 							int newNr = table_1.getRowCount() + 1;
-							BigDecimal totalBDPrice = material.getCurrentSalesPrice().multiply(new BigDecimal(amountNo));
+							BigDecimal totalBDPrice = priceValue.multiply(new BigDecimal(amountNo));
 							Double totalPrice = totalBDPrice.doubleValue();
-							Double saleprice = material.getCurrentSalesPrice().doubleValue();
+							Double saleprice = priceValue.doubleValue();
 							
 							Object[] newRow = {newNr,
 									material.getMaterialNo(),
@@ -462,17 +482,14 @@ public class RegisterOrderV2 extends JFrame {
 									saleprice, 
 									totalPrice};
 							DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-							model.addRow(newRow);
-							
-							
-						
-							
+							model.addRow(newRow);	
 						}
-				} catch (DataAccessException e1) {
+				//}
+			//catch (DataAccessException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
-			}
+			//}
 		});
 	}
 

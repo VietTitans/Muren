@@ -11,7 +11,7 @@ public class MaterialController {
 		materialDBIF = new MaterialDB();
 	}
  
-public Material findMaterialByMaterialNo(int materialNo, boolean fullAssociation) throws DataAccessException {
-	return materialDBIF.findMaterialByMaterialNo(materialNo);
+public Material findMaterialByMaterialNo(int materialNo) throws DataAccessException {
+	return materialDBIF.findMaterialByMaterialNo(materialNo,fullAssociation);
 	}
 }

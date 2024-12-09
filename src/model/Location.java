@@ -17,7 +17,7 @@ public class Location extends Inventory{
 	
 	@Override
 	public void addMaterialToInventory(Material material) {
-		materialsInInventory.put(material.getProductNo(), material);
+		materialsInInventory.put(material.getMaterialNo(), material);
 	}
 
 	@Override
