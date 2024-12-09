@@ -89,8 +89,6 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoMaterial.setInt(1,materialNo);
 			ResultSet rsMaterial = psSelectMaterialNoMaterial.executeQuery();
 			
-			rsMaterial.next();
-			
 			psSelectMaterialNoMaterialDescription.setInt(1,materialNo);
 			ResultSet rsDescription = psSelectMaterialNoMaterialDescription.executeQuery();
 			
@@ -100,27 +98,33 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoPurchasePrice.setInt(1,materialNo);
 			ResultSet rsPurchasePrice = psSelectMaterialNoPurchasePrice.executeQuery();
 			
-			if(rsSalesPrice.isBeforeFirst() && rsPurchasePrice.isBeforeFirst()) {	
-				while(rsSalesPrice.next()) {
-					Price salesPrice = buildObjectSalesPrice(rsSalesPrice);
-					salesPrices.add(salesPrice);					
+			if(rsMaterial.next()) {
+				if(rsSalesPrice.isBeforeFirst() && rsPurchasePrice.isBeforeFirst()) {	
+					while(rsSalesPrice.next()) {
+						Price salesPrice = buildObjectSalesPrice(rsSalesPrice);
+						salesPrices.add(salesPrice);					
+					}
+					while(rsPurchasePrice.next()) {
+						Price purchasePrice = buildObjectPurchasePrice(rsPurchasePrice);
+						salesPrices.add(purchasePrice);					
+					}
+				} 
+				
+				if(rsDescription.next()) {
+					materialDescription = buildObjectMaterialDescription(rsDescription);
+					
 				}
-				while(rsPurchasePrice.next()) {
-					Price purchasePrice = buildObjectPurchasePrice(rsPurchasePrice);
-					salesPrices.add(purchasePrice);					
+				if(rsMaterial.getString("GenericMaterialId") != null && salesPrices != null && purchasePrices != null) {
+					foundMaterial = buildObjectGenericMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
+					
+				} else if(rsMaterial.getString("StockMaterialId") != null && salesPrices != null && purchasePrices != null) {
+					int stockMaterialId = rsMaterial.getInt("StockMaterialId");
+					foundMaterial = buildObjectStockMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices, stockMaterialId);
+					
+				} else {
+					System.out.println("Cant run methods");
 				}
-			}
-			if(rsDescription.next()) {
-				materialDescription = buildObjectMaterialDescription(rsDescription);
-				
-			}
-			if(rsMaterial.getString("GenericMaterialId") != null) {
-				foundMaterial = buildObjectGenericMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
-				
-			} else if(rsMaterial.getString("StockMaterialId") != null) {
-				foundMaterial = buildObjectStockMaterial(rsMaterial, materialDescription, salesPrices, purchasePrices);
-				
-			}
+			}	
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException("Cant find material", e);
@@ -145,19 +149,22 @@ public class MaterialDB implements MaterialDBIF {
 		return materialDescription;
 	}
 
-	private StockMaterial buildObjectStockMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
+	private StockMaterial buildObjectStockMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, int stockMaterialId) throws DataAccessException {
 		StockMaterial stockMaterial = null;
 		try {
 			stockMaterial = new StockMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
 			
-			psSelectMaterialNoMaterial.setInt(1,rs.getInt("stockMaterialId"));
+			psSelectMaterialNoMaterial.setInt(1,stockMaterialId);
 			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
+			System.out.println("hej");
 			
 			if(rsStockReservation.isBeforeFirst()) {
 				while(rsStockReservation.next()) {
 					StockReservation stockReservation = buildObjectStockReservation(rsStockReservation);
 					stockMaterial.addStockReservation(stockReservation);
 				}
+			} else {
+				System.out.println("Cant use method");
 			}
 			
 		}catch (SQLException e) {
@@ -172,7 +179,7 @@ public class MaterialDB implements MaterialDBIF {
 	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
 		GenericMaterial genericMaterial = null;
 		try {
-			genericMaterial = new GenericMaterial(rs.getInt("ProductNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getString("ProductType"));
+			genericMaterial = new GenericMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getString("ProductType"));
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
