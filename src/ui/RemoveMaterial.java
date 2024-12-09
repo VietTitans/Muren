@@ -80,6 +80,20 @@ public class RemoveMaterial extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 					int [] removeList = list.getSelectedIndices();
+						
+					 // Reverse the array in place
+			        int start = 0;
+			        int end = removeList.length - 1;
+
+			        while (start < end) {
+			            // Swap the elements at start and end
+			            int temp = removeList[start];
+			            removeList[start] = removeList[end];
+			            removeList[end] = temp;
+
+			            start++;
+			            end--;
+			        }
 						registerOrderV2.removeRow(removeList);
 						
 					}
