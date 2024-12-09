@@ -3,18 +3,31 @@ package db;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
+import controller.OrderController;
 import model.Customer;
 
 class TestCustomerDB {
+	
+	private CustomerDB customerDB;
+
+	@BeforeEach
+	void setUp() throws Exception {
+		CustomerDB customerDB = new CustomerDB();
+	}
+
+	@AfterEach
+	void tearDown() throws Exception {
+	}
 
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
 		//Arrange
-		CustomerDB customerDB = new CustomerDB();
 		Customer expectedResult = new Customer();
 			expectedResult.setfName("John");
 			expectedResult.setlName("Doe");
