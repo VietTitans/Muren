@@ -42,7 +42,7 @@ public class OrderController {
 	}
 	
 	public Material findAndAddMaterialByMaterialNo(Employee employee, int materialNo, int quantity) throws DataAccessException {
-		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo, false);
+		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo);
 		if (employee != null && foundMaterial != null && quantity != 0){
 		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		currentOrder.addMaterialLogToOrder(newLog);
