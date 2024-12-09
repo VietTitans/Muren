@@ -1,6 +1,6 @@
 package model;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 
 
@@ -13,14 +13,15 @@ public abstract class Material {
 	private Price salesPrice;
 	private ArrayList<Price> salesPrices;
 	private ArrayList<Price> purchasePrices;
+	private ArrayList<MaterialDescription> materialDescriptions;
 			
 	
 
-	public Material(int materialNo, String productName, MaterialDescription materialDescription, 
+	public Material(int materialNo, String productName, ArrayList<MaterialDescription> materialDescriptions, 
 	ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) {
 		this.materialNo = materialNo;
 		this.productName = productName;
-		this.materialDescription = materialDescription;
+		this.materialDescriptions = materialDescriptions;
 		this.salesPrices = salesPrices;
 		this.purchasePrices = purchasePrices;
 		
@@ -50,10 +51,11 @@ public abstract class Material {
 	 * Called currentSalesPrice because the option to search for a specific Price,
 	 * at a certain time is a different use case.
 	 */
-	public abstract BigDecimal getCurrentSalesPrice(); 
+	public abstract Price getCurrentSalesPrice(); 
 	
-	protected BigDecimal getCurrentSalesPriceSubClasses() {
-		return salesPrice.getPreVATValue();
+	protected Price getCurrentSalesPriceSubClasses() {
+		salesPrice = salesPrices.get(0);
+		return salesPrice;
 	}
 	
 	/*
@@ -61,55 +63,65 @@ public abstract class Material {
 	 * at a certain time is a different use case.
 	 */
 	
-	public abstract BigDecimal getCurrentPurchasePrice(); 
+	public abstract Price getCurrentPurchasePrice(); 
 	
-	protected BigDecimal getCurrentPurchasePriceSubClasses() {
-		return purchasePrice.getPreVATValue();
+	protected Price getCurrentPurchasePriceSubClasses() {
+		purchasePrice = purchasePrices.get(0);
+		return purchasePrice;
 	}
 	
 	
-	public abstract String getMaterialDescription();
+	public abstract MaterialDescription getCurrentMaterialDescription();
 	
-	protected String getMaterialDescriptionSubClasses() {
-		return materialDescription.getDescription();
+	protected MaterialDescription getCurrentMaterialDescriptionSubClasses() {
+		materialDescription = materialDescriptions.get(0);
+		return materialDescription;	
 	}
 	
 	
 	
 	//Setters
 	
-	public abstract void setCurrentSalesPrice(BigDecimal newValue);
+	public abstract void setCurrentSalesPrice(Price newPrice);
 	
-	protected void setCurrentSalesPriceSubClasses(BigDecimal newValue) {
-		salesPrices.add(0, new Price(newValue));
-		salesPrice = salesPrices.get(0);
+	protected void setCurrentSalesPriceSubClasses(Price newPrice) {
+		salesPrice = newPrice;
+		if(!salesPrices.contains(newPrice)) {
+			addSalesPriceToSalesPricesSubClasses(newPrice);
+		}
 	}
 	
-	public abstract void addSalesPriceToSalesPrices(Price salesPrice);
-	
-	protected void addSalesPriceToSalesPricesSubClasses(Price salesPrice) {
-		salesPrices.add(salesPrice);
+	private void addSalesPriceToSalesPricesSubClasses(Price salesPrice) {
+		salesPrices.add(0, salesPrice);
 	}	
 	
-	public abstract void setCurrentPurchasePrice(BigDecimal newValue);
+	public abstract void setCurrentPurchasePrice(Price newPrice);
 	
-	protected void setCurrentPurchasePriceSubClasses(BigDecimal newValue) {	
-		purchasePrices.add(0, new Price(newValue));
-		purchasePrice = purchasePrices.get(0);
-	
+	protected void setCurrentPurchasePriceSubClasses(Price newPrice) {	
+		purchasePrice = newPrice;
+		if(!purchasePrices.contains(newPrice)) {
+			addPurchasePriceToPurchasePricesSubClasses(newPrice);
+		}
 	}
 	
-	public abstract void addPurchasePriceToPurchasePrices(Price purchasePrice);
 	
-	protected void addPurchasePriceToPurchasePricesSubClasses(Price purchasePrice) {
+	private void addPurchasePriceToPurchasePricesSubClasses(Price purchasePrice) {
+		purchasePrices.add(0, salesPrice);
+	}
+	
+	public abstract void setCurrentMaterialDescription(MaterialDescription newDescription);
+	
+	protected void setCurrentMaterialDescriptionSubClasses(MaterialDescription newDescription) {
+		materialDescription = newDescription;
+		if(materialDescriptions.contains(newDescription)) {
+			addMaterialDescriptionToMaterialDescriptionsSubClasses(newDescription);
+		}
 		
 	}
 	
-	public abstract void setMaterialDescription(String newDescription);
 	
-	protected void setMaterialDescriptionSubClasses(String description) {
-		materialDescription = new MaterialDescription(description);
+	private void addMaterialDescriptionToMaterialDescriptionsSubClasses(MaterialDescription newDescription) {
+		materialDescriptions.add(0, newDescription);
 	}
-	
 	
 }

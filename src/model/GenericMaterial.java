@@ -1,6 +1,6 @@
 package model;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 
 public class GenericMaterial extends Material{
@@ -8,8 +8,8 @@ public class GenericMaterial extends Material{
 	private String materialType;
 
 
-	public GenericMaterial(int materialNo, String productName, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, String materialType) {
-		super(materialNo, productName, materialDescription, salesPrices, purchasePrices);
+	public GenericMaterial(int materialNo, String productName, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, String materialType) {
+		super(materialNo, productName, materialDescriptions, salesPrices, purchasePrices);
 		this.materialType = materialType;
 
 	}
@@ -29,18 +29,18 @@ public class GenericMaterial extends Material{
 	}
 
 	@Override
-	public BigDecimal getCurrentSalesPrice() {
+	public Price getCurrentSalesPrice() {
 		return super.getCurrentSalesPriceSubClasses();
 	}
 
 	@Override
-	public BigDecimal getCurrentPurchasePrice() {
+	public Price getCurrentPurchasePrice() {
 		return super.getCurrentPurchasePriceSubClasses();
 	}
 
 	@Override
-	public String getMaterialDescription() {
-		return super.getMaterialDescriptionSubClasses();
+	public MaterialDescription getCurrentMaterialDescription() {
+		return super.getCurrentMaterialDescriptionSubClasses();
 	}
 	
 	
@@ -52,41 +52,25 @@ public class GenericMaterial extends Material{
 	//Setters
 	
 	@Override
-	public void setMaterialDescription(String newDescription) {
-		super.setMaterialDescriptionSubClasses(newDescription);
+	public void setCurrentMaterialDescription(MaterialDescription newDescription) {
+		super.setCurrentMaterialDescriptionSubClasses(newDescription);
 		
 	}
 
 	@Override
-	public void setCurrentSalesPrice(BigDecimal newValue) {
-		super.setCurrentSalesPriceSubClasses(newValue);
+	public void setCurrentSalesPrice(Price newPrice) {
+		super.setCurrentSalesPriceSubClasses(newPrice);
 	}
 
-	@Override
-	public void addSalesPriceToSalesPrices(Price salesPrice) {
-		super.addSalesPriceToSalesPricesSubClasses(salesPrice);
-		
-	}
 	
 	@Override
-	public void setCurrentPurchasePrice(BigDecimal newValue) {
-		super.setCurrentPurchasePriceSubClasses(newValue);
+	public void setCurrentPurchasePrice(Price newPrice) {
+		super.setCurrentPurchasePriceSubClasses(newPrice);
 	}
 	
-	@Override
-	public void addPurchasePriceToPurchasePrices(Price purchasePrice) {
-		super.addPurchasePriceToPurchasePricesSubClasses(purchasePrice);
-		
-	}
 
 	public void setMaterialType(String newType) {
 		materialType = newType;
 	}
-
-	
-
-	
-
-
 
 }

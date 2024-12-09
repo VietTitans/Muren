@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
 import model.Material;
-import model.StockMaterial;
+
 
 public class TestMaterialDB {
 	
@@ -27,7 +27,11 @@ public class TestMaterialDB {
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		//Assert
 		assertNotNull(material);
-		
+		assertNotNull(material.getCurrentMaterialDescription());
+		assertNotNull(material.getCurrentPurchasePrice());
+		assertNotNull(material.getCurrentSalesPrice());
+		assertNotNull(material.getMaterialNo());
+		assertNotNull(material.getProductName());
 	}
 	
 	@Test

@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -13,10 +12,10 @@ public class StockMaterial extends Material {
 	private ArrayList<StockReservation> stockReservations;
 	private int availableAmount;
 	
-	public StockMaterial(int materialNo, String productName, MaterialDescription materialDescription, 
+	public StockMaterial(int materialNo, String productName, ArrayList<MaterialDescription> materialDescriptions, 
 			ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, int minStock, int maxStock, int quantity) {
 		
-		super(materialNo, productName, materialDescription, salesPrices, purchasePrices);
+		super(materialNo, productName, materialDescriptions, salesPrices, purchasePrices);
 			
 		this.minStock = minStock;
 		this.maxStock = maxStock;
@@ -83,61 +82,42 @@ public class StockMaterial extends Material {
 
 	@Override
 	public String getProductName() {
+	
 		return super.getProductNameSubClasses();
 	}
 
 	@Override
-	public BigDecimal getCurrentSalesPrice() {
+	public Price getCurrentSalesPrice() {
 		return super.getCurrentSalesPriceSubClasses();
 	}
 
-
 	@Override
-	public BigDecimal getCurrentPurchasePrice() {		
+	public Price getCurrentPurchasePrice() {
 		return super.getCurrentPurchasePriceSubClasses();
 	}
 
-
 	@Override
-	public String getMaterialDescription() {		
-		return super.getMaterialDescriptionSubClasses();
+	public MaterialDescription getCurrentMaterialDescription() {
+		return super.getCurrentMaterialDescriptionSubClasses();
 	}
-
 	
 	//Setters
 	
 	@Override
-	public void setCurrentSalesPrice(BigDecimal newValue) {
-		super.setCurrentPurchasePriceSubClasses(newValue);
-	}
-	
-	@Override
-	public void addSalesPriceToSalesPrices(Price salesPrice) {
-		super.addSalesPriceToSalesPricesSubClasses(salesPrice);
-		
-	}
-	
-	@Override
-	public void setCurrentPurchasePrice(BigDecimal newValue) {
-		super.setCurrentPurchasePriceSubClasses(newValue);	
-	}
-	
-	@Override
-	public void addPurchasePriceToPurchasePrices(Price purchasePrice) {
-		super.addPurchasePriceToPurchasePricesSubClasses(purchasePrice);
-		
-	}
-	
-	@Override
-	public void setMaterialDescription(String newDescription) {
-		super.setMaterialDescriptionSubClasses(newDescription);
+	public void setCurrentMaterialDescription(MaterialDescription newDescription) {
+		super.setCurrentMaterialDescriptionSubClasses(newDescription);
 		
 	}
 
+	@Override
+	public void setCurrentSalesPrice(Price newPrice) {
+		super.setCurrentSalesPriceSubClasses(newPrice);
+	}
+
 	
-	
-	
-	
-	
+	@Override
+	public void setCurrentPurchasePrice(Price newPrice) {
+		super.setCurrentPurchasePriceSubClasses(newPrice);
+	}
 	
 }
