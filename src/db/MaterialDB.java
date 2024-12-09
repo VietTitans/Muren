@@ -42,25 +42,17 @@ public class MaterialDB implements MaterialDBIF {
 	private PreparedStatement psSelectMaterialNoPurchasePrice;
 	private PreparedStatement psSelectStockMaterialIdStockReservation;
 	
-//	private PreparedStatement findStockMaterial;
-//	private PreparedStatement findGenericMaterial;
-//	
 	
 	private Connection connection;
-	//Grund til brug af instans her? Hvis ja instantiate i contructor 
 	public MaterialDB() throws DataAccessException {
 		connection = DBConnection.getInstance().getConnection();
 		try {
-//			findStockMaterial = DBConnection.getInstance().getConnection()
-//					.prepareStatement(SELECT_STOCKMATERIAL_BY_MATERIALNO);
-//			findGenericMaterial = DBConnection.getInstance().getConnection()
-//			.prepareStatement(SELECT_GENERICMATERIAL_BY_MATERIALNO);
 		initPreparedStatements();
 		}
 		catch (DataAccessException e){ //Ændret fra SQL-Exception til DataAccessException for at matche "throws" 
 			throw new DataAccessException("Statement could not be prepared", e);
 		}
-	} //Indsat manglede } så contructor var aldrig lukket 
+	} 
 	
 	private void initPreparedStatements() throws DataAccessException{
 		try {
@@ -78,13 +70,6 @@ public class MaterialDB implements MaterialDBIF {
 	@Override
 	public Material findMaterialByMaterialNo(int materialNo) throws DataAccessException {
 		Material foundMaterial = null;
-//		StockMaterial foundStockMaterial = null;
-//		
-//		findStockMaterial.setInt(1, materialNo);
-//		ResultSet resultSet = findStockMaterial.executeQuery();
-//		if(resultSet.next()) {
-//			foundStockMaterial = buildObject(resultSet, false);
-//		}
 		MaterialDescription materialDescription = null;
 		ArrayList<Price> salesPrices = new ArrayList<>();
 		ArrayList<Price> purchasePrices = new ArrayList<>();
@@ -165,7 +150,6 @@ public class MaterialDB implements MaterialDBIF {
 			
 			psSelectStockMaterialIdStockReservation.setInt(1,stockMaterialId);
 			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
-			System.out.println("hej");
 			
 			if(rsStockReservation.isBeforeFirst()) {
 				while(rsStockReservation.next()) {
