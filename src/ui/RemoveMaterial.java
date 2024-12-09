@@ -8,24 +8,29 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.awt.event.ActionEvent;
 
 public class RemoveMaterial extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private static JTable table;
-
+	private static RegisterOrderV2 registerOrderV2;
+	private JList list;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RemoveMaterial dialog = new RemoveMaterial(table);
+			RemoveMaterial dialog = new RemoveMaterial(registerOrderV2, table);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -35,9 +40,11 @@ public class RemoveMaterial extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param registerOrderV2 
 	 */
-	public RemoveMaterial(JTable table) {
+	public RemoveMaterial(RegisterOrderV2 registerOrderV2, JTable table) {
 		this.table = table;
+		this.registerOrderV2 = registerOrderV2;
 		ArrayList<String> listData = new ArrayList<>();
 		for (int row = 0; row < table.getRowCount(); row++) {
             String name = Integer.toString((int) table.getValueAt(row, 0)); // First column (Name)
@@ -59,7 +66,7 @@ public class RemoveMaterial extends JDialog {
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane);
 			{
-				JList list = new JList();
+				list = new JList();
 				scrollPane.setViewportView(list);
 				list.setListData(listArray);
 			}
@@ -70,6 +77,13 @@ public class RemoveMaterial extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+					int [] removeList = list.getSelectedIndices();
+						registerOrderV2.removeRow(removeList);
+						
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
