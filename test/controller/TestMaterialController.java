@@ -26,9 +26,9 @@ class TestMaterialController {
 		//Material(int, string) material (1001, "cement") exists in the DB:
 		//Act
 		int materialNo = 1001;
-		Material result = materialController.findMaterialByMaterialNo(materialNo, false);
+		Material result = materialController.findMaterialByMaterialNo(materialNo);
 		//Assert
-		String expectedResult = "cement";
+		String expectedResult = "Cement";
 		assertEquals(expectedResult, result.getProductName());
 	}
 	
@@ -38,7 +38,7 @@ class TestMaterialController {
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
 			//Act
 			int invalidMaterialNo = 0005;
-			materialController.findMaterialByMaterialNo(invalidMaterialNo, false);
+			materialController.findMaterialByMaterialNo(invalidMaterialNo);
 			throw new NullPointerException("Material not found");
 		});
 		//Assert
