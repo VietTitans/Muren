@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
 import model.Material;
+import model.StockMaterial;
 
 
 public class TestMaterialDB {
@@ -20,18 +21,15 @@ public class TestMaterialDB {
 	}
 	
 	@Test
-	public void testFindMaterialByProductNo() throws DataAccessException {
+	public void testFindMaterialByMaterialNo1() throws DataAccessException {
 		//Arrange
-		//No action
+		//Cement with materialNo 1001 exits in database
 		//Act
-		Material material = materialDB.findMaterialByMaterialNo(1001);
+		Material cement = materialDB.findMaterialByMaterialNo(1001);
 		//Assert
-		assertNotNull(material);
-		assertNotNull(material.getCurrentMaterialDescription());
-		assertNotNull(material.getCurrentPurchasePrice());
-		assertNotNull(material.getCurrentSalesPrice());
-		assertNotNull(material.getMaterialNo());
-		assertNotNull(material.getProductName());
+		String result = cement.getProductName();
+		String expectedResult = "Cement";
+		assertEquals(expectedResult, result);
 	}
 	
 	@Test
@@ -39,7 +37,6 @@ public class TestMaterialDB {
 		//Using NullPointerException to test for null
 		//Arrange
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
-			
 			//Act
 			materialDB.findMaterialByMaterialNo(6761137); //Searching for an invalid product
 			throw new IllegalArgumentException("Material not found");
