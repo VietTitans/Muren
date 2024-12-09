@@ -23,8 +23,6 @@ public abstract class Material {
 		this.materialDescription = materialDescription;
 		this.salesPrices = salesPrices;
 		this.purchasePrices = purchasePrices;
-		salesPrice = salesPrices.get(0);
-		purchasePrice = purchasePrices.get(0);
 		
 	}
 	
@@ -32,8 +30,7 @@ public abstract class Material {
 		this.materialNo = materialNo;
 		this.productName = productName;
 		this.materialDescription = materialDescription;
-		
-		
+				
 	}
 	
 	//Getters
