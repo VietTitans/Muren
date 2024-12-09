@@ -108,7 +108,7 @@ public class MaterialDB implements MaterialDBIF {
 				if(rsPurchasePrice.isBeforeFirst()) {
 					while(rsPurchasePrice.next()) {
 						Price purchasePrice = buildObjectPurchasePrice(rsPurchasePrice);
-						salesPrices.add(purchasePrice);					
+						purchasePrices.add(purchasePrice);					
 					}
 				} 
 				
