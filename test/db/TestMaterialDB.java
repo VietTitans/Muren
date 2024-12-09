@@ -21,7 +21,7 @@ public class TestMaterialDB {
 	}
 	
 	@Test
-	public void testFindMaterialByMaterialNo1() throws DataAccessException {
+	public void testFindMaterialByMaterialNo() throws DataAccessException {
 		//Arrange
 		//Cement with materialNo 1001 exits in database
 		//Act
