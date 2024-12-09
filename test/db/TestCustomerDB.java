@@ -11,9 +11,6 @@ import model.Customer;
 
 class TestCustomerDB {
 
-
-
-
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
 		//Arrange

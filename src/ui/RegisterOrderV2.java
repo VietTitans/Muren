@@ -22,9 +22,11 @@ import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
+import controller.DataAccessException;
 import controller.OrderController;
 import model.Customer;
+import model.Employee;
+import model.Material;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -33,6 +35,7 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
 import java.awt.Color;
 
 public class RegisterOrderV2 extends JFrame {
@@ -149,7 +152,7 @@ public class RegisterOrderV2 extends JFrame {
 			}
 		});
 		txtProduktno.setHorizontalAlignment(SwingConstants.LEFT);
-		txtProduktno.setText("ProduktNo:");
+		txtProduktno.setText("MaterialNo:");
 		GridBagConstraints gbc_txtProduktno = new GridBagConstraints();
 		gbc_txtProduktno.insets = new Insets(0, 0, 5, 0);
 		gbc_txtProduktno.fill = GridBagConstraints.HORIZONTAL;
@@ -184,14 +187,14 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(txtMngde, gbc_txtMngde);
 		txtMngde.setColumns(10);
 		
-		JButton btnNewButton_3 = new JButton("Tilføj materiale");
-		btnNewButton_3.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 7;
-		panel.add(btnNewButton_3, gbc_btnNewButton_3);
+		JButton addMaterialBtn = new JButton("Tilføj materiale");
+		addMaterialBtn.setForeground(new Color(255, 0, 0));
+		GridBagConstraints gbc_addMaterialBtn = new GridBagConstraints();
+		gbc_addMaterialBtn.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addMaterialBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_addMaterialBtn.gridx = 1;
+		gbc_addMaterialBtn.gridy = 7;
+		panel.add(addMaterialBtn, gbc_addMaterialBtn);
 		
 		txtMedarbejderid = new JTextField();
 		txtMedarbejderid.addFocusListener(new FocusAdapter() {
@@ -366,10 +369,9 @@ public class RegisterOrderV2 extends JFrame {
 		scrollPane.setViewportView(table_1);
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
-				{1, 2, "ting","en ting man kan se", 4, 27, 124},
 			},
 			new String[] {
-				"NR:", "ID:", "Name:", "Beskrivelse:", "Mængde:", "Stk pris:", "Total pris:"
+				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:", "Stk pris:", "Total pris:"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -418,7 +420,6 @@ public class RegisterOrderV2 extends JFrame {
 
 				try {
 					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-					System.out.println("Customer object: " + customer);
 						if (customer.getfName() == null) {
 							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
 							customerNotFoundDialog.setVisible(true);
@@ -436,6 +437,43 @@ public class RegisterOrderV2 extends JFrame {
 			}
 		});
 
+		addMaterialBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Employee employee = new Employee();
+				int materialNo = Integer.parseInt(txtProduktno.getText());
+				int amountNo = Integer.parseInt(txtMngde.getText());
+				try {
+					Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
+						if (material.getProductName() == null) {
+							MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
+							materialNotFoundDialog.setVisible(true);
+						}
+						else {
+							int newNr = table_1.getRowCount() + 1;
+							BigDecimal totalBDPrice = material.getCurrentSalesPrice().multiply(new BigDecimal(amountNo));
+							Double totalPrice = totalBDPrice.doubleValue();
+							Double saleprice = material.getCurrentSalesPrice().doubleValue();
+							
+							Object[] newRow = {newNr,
+									material.getMaterialNo(),
+									material.getProductName(), 
+									material.getMaterialDescription(),
+									amountNo, 
+									saleprice, 
+									totalPrice};
+							DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+							model.addRow(newRow);
+							
+							
+						
+							
+						}
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 
 }
