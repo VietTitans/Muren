@@ -40,7 +40,7 @@ public class RemoveMaterial extends JDialog {
 		this.table = table;
 		ArrayList<String> listData = new ArrayList<>();
 		for (int row = 0; row < table.getRowCount(); row++) {
-            String name = (String) table.getValueAt(row, 0); // First column (Name)
+            String name = Integer.toString((int) table.getValueAt(row, 0)); // First column (Name)
             listData.add(name); // Add the name to the listData
         }
 		
