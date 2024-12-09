@@ -29,13 +29,13 @@ class TestEmployeeController {
 		personId: 9
 		*/
 		//Act
-		int validEmployeeId = 9;
+		int validEmployeeId = 1;
 		Employee result = employeeController.findEmployeeByEmployeeId(validEmployeeId, false);
 		//Assert
 		String expectedFName = "Michael";
 		String expectedLName = "Scott";
 		String expectedCPR = "1234567890";
-		String expectedEmployeeId = "9";
+		int expectedEmployeeId = 1;
 		assertEquals(expectedFName, result.getfName());
 		assertEquals(expectedLName, result.getlName());
 		assertEquals(expectedCPR, result.getCpr());
