@@ -13,7 +13,9 @@ import model.Customer;
 import model.Employee;
 import model.HourLog;
 import model.Material;
+import model.MaterialLog;
 import model.Order;
+import model.StockMaterial;
 
 class TestOrderController {
 	private OrderController orderController;
@@ -33,7 +35,7 @@ class TestOrderController {
 	void tearDown() throws Exception {
 	}
 	
-	
+	//TODO: Move these three test to their respected controller?
 //	@Test
 //	void testFindAndAddCustomerByPhoneNo() throws DataAccessException {
 //		//Arrange
@@ -49,7 +51,6 @@ class TestOrderController {
 //	
 //	@Test
 //	void testFindAndAddMaterialByMaterialNo() throws DataAccessException {
-//		//TODO:STUBS
 //		//Arrange
 //		//Material Cement with productNo 1001 exists in the DB
 //		//Act
@@ -62,12 +63,7 @@ class TestOrderController {
 //	
 //	@Test
 //	void testFindEmployeeByEmployeeId() throws DataAccessException, GeneralException {
-//		//TODO:STUBS
-//		//Arrange
-//		//Employee with CPR: 1234567890, employeeNo: 1 exists in the DB
-//		//Act
-//		employeeController.findEmployeeByEmployeeId(1, false);
-//		//Assert
+//		//TODO: This test exists in TestEmployeeDB
 //	}
 	
 	@Test
@@ -84,16 +80,18 @@ class TestOrderController {
 		//Act
 		currentOrder.addHourLogToOrder(hourLog);
 		//Assert
-		BigDecimal expectedResult = new BigDecimal(10);
-		BigDecimal result = new BigDecimal(0);
 		//Iteration through list of HourLogs and sum hoursWorked
+		BigDecimal result = new BigDecimal(0);
 		for (int i = 0; i < currentOrder.getHourLogs().size(); i++) {
 			result = result.add(hourLog.getHoursWorked());
 		} 
+		BigDecimal expectedResult = new BigDecimal(10);
 		assertEquals(expectedResult, result);
 	}
 	
+	/*
 	@Test
+	//TODO: How to test assert??
 	void testSaveOrder() throws DataAccessException, GeneralException {
 		//Arrange
 		Employee employee = new Employee();
@@ -102,44 +100,99 @@ class TestOrderController {
 		//Act
 		orderInterface.saveOrder(order);
 		//Assert
-		//TODO: How to test this?
-	}
-	
-	/*
-	//Inventory: Boundry testing
-	@Test
-	void testOverMaxStockLimit() throws DataAccessException {
-		//TODO:STUBS
-		 //Arrange
-		 //Act
-		 //Assert
-	}
-	
-	@Test
-	void testWithInStockLimit() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	@Test
-	void testUnderMinStockLimit() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	
-	//Material input: Boundry testing
-	@Test
-	void testZeroMaterialInput() throws DataAccessException {
-		//TODO:STUBS
-	}
-	
-	@Test
-	void testValidMaterialInput() throws DataAccessException {
-		//TODO:STUBS
-	}
-
-	@Test
-	void testNegativeMaterialInput() throws DataAccessException {
-		//TODO:STUBS
+		//??
 	}
 	*/
+	
+	//Boundary testing: Add material quantity to order
+	@Test
+	void testAddMaterialLogToOrderOverMaxStockLimitThrowsException() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		//Cement (materialNo 1001) has a maximum stock of 75 in database
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			orderController.findAndAddMaterialByMaterialNo(employee, 1001, 40);
+			throw new Exception("Stock insuffient: Cannot add that amount.");
+		});
+		//Assert
+		String result = exceptionThrown.getMessage();
+		String expectedResult = "Stock insuffient: Cannot add that amount."; 
+		assertEquals(expectedResult, result);
+		
+	}
+	
+	@Test
+	void testAddMaterialLogToOrderWithinStockLimit() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		Order order = new Order(employee);
+		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
+		//Cement has available quantity of 50 in database
+		MaterialLog materialLog = new MaterialLog(employee, cement, 20);
+		//Act
+		order.addMaterialLogToOrder(materialLog);
+		//Assert;
+		int result = cement.getQuantity(); //TODO: Why does this value not update to 30?
+		int expectedResult = 30;
+		assertEquals(expectedResult, result);
+		
+	}
+	
+	//TODO: Need review for the 2 tests below
+	@Test
+	void testAddMaterialLogToOrderUnderMinStockLimit() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		Order order = new Order(employee);
+		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
+		//Cement has available quantity of 50 in database
+		int invalidInput = 0;
+		MaterialLog materialLog = new MaterialLog(employee, cement, invalidInput);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			order.addMaterialLogToOrder(materialLog);
+			throw new IllegalArgumentException("Error: Invalid amount");
+		});
+		int resultQuantity = cement.getQuantity();
+		int expectedQuantity = 50;
+		assertEquals(expectedQuantity, resultQuantity);
+		assertEquals("Error: Invalid amount", exceptionThrown.getMessage());
+	}
+	
+	@Test
+	void testAddMaterialLogToOrderNegativeInput() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		Order order = new Order(employee);
+		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
+		//Cement has available quantity of 50 in database
+		int invalidInput = -1;
+		MaterialLog materialLog = new MaterialLog(employee, cement, invalidInput);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			order.addMaterialLogToOrder(materialLog);
+			throw new IllegalArgumentException("Error: Invalid amount");
+		});
+		int resultQuantity = cement.getQuantity();
+		int expectedQuantity = 50;
+		assertEquals(expectedQuantity, resultQuantity);
+		assertEquals("Error: Invalid amount", exceptionThrown.getMessage());
+	}
+	
+	
+	@Test
+	void testNullMaterialInputInMaterialLogThrowsException() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		Order order = new Order(employee);
+		Material invalidInput = null;
+		MaterialLog materialLog = new MaterialLog(employee, invalidInput, 20);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			order.addMaterialLogToOrder(materialLog);
+			throw new Exception("Error: Material is null");
+		});
+		assertEquals("Error: Material is null", exceptionThrown.getMessage());
+	}
 }

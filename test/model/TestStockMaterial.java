@@ -48,7 +48,7 @@ public class TestStockMaterial {
 		assertEquals(1, stockMaterial.getStockReservations().size());
 	}
 	
-	//Boundry testing addReservation: Over available amount
+	//Boundary testing addReservation: Over available amount
 	@Test
 	public void testReservationOverAvailableLimitThrowsException() {
 		//Arrange
@@ -75,7 +75,7 @@ public class TestStockMaterial {
 		
 	}
 	
-	//Boundry testing addReservation: Zero input
+	//Boundary testing addReservation: Zero input
 	@Test
 	public void testReservationUnderAvailableLimitThrowsException() {
 		//Arrange
@@ -102,7 +102,7 @@ public class TestStockMaterial {
 		
 	}
 	
-	//Boundry testing addReservation: Negative input
+	//Boundary testing addReservation: Negative input
 	@Test
 	public void testReservationMinusUnderAvailableLimitThrowsException() {
 		//Arrange
@@ -123,9 +123,10 @@ public class TestStockMaterial {
 			stockMaterial.addStockReservation(stockReservation);
 			throw new Exception("Cannot reserve the required amount");
 		});
-		String result = exceptionThrown.getMessage();
 		//Assert
-		assertEquals("Cannot reserve the required amount", result);
+		String result = exceptionThrown.getMessage();
+		String expectedResult = "Cannot reserve the required amount"; 
+		assertEquals(expectedResult, result);
 		
 	}
 

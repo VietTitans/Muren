@@ -54,7 +54,6 @@ class TestEmployeeDB {
 	
 	@Test
 	void testEmployeeDoesntExists() throws DataAccessException { 
-		//Using NullPointerException to test for null
 		//Arrange
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
