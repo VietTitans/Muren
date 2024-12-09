@@ -13,7 +13,6 @@ public class TestMaterialDB {
 	
 	static MaterialDB materialDB;
 	
-	
 	@BeforeAll
 	static void setUp() throws DataAccessException {
 		materialDB = new MaterialDB();
@@ -26,7 +25,6 @@ public class TestMaterialDB {
 		//No action
 		//Act
 		Material material = materialDB.findMaterialByMaterialNo(1001);
-		
 		//Assert
 		assertNotNull(material);
 		
@@ -36,7 +34,6 @@ public class TestMaterialDB {
 	public void testMaterialDoesntExists() throws DataAccessException {
 		//Using NullPointerException to test for null
 		//Arrange
-		
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			
 			//Act
