@@ -63,7 +63,7 @@ public class RegisterOrderV2 extends JFrame {
 
 	public RegisterOrderV2() {
 		try {
-		currentOrderController = new OrderController();
+		this.currentOrderController = new OrderController();
 		} catch (Exception e) {
 			 e.printStackTrace();  // Log the exception
 		      //  JOptionPane.showMessageDialog(this, "Failed to initialize OrderController.");

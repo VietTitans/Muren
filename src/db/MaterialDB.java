@@ -46,6 +46,7 @@ public class MaterialDB implements MaterialDBIF {
 	private Connection connection;
 	//Grund til brug af instans her? Hvis ja instantiate i contructor 
 	public MaterialDB() throws DataAccessException {
+		connection = DBConnection.getInstance().getConnection();
 		try {
 //			findStockMaterial = DBConnection.getInstance().getConnection()
 //					.prepareStatement(SELECT_STOCKMATERIAL_BY_MATERIALNO);
