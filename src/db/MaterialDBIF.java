@@ -5,6 +5,6 @@ import model.Material;
 
 public interface MaterialDBIF {
 
-	Material findMaterialByMaterialNo(int materialNo, boolean fullAssertion) throws DataAccessException;
+	Material findMaterialByMaterialNo(int materialNo) throws DataAccessException;
 
 }
