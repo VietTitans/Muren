@@ -38,7 +38,7 @@ public class TestMaterialDB {
 		//Arrange
 		
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
-			//forkert metode navn findMaterialByMaterialNo
+			
 			//Act
 			materialDB.findMaterialByMaterialNo(6761137); //Searching for an invalid product
 			throw new IllegalArgumentException("Material not found");

@@ -45,5 +45,7 @@ public class StockReservation {
 	public void setActiveStatus(boolean newStatus) {
 		isActive = newStatus;
 	}
+	//Lav update IsActive method.
+	
 	
 }
