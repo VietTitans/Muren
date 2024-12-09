@@ -73,7 +73,7 @@ public class MaterialDB implements MaterialDBIF {
 		}
 	}
 	@Override
-	public Material findMaterialByMaterialNo(int materialNo, boolean fullAssertion) throws DataAccessException {
+	public Material findMaterialByMaterialNo(int materialNo) throws DataAccessException {
 		Material foundMaterial = null;
 //		StockMaterial foundStockMaterial = null;
 //		
@@ -89,6 +89,8 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoMaterial.setInt(1,materialNo);
 			ResultSet rsMaterial = psSelectMaterialNoMaterial.executeQuery();
 			
+			rsMaterial.next();
+			
 			psSelectMaterialNoMaterialDescription.setInt(1,materialNo);
 			ResultSet rsDescription = psSelectMaterialNoMaterialDescription.executeQuery();
 			
@@ -98,9 +100,7 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoPurchasePrice.setInt(1,materialNo);
 			ResultSet rsPurchasePrice = psSelectMaterialNoPurchasePrice.executeQuery();
 			
-			//Årsag til vi bruger || som beskriver eller?
-			// Hvis en af disse result sets er tomme skaber det måske problemer 
-			if(rsSalesPrice.isBeforeFirst() || rsPurchasePrice.isBeforeFirst()) {	
+			if(rsSalesPrice.isBeforeFirst() && rsPurchasePrice.isBeforeFirst()) {	
 				while(rsSalesPrice.next()) {
 					Price salesPrice = buildObjectSalesPrice(rsSalesPrice);
 					salesPrices.add(salesPrice);					
@@ -148,7 +148,7 @@ public class MaterialDB implements MaterialDBIF {
 	private StockMaterial buildObjectStockMaterial(ResultSet rs, MaterialDescription materialDescription, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
 		StockMaterial stockMaterial = null;
 		try {
-			stockMaterial = new StockMaterial(rs.getInt("ProductNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
+			stockMaterial = new StockMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescription, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
 			
 			psSelectMaterialNoMaterial.setInt(1,rs.getInt("stockMaterialId"));
 			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
