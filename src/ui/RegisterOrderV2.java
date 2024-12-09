@@ -237,7 +237,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_6 = new JButton("Fjern materiale");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(table_1);
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, table_1);
 				removeMaterialFrame.setVisible(true);
 			}
 		});
@@ -491,6 +491,17 @@ public class RegisterOrderV2 extends JFrame {
 				}
 			//}
 		});
+	}
+
+
+	public void removeRow(int[] removeList) {
+		for (int index : removeList) {
+			System.out.println("index: " + index);
+			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+			model.removeRow(index);
+		}
+		// TODO Auto-generated method stub
+		
 	}
 
 }
