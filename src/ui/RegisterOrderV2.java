@@ -446,17 +446,19 @@ public class RegisterOrderV2 extends JFrame {
 				
 				ArrayList<Price> salesPrices = new ArrayList<>();
 				BigDecimal priceValue = new BigDecimal(10);
-				Price price = new Price(priceValue);
+				Price salesPrice = new Price(priceValue);
+				salesPrices.add(salesPrice);
 				
 				ArrayList<Price> purchasePrices = new ArrayList<>();
 				BigDecimal purchasePriceValue = new BigDecimal(5);
-				Price purchasePrice = new Price(priceValue);
+				Price purchasePrice = new Price(purchasePriceValue);
+				purchasePrices.add(purchasePrice);
 				
 				MaterialDescription materialDescription = new MaterialDescription("en ting");
 				
 				StockMaterial material = new StockMaterial(10, "ting", materialDescription, salesPrices, purchasePrices, 1, 100, 55);
-				Employee employee = new Employee();
-				int materialNo = Integer.parseInt(txtProduktno.getText());
+//				Employee employee = new Employee();
+//				int materialNo = Integer.parseInt(txtProduktno.getText());
 				int amountNo = Integer.parseInt(txtMngde.getText());
 				
 				
@@ -468,9 +470,9 @@ public class RegisterOrderV2 extends JFrame {
 						}
 						else {
 							int newNr = table_1.getRowCount() + 1;
-							BigDecimal totalBDPrice = material.getCurrentSalesPrice().multiply(new BigDecimal(amountNo));
+							BigDecimal totalBDPrice = priceValue.multiply(new BigDecimal(amountNo));
 							Double totalPrice = totalBDPrice.doubleValue();
-							Double saleprice = material.getCurrentSalesPrice().doubleValue();
+							Double saleprice = priceValue.doubleValue();
 							
 							Object[] newRow = {newNr,
 									material.getMaterialNo(),
