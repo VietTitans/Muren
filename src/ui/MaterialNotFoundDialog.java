@@ -1,31 +1,27 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class RemoveMaterial extends JDialog {
+public class MaterialNotFoundDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RemoveMaterial dialog = new RemoveMaterial(table);
+			MaterialNotFoundDialog dialog = new MaterialNotFoundDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -36,33 +32,15 @@ public class RemoveMaterial extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public RemoveMaterial(JTable table) {
-		this.table = table;
-		ArrayList<String> listData = new ArrayList<>();
-		for (int row = 0; row < table.getRowCount(); row++) {
-            String name = Integer.toString((int) table.getValueAt(row, 0)); // First column (Name)
-            listData.add(name); // Add the name to the listData
-        }
-		
-		String[] listArray = listData.toArray(new String[0]);
-		
-		setBounds(100, 100, 450, 300);
+	public MaterialNotFoundDialog() {
+		setBounds(100, 100, 235, 106);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
-			JLabel lblNewLabel = new JLabel("Hvilken række vil du fjerne?");
+			JLabel lblNewLabel = new JLabel("Materiale kunne ikke findes i database!");
 			contentPanel.add(lblNewLabel);
-		}
-		{
-			JScrollPane scrollPane = new JScrollPane();
-			contentPanel.add(scrollPane);
-			{
-				JList list = new JList();
-				scrollPane.setViewportView(list);
-				list.setListData(listArray);
-			}
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -70,6 +48,11 @@ public class RemoveMaterial extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
