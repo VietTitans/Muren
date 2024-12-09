@@ -23,7 +23,7 @@ public class TestStockMaterial {
 		salesPrice = new Price(new BigDecimal(20));
 		purchasePrice = new Price(new BigDecimal(17));
 		materialDescription = new MaterialDescription("This is cement");
-	
+
 	}
 	
 	@AfterEach
@@ -33,7 +33,14 @@ public class TestStockMaterial {
 	@Test
 	public void testAddStockReservation() {
 		//Arrange
-		StockMaterial stockMaterial = new StockMaterial(123, "cement", null, null, null, 15, 75, 30);
+		ArrayList<Price> salesPrices = new ArrayList<>();
+		Price salesPrice = new Price(null);
+		salesPrices.add(0, salesPrice);
+		ArrayList<Price> purchasePrices = new ArrayList<>();
+		Price purchasePrice = new Price(null);
+		purchasePrices.add(0, purchasePrice);
+		
+		StockMaterial stockMaterial = new StockMaterial(1001, "cement", null, salesPrices, purchasePrices, 15, 75, 50);
 		StockReservation stockReservation = new StockReservation(1, LocalDateTime.now());
 		//Act
 		stockMaterial.addStockReservation(stockReservation);
