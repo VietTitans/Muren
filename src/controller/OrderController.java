@@ -20,13 +20,11 @@ public class OrderController {
 	private MaterialController materialController;
 	private OrderDBIF orderInterface;
 
-	
 	public OrderController() throws DataAccessException, SQLException {
 		logController = new LogController();
 		employeeController = new EmployeeController();
 		materialController = new MaterialController();
 		currentOrder = new Order(null);
-		
 	}
 	
 	
@@ -46,7 +44,7 @@ public class OrderController {
 		if (employee != null && foundMaterial != null && quantity != 0){
 		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		currentOrder.addMaterialLogToOrder(newLog);
-	}
+		}
 		return foundMaterial;
 	}
 	
@@ -64,8 +62,6 @@ public class OrderController {
 	
 	public void saveOrder() throws GeneralException, DataAccessException {
 		orderInterface.saveOrder(currentOrder);
-		
-		
 	}
 
 }
