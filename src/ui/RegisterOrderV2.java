@@ -495,13 +495,32 @@ public class RegisterOrderV2 extends JFrame {
 
 
 	public void removeRow(int[] removeList) {
-		for (int index : removeList) {
-			System.out.println("index: " + index);
-			DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-			model.removeRow(index);
-		}
+		//for (int index : removeList) {
+			//System.out.println("index: " + index);
+			//DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+			//model.removeRow(index);
+			//updateRowNumbers(table_1, index);
+
+		//}
 		// TODO Auto-generated method stub
-		
+		DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+		for (int i = removeList.length - 1; i >= 0; i--) {
+	        int index = removeList[i];
+	        System.out.println("index: " + index);
+	        System.out.println(table_1.getValueAt(index, 1));
+	        model.removeRow(index);
+	        System.out.println(table_1.getValueAt(index, 1));
+	        updateRowNumbers(model, index);}
+	}
+	public void updateRowNumbers(DefaultTableModel model, int index) {
+		//while (index < table_1.getRowCount()) {
+			//table_1.setValueAt(index, index, 1);
+		//}
+		for (int i = index; i < table_1.getRowCount(); i++) {
+			System.out.println(table_1.getValueAt(index, 1));
+	        table_1.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
+	        System.out.println(table_1.getValueAt(index, 1));
+		}
 	}
 
 }
