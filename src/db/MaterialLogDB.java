@@ -84,8 +84,11 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	}
 	public void addPricesFromGenericMaterial(MaterialLog materialLog) throws SQLException, DataAccessException {
 		if(materialLog.getMaterial() instanceof GenericMaterial) {
-			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentPurchasePrice());
-			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentSalesPrice());
+
+			MaterialDB materialDB = new MaterialDB();
+			
+			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestPurchasePrice());
+			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestSalesPrice());
 		}
 		
 	}

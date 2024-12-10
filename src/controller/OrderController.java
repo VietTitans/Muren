@@ -54,7 +54,9 @@ public class OrderController {
 	}
 	
 	public void addWorkHours(Employee employee, BigDecimal hours) {
-		if(employee != null && hours > 0.00 && hours <= 99.00) {
+		BigDecimal minBoundary = new BigDecimal(0.00);
+		BigDecimal maxBoundary = new BigDecimal(99.00);
+		if(employee != null && hours.compareTo(minBoundary) > 0.00 && hours.compareTo(maxBoundary) <= 99.00) {
 		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
 		currentOrder.addHourLogToOrder(newLog);	
 		}

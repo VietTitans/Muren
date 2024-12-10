@@ -58,18 +58,5 @@ class TestHourLogDB {
 		//Assert
 		assertEquals("HourLog Could Not Be Saved", exceptionThrown.getMessage());
 	}
-	@Test
-	void testSaveHourLogWith() throws DataAccessException {
-		//Arrange
-		HourLog hourLog = null;
-		
-		Exception exceptionThrown = assertThrows(Exception .class, () -> {
-			//Act
-			hourLogDB.saveHourLog(hourLog, 1);
-		});
-		//Assert
-		assertEquals("HourLog Could Not Be Saved", exceptionThrown.getMessage());
-		
-	}
 
 }

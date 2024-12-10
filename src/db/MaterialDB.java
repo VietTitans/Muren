@@ -24,7 +24,7 @@ public class MaterialDB implements MaterialDBIF {
 			+ "FROM Material\r\n"
 			+ "FULL JOIN StockMaterial ON Material.MaterialNo = StockMaterial.MaterialNo\r\n"
 			+ "FULL JOIN GenericMaterial ON Material.MaterialNo = GenericMaterial.MaterialNo\r\n"
-			+ "WHERE Material.MaterialNo = ?;"; 
+			+ "WHERE Material.MaterialNo = ? ;"; 
 	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE MaterialNo = ?\r\n"
 			+ "ORDER BY MaterialDescriptionTimeStamp DESC;";
 	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE MaterialNo = ?\r\n"
@@ -160,6 +160,7 @@ public class MaterialDB implements MaterialDBIF {
 		
 		
 		try {
+			if(newPrice != null) {
 			//Added prints for debugging
 			BigDecimal adjustedValue = newPrice.getPreVATValue();
 			psInsertIntoPurchasePrice.setBigDecimal(1, adjustedValue);
@@ -170,6 +171,7 @@ public class MaterialDB implements MaterialDBIF {
 			psInsertIntoPurchasePrice.setInt(3,materialNo);
 			System.out.println("Value = " + materialNo);
 			psInsertIntoPurchasePrice.executeUpdate();
+			}
 		} catch (SQLException e) {
 	        throw new DataAccessException("Error inserting purchase price", e);
 	    }
@@ -230,9 +232,11 @@ public class MaterialDB implements MaterialDBIF {
 	
 
 	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
-		GenericMaterial genericMaterial;
+		GenericMaterial genericMaterial = null;
 		try {
-			genericMaterial = new GenericMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescriptions, salesPrices, purchasePrices, rs.getString("ProductType"));
+			System.out.println("GenericMaterialId: " + rs.getString("GenericMaterialId"));
+			System.out.println("MaterialNo "+ rs.getInt(7));
+			genericMaterial = new GenericMaterial(rs.getInt(7), rs.getString("ProductName"), materialDescriptions, salesPrices, purchasePrices, rs.getString("ProductType"));
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
