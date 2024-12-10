@@ -10,6 +10,7 @@ import model.MaterialDescription;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,17 +32,24 @@ public class MaterialDB implements MaterialDBIF {
 			+ "ORDER BY SalesPriceTimeStamp DESC;";
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE MaterialNo = ?\r\n"
 			+ "ORDER BY PurchasePriceTimeStamp DESC;";
-	private static final String PS_SELECT_FROM_Stock_Reservation = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
+	private static final String PS_SELECT_FROM_STOCK_RESERVATION = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
 	
-//	private static final String SELECT_STOCKMATERIAL_BY_MATERIALNO = "SELECT * FROM StockMaterial WHERE MaterialNo = ?";
-//	private static final String SELECT_GENERICMATERIAL_BY_MATERIALNO = "SELECT * FROM GenericMaterial WHERE MaterialNo = ?";
+
+	private static final String PS_INSERT_INTO_MATERIAL_DESCRIPTION = "INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, MaterialNo) VALUES (?, ?, ?);";
+	
+	private static final String PS_INSERT_INTO_SALES_PRICE ="INSERT INTO SalesPrice (Price, SalesPriceTimeStamp, MaterialNo) VALUES (?, ?, ?);";
+	
+	private static final String PS_INSERT_INTO_PURCHASE_PRICE ="INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, MaterialNo) VALUES (?, ?, ?);";
+	
 	
 	private PreparedStatement psSelectMaterialNoMaterial;
 	private PreparedStatement psSelectMaterialNoMaterialDescription;
 	private PreparedStatement psSelectMaterialNoSalesPrice;
 	private PreparedStatement psSelectMaterialNoPurchasePrice;
 	private PreparedStatement psSelectStockMaterialIdStockReservation;
-	
+	private PreparedStatement psInsertIntoMaterialDescription;
+	private PreparedStatement psInsertIntoSalesPrice;
+	private PreparedStatement psInsertIntoPurchasePrice;
 	
 	private Connection connection;
 	public MaterialDB() throws DataAccessException {
@@ -60,7 +68,10 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoMaterialDescription = connection.prepareStatement(PS_SELECT_FROM_MATERIAL_DESCRIPTION);
 			psSelectMaterialNoSalesPrice = connection.prepareStatement(PS_SELECT_FROM_SALES_PRICE);
 			psSelectMaterialNoPurchasePrice = connection.prepareStatement(PS_SELECT_FROM_PURCHASE_PRICE);
-			psSelectStockMaterialIdStockReservation = connection.prepareStatement(PS_SELECT_FROM_Stock_Reservation);
+			psSelectStockMaterialIdStockReservation = connection.prepareStatement(PS_SELECT_FROM_STOCK_RESERVATION);
+			psInsertIntoMaterialDescription = connection.prepareStatement(PS_INSERT_INTO_MATERIAL_DESCRIPTION);
+			psInsertIntoSalesPrice = connection.prepareStatement(PS_INSERT_INTO_SALES_PRICE);
+			psInsertIntoPurchasePrice = connection.prepareStatement(PS_INSERT_INTO_PURCHASE_PRICE);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -126,7 +137,57 @@ public class MaterialDB implements MaterialDBIF {
 		
 		return foundMaterial;
 	}
-
+	
+	@Override
+	public void insertNewSalesPrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
+		
+		
+		try {
+			BigDecimal adjustedValue = newPrice.getPreVATValue().setScale(4, RoundingMode.HALF_UP);
+			psInsertIntoSalesPrice.setBigDecimal(1, adjustedValue);
+			System.out.println("Value = " + adjustedValue);
+			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
+			psInsertIntoSalesPrice.setTimestamp(2,timeStamp);
+			System.out.println("Value = " + timeStamp);
+			psInsertIntoSalesPrice.setInt(3,materialNo);
+			System.out.println("Value = " + materialNo);
+			psInsertIntoSalesPrice.executeUpdate();
+		} catch (SQLException e) {
+	        throw new DataAccessException("Error inserting sales price", e);
+	    }
+	}
+	
+	@Override
+	public void insertNewPurchasePrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
+		
+		
+		try {
+			BigDecimal adjustedValue = newPrice.getPreVATValue().setScale(4, RoundingMode.HALF_UP);
+			psInsertIntoPurchasePrice.setBigDecimal(1, adjustedValue);
+			System.out.println("Value = " + adjustedValue);
+			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
+			psInsertIntoPurchasePrice.setTimestamp(2,timeStamp);
+			System.out.println("Value = " + timeStamp);
+			psInsertIntoPurchasePrice.setInt(3,materialNo);
+			System.out.println("Value = " + materialNo);
+			psInsertIntoPurchasePrice.executeUpdate();
+		} catch (SQLException e) {
+	        throw new DataAccessException("Error inserting purchase price", e);
+	    }
+	}
+	
+	@Override
+	public void insertNewMaterialDescription(int materialNo, MaterialDescription materialDescription) throws SQLException, DataAccessException {
+		try {
+			psInsertIntoMaterialDescription.setString(1, materialDescription.getDescription());
+			psInsertIntoMaterialDescription.setTimestamp(2,Timestamp.valueOf(materialDescription.getTimeStamp()));
+			psInsertIntoMaterialDescription.setInt(3,materialNo);
+			psInsertIntoMaterialDescription.executeUpdate();
+		} catch (SQLException e) {
+	        throw new DataAccessException("Error inserting material description", e);
+	    }
+	}
+	
 
 	private MaterialDescription buildObjectMaterialDescription(ResultSet rs) throws DataAccessException {
 		MaterialDescription materialDescription = null;

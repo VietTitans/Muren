@@ -3,11 +3,19 @@ package db;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import controller.DataAccessException;
 import model.Material;
-import model.StockMaterial;
+import model.MaterialDescription;
+import model.Price;
+
 
 
 public class TestMaterialDB {
@@ -18,6 +26,12 @@ public class TestMaterialDB {
 	static void setUp() throws DataAccessException {
 		materialDB = new MaterialDB();
 		
+	}
+	
+	@BeforeEach
+	void setUpBeforeEach() throws Exception {
+		// Resets the database to a known state
+		ResetDB.main(null);
 	}
 	
 	@Test
@@ -43,6 +57,50 @@ public class TestMaterialDB {
 		});
 		//Assert
 		assertEquals("Material not found", exceptionThrown.getMessage());
+	}
+	
+	@Test
+	public void testInsertIntoSalesPrice() throws DataAccessException, SQLException {
+		//Arrange
+		Material material = materialDB.findMaterialByMaterialNo(1001);
+		Price newSalesPrice = new Price(LocalDateTime.of(2024, 12, 10, 12, 0), new BigDecimal(150.00));
+		//Act
+		materialDB.insertNewSalesPrice(material.getMaterialNo(), newSalesPrice);
+		
+		//Assert
+		
+		
+		
+	}
+	
+	@Test
+	public void testInsertIntoPurchasePrice() throws DataAccessException, SQLException {
+		//Arrange
+		Material material = materialDB.findMaterialByMaterialNo(1001);
+		Price newPurchasePrice = new Price(LocalDateTime.of(2024, 12, 10, 12, 0), new BigDecimal(180.00));
+		
+		//Act
+		materialDB.insertNewPurchasePrice(material.getMaterialNo(), newPurchasePrice);
+				
+		//Assert
+				
+				
+				
+	}
+	
+	@Test
+	public void testInsertIntoMaterialDescription() throws DataAccessException, SQLException {
+		//Arrange
+		Material material = materialDB.findMaterialByMaterialNo(1001);
+		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
+		
+		//Act
+		materialDB.insertNewMaterialDescription(material.getMaterialNo(), newMaterialDescription);	
+				
+		//Assert
+				
+				
+				
 	}
 	
 }
