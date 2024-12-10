@@ -49,7 +49,7 @@ class TestEmployeeController {
 		//Arrange
 		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
 			//Act
-			int invalidEmployeeId = 45249;
+			int invalidEmployeeId = 9;
 			employeeController.findEmployeeByEmployeeId(invalidEmployeeId, false);
 			throw new NullPointerException("Employee not found");
 		});

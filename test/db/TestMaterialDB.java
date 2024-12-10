@@ -49,7 +49,7 @@ public class TestMaterialDB {
 		//Arrange
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			//Act
-			materialDB.findMaterialByMaterialNo(6761137); //Searching for an invalid product
+			materialDB.findMaterialByMaterialNo(192); //Searching for an invalid product
 			throw new IllegalArgumentException("Material not found");
 		});
 		//Assert
