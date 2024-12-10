@@ -30,10 +30,11 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	}
 
 	@Override
-	public void saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
+	public int saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
 		try {
 			//TODO:TRANSACTION? 
 			//Inserts data for the Logs table
+			int materialLogKey = -1;
 			insertMaterialLogIntoLogs.setInt(1, orderId);
 			int EmployeeId = materialLog.getEmployee().getEmployeeId();
 			insertMaterialLogIntoLogs.setInt(2, EmployeeId);
@@ -44,9 +45,9 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 			insertMaterialLogIntoLogs.executeUpdate();
 			ResultSet generatedLogId = insertMaterialLogIntoLogs.getGeneratedKeys();
 			
-			//If the insert was successfull Insert MaterialLogs into MaterialLogs table, with generated LogId
+			//If the insert was successfully Insert MaterialLogs into MaterialLogs table, with generated LogId
 				if (generatedLogId.next()) {
-					int materialLogKey = generatedLogId.getInt(1);
+					materialLogKey = generatedLogId.getInt(1);
 					insertMaterialLogIntoLogs.close();
 					
 					int quantity = materialLog.getQuantity();
@@ -55,7 +56,10 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 					insertMaterialLogIntoMaterialLogs.setInt(2, productNo);
 					insertMaterialLogIntoMaterialLogs.setInt(3, materialLogKey);
 					insertMaterialLogIntoMaterialLogs.executeUpdate();
+					
+			
 				}
+		return materialLogKey;
 		} catch (SQLException e) {
 			throw new DataAccessException("MaterialLog could not be saved", e);
 		}
