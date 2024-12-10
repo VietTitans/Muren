@@ -34,7 +34,7 @@ class TestHourLogDB {
 		int expectedHourLogId = 6;
 		Employee employee = new Employee();
 		employee.setEmployeeId(1);
-		BigDecimal workedHours = new BigDecimal("2.0");
+		BigDecimal workedHours = new BigDecimal("3.0");
 		HourLog hourLog = new HourLog(employee, workedHours);
 		int orderId = 1; 
 		//Act
@@ -44,16 +44,31 @@ class TestHourLogDB {
 	}
 	
 	@Test
-	void testSaveHourLogDoesntExist() throws DataAccessException {
+	void testSaveHourLogWithInvallidOrderId() throws DataAccessException {
 		//Arrange
-		HourLog hourLog = null;
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		BigDecimal workedHours = new BigDecimal("2.0");
+		HourLog hourLog = new HourLog(employee, workedHours);
+		
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			//Act
 			hourLogDB.saveHourLog(hourLog, 0);
-			throw new IllegalArgumentException("Hourlog not found");
 		});
 		//Assert
-		assertEquals("Hourlog not found", exceptionThrown.getMessage());
+		assertEquals("HourLog Could Not Be Saved", exceptionThrown.getMessage());
+	}
+	@Test
+	void testSaveHourLogWith() throws DataAccessException {
+		//Arrange
+		HourLog hourLog = null;
+		
+		Exception exceptionThrown = assertThrows(Exception .class, () -> {
+			//Act
+			hourLogDB.saveHourLog(hourLog, 1);
+		});
+		//Assert
+		assertEquals("HourLog Could Not Be Saved", exceptionThrown.getMessage());
 	}
 
 }

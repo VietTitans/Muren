@@ -51,9 +51,10 @@ public class HourLogDB implements HourLogDBIF {
 				}
 		
 		} catch (SQLException e){
-			throw new DataAccessException("HourLog Could Not be Saved", e);
+			throw new DataAccessException("HourLog Could Not Be Saved", e);
 		}
 		return hourLogKey;
-	}
+	
 
+}
 }
