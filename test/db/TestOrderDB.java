@@ -24,6 +24,7 @@ import model.MaterialLog;
 import model.Order;
 import model.Price;
 import model.StockMaterial;
+import db.MaterialDB;
 
 class TestOrderDB {
 
@@ -51,8 +52,9 @@ class TestOrderDB {
 		ArrayList<Price> salesPrices = new ArrayList<>();
 		salesPrices.add(salesPrice);
 		
+		MaterialDB materialDB = new MaterialDB();
 		MaterialLogDB materialLogDB = new MaterialLogDB();
-		StockMaterial material = new StockMaterial(1001, null, null, salesPrices, purchasePrices, 0, 0, 0);
+		Material material = materialDB.findMaterialByMaterialNo(1001);
 		MaterialLog materialLog = new MaterialLog(emp, material, 1);
 		materialLogDB.saveMaterialLog(materialLog, 1);
 

@@ -8,7 +8,9 @@ import java.sql.Timestamp;
 
 import controller.DataAccessException;
 import model.HourLog;
+import model.Material;
 import model.MaterialLog;
+import model.StockMaterial;
 
 public class MaterialLogDB  implements MaterialLogDBIF {
 
@@ -16,13 +18,15 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	private PreparedStatement insertMaterialLogIntoLogs;
 	private static final String INSERT_MATERIALLOG_INTO_MATERIALLOG = " INSERT INTO MaterialLogs(Quantity, MaterialNo, LogId) VALUES (?, ?, ?); ";
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
-	
+	private static final String UPDATE_MATERIALQUANTITY = "UPDATE StockMaterial SET Quantity = ? WHERE MaterialNo = ? ";
+	private PreparedStatement updateMaterialQuantity;
 	public MaterialLogDB() throws DataAccessException {
 		try {
 		insertMaterialLogIntoLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 		insertMaterialLogIntoMaterialLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_MATERIALLOG);
+		updateMaterialQuantity = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_MATERIALQUANTITY);
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare Statement", e);
 		}
@@ -57,14 +61,23 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 					insertMaterialLogIntoMaterialLogs.setInt(3, materialLogKey);
 					insertMaterialLogIntoMaterialLogs.executeUpdate();
 					
-			
+					updateMaterialQuantity(materialLog);
 				}
 		return materialLogKey;
 		} catch (SQLException e) {
 			throw new DataAccessException("MaterialLog could not be saved", e);
 		}
 	}
+	public void updateMaterialQuantity(MaterialLog materialLog) throws SQLException {
+		if(materialLog.getMaterial() instanceof StockMaterial){
+			StockMaterial stockMaterial = (StockMaterial) materialLog.getMaterial();
+			updateMaterialQuantity.setInt(1, stockMaterial.getQuantity());
+			updateMaterialQuantity.setInt(2, stockMaterial.getMaterialNo());
+			updateMaterialQuantity.executeUpdate();
+			
+		}
+		
+	}
 
 }
 
-//}

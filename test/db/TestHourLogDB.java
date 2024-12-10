@@ -69,6 +69,7 @@ class TestHourLogDB {
 		});
 		//Assert
 		assertEquals("HourLog Could Not Be Saved", exceptionThrown.getMessage());
+		
 	}
 
 }
