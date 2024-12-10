@@ -18,7 +18,6 @@ class TestCustomerDB {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		CustomerDB customerDB = new CustomerDB();
 		ResetDB.main(null);
 	}
 
@@ -29,6 +28,7 @@ class TestCustomerDB {
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
 		//Arrange
+		CustomerDB customerDB = new CustomerDB();
 		Customer expectedResult = new Customer();
 			expectedResult.setfName("John");
 			expectedResult.setlName("Doe");
