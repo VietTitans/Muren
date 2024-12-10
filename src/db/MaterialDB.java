@@ -10,7 +10,6 @@ import model.MaterialDescription;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -140,17 +139,16 @@ public class MaterialDB implements MaterialDBIF {
 	
 	@Override
 	public void insertNewSalesPrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
-		
-		
 		try {
-			BigDecimal adjustedValue = newPrice.getPreVATValue().setScale(4, RoundingMode.HALF_UP);
-			psInsertIntoSalesPrice.setBigDecimal(1, adjustedValue);
-			System.out.println("Value = " + adjustedValue);
+			//Added prints for debugging
+			BigDecimal Value = newPrice.getPreVATValue();
+			psInsertIntoSalesPrice.setBigDecimal(1, Value);
+			System.out.println("Value = " + Value);
 			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
 			psInsertIntoSalesPrice.setTimestamp(2,timeStamp);
-			System.out.println("Value = " + timeStamp);
+			System.out.println("Timestamp = " + timeStamp);
 			psInsertIntoSalesPrice.setInt(3,materialNo);
-			System.out.println("Value = " + materialNo);
+			System.out.println("MaterialNo = " + materialNo);
 			psInsertIntoSalesPrice.executeUpdate();
 		} catch (SQLException e) {
 	        throw new DataAccessException("Error inserting sales price", e);
@@ -162,7 +160,8 @@ public class MaterialDB implements MaterialDBIF {
 		
 		
 		try {
-			BigDecimal adjustedValue = newPrice.getPreVATValue().setScale(4, RoundingMode.HALF_UP);
+			//Added prints for debugging
+			BigDecimal adjustedValue = newPrice.getPreVATValue();
 			psInsertIntoPurchasePrice.setBigDecimal(1, adjustedValue);
 			System.out.println("Value = " + adjustedValue);
 			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
