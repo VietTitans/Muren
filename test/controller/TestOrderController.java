@@ -84,21 +84,6 @@ class TestOrderController {
 		assertEquals(expectedResult, result);
 	}
 	
-	/*
-	@Test
-	//TODO: How to test assert??
-	void testSaveOrder() throws DataAccessException, GeneralException {
-		//Arrange
-		Employee employee = new Employee();
-		employee.setCpr("9244"); 
-		Order order = new Order(employee);
-		//Act
-		orderInterface.saveOrder(order);
-		//Assert
-		//??
-	}
-	*/
-	
 	//Boundary testing: Add material quantity to order
 	@Test
 	void testAddMaterialLogToOrderOverMaxStockLimitThrowsException() throws DataAccessException {
