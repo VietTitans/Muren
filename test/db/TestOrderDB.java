@@ -51,9 +51,8 @@ class TestOrderDB {
 		ArrayList<Price> salesPrices = new ArrayList<>();
 		salesPrices.add(salesPrice);
 		
-		MaterialDescription materialDescription = new MaterialDescription("Ting");
 		MaterialLogDB materialLogDB = new MaterialLogDB();
-		StockMaterial material = new StockMaterial(1001, null, materialDescription, salesPrices, purchasePrices, 0, 0, 0);
+		StockMaterial material = new StockMaterial(1001, null, null, salesPrices, purchasePrices, 0, 0, 0);
 		MaterialLog materialLog = new MaterialLog(emp, material, 1);
 		materialLogDB.saveMaterialLog(materialLog, 1);
 
