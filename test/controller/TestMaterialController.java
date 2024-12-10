@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import db.ResetDB;
 import model.Material;
 
 class TestMaterialController {
@@ -14,6 +15,7 @@ class TestMaterialController {
 	@BeforeEach
 	void setUp() throws Exception {
 		materialController = new MaterialController();
+		ResetDB.main(null);
 	}
 
 	@AfterEach

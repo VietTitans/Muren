@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import db.OrderDBIF;
+import db.ResetDB;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
@@ -29,6 +30,7 @@ class TestOrderController {
 		orderController = new OrderController();
 		materialController = new MaterialController();
 		employeeController = new EmployeeController();
+		ResetDB.main(null);
 	}
 
 	@AfterEach
@@ -81,21 +83,6 @@ class TestOrderController {
 		BigDecimal expectedResult = new BigDecimal(10);
 		assertEquals(expectedResult, result);
 	}
-	
-	/*
-	@Test
-	//TODO: How to test assert??
-	void testSaveOrder() throws DataAccessException, GeneralException {
-		//Arrange
-		Employee employee = new Employee();
-		employee.setCpr("9244"); 
-		Order order = new Order(employee);
-		//Act
-		orderInterface.saveOrder(order);
-		//Assert
-		//??
-	}
-	*/
 	
 	//Boundary testing: Add material quantity to order
 	@Test

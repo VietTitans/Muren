@@ -19,6 +19,7 @@ class TestCustomerDB {
 	@BeforeEach
 	void setUp() throws Exception {
 		CustomerDB customerDB = new CustomerDB();
+		ResetDB.main(null);
 	}
 
 	@AfterEach

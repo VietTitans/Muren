@@ -65,7 +65,7 @@ public class Order {
 	public BigDecimal calculateTotalMaterialPrice() {
 		BigDecimal sum = null;
 		for (MaterialLog ml : materialLogs) {
-			sum = sum.add(ml.getMaterial().getCurrentSalesPrice().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
+			sum = sum.add(ml.getMaterial().getCurrentSalesPrice().getPreVATValue().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
 		}
 		return sum;
 	}
