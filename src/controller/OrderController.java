@@ -41,7 +41,7 @@ public class OrderController {
 	
 	public Material findAndAddMaterialByMaterialNo(Employee employee, int materialNo, int quantity) throws DataAccessException {
 		Material foundMaterial = materialController.findMaterialByMaterialNo(materialNo);
-		if (employee != null && foundMaterial != null && quantity != 0){
+		if (employee != null && foundMaterial != null && quantity > 0 && quantity <= 99){
 		MaterialLog newLog = logController.addMaterialToLog(employee, foundMaterial, quantity);
 		currentOrder.addMaterialLogToOrder(newLog);
 		}
@@ -54,7 +54,7 @@ public class OrderController {
 	}
 	
 	public void addWorkHours(Employee employee, BigDecimal hours) {
-		if(employee != null && hours != null) {
+		if(employee != null && hours > 0.00 && hours <= 99.00) {
 		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
 		currentOrder.addHourLogToOrder(newLog);	
 		}
