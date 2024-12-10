@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import db.ResetDB;
 import model.Customer;
 
 class TestCustomerController {
@@ -15,6 +16,7 @@ class TestCustomerController {
 	@BeforeEach
 	void setUp() throws Exception {
 		customerController = new CustomerController();
+		ResetDB.main(null);
 	}
 
 	@AfterEach

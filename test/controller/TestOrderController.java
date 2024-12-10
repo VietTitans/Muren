@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import db.OrderDBIF;
+import db.ResetDB;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
@@ -29,6 +30,7 @@ class TestOrderController {
 		orderController = new OrderController();
 		materialController = new MaterialController();
 		employeeController = new EmployeeController();
+		ResetDB.main(null);
 	}
 
 	@AfterEach
