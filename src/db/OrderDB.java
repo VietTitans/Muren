@@ -69,7 +69,6 @@ public class OrderDB implements OrderDBIF {
 
 			DBConnection.getInstance().commitTransaction();
 		} catch (DataAccessException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DBConnection.getInstance().rollbackTransaction();
 		}

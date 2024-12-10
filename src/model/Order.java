@@ -37,28 +37,33 @@ public class Order {
 		return calculateTotalHoursPrice().add(calculateTotalMaterialPrice());
 	}
 
-	
 	public BigDecimal calculateTotalHoursPrice() {
 		BigDecimal sum = null;
 		BigDecimal hourrate = null;
-		for (HourLog hl : hourLogs) {
-			EmployeeType Type = hl.getEmployee().getEmployeeType();
-			switch(Type) {
-			case APPRENTICE:
-				hourrate = BigDecimal.valueOf(250);
-				break;
-			case JOURNEYMAN:
-				hourrate = BigDecimal.valueOf(400);
-				break;
-			case OWNER:
-				hourrate = BigDecimal.valueOf(450);
-				break;
-			default:
-				// TODO make an UnknownEmployeeTypeException
-				break;
-			}
-			sum = sum.add(hourrate.multiply(hl.getHoursWorked()));
+		try {
+				for (HourLog hourLog : hourLogs) {
+					EmployeeType type = hourLog.getEmployee().getEmployeeType();
+					switch(type) {
+					case APPRENTICE:
+						hourrate = BigDecimal.valueOf(250);
+						break;
+					case JOURNEYMAN:
+						hourrate = BigDecimal.valueOf(400);
+						break;
+					case OWNER:
+						hourrate = BigDecimal.valueOf(450);
+						break;
+					default:
+						throw new IllegalArgumentException("Unknown employee type" + type);
+					}
+					
+					sum = sum.add(hourrate.multiply(hourLog.getHoursWorked()));
+				}
+		} catch (IllegalArgumentException e) {
+			e.getMessage();
+			e.printStackTrace();
 		}
+		
 		return sum;
 	}
 	
