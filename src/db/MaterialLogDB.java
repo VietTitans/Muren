@@ -86,8 +86,9 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 		if(materialLog.getMaterial() instanceof GenericMaterial) {
 
 			MaterialDB materialDB = new MaterialDB();
-			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentPurchasePrice());
-			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentSalesPrice());
+			
+			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestPurchasePrice());
+			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestSalesPrice());
 		}
 		
 	}
