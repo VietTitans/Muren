@@ -3,6 +3,7 @@ package db;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import controller.DataAccessException;
 import model.Employee;
+import model.GenericMaterial;
 import model.HourLog;
 import model.Material;
 import model.MaterialDescription;
@@ -71,6 +73,26 @@ class TestMaterialLogDB {
 		int result = materialLog.getQuantity();
 		assertEquals(expectedResult, result);
 		
+	}
+	@Test
+	void testSaveMaterialLogWithGenericMaterial() throws DataAccessException{
+		MaterialDB materialDB = new MaterialDB();
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		
+		ArrayList<MaterialDescription> materialDescriptions = new ArrayList<>();
+		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
+		materialDescriptions.add(newMaterialDescription);
+		
+		Material material = materialDB.findMaterialByMaterialNo(1003);
+		material.setCurrentMaterialDescription(newMaterialDescription);
+		Price salesPrice = new Price(BigDecimal.valueOf(100));
+		Price purchasePrice = new Price(BigDecimal.valueOf(110));
+
+		material.setCurrentPurchasePrice(purchasePrice);
+		material.setCurrentSalesPrice(salesPrice);
+		MaterialLog materialLog = new MaterialLog(employee, material ,1);
+		materialLogDB.saveMaterialLog(materialLog, 1);		
 	}
 
 }

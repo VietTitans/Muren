@@ -141,9 +141,9 @@ public class MaterialDB implements MaterialDBIF {
 	public void insertNewSalesPrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
 		try {
 			//Added prints for debugging
-			BigDecimal Value = newPrice.getPreVATValue();
-			psInsertIntoSalesPrice.setBigDecimal(1, Value);
-			System.out.println("Value = " + Value);
+			BigDecimal value = newPrice.getPreVATValue();
+			psInsertIntoSalesPrice.setBigDecimal(1, value);
+			System.out.println("Value = " + value);
 			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
 			psInsertIntoSalesPrice.setTimestamp(2,timeStamp);
 			System.out.println("Timestamp = " + timeStamp);
@@ -230,7 +230,7 @@ public class MaterialDB implements MaterialDBIF {
 	
 
 	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
-		GenericMaterial genericMaterial = null;
+		GenericMaterial genericMaterial;
 		try {
 			genericMaterial = new GenericMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescriptions, salesPrices, purchasePrices, rs.getString("ProductType"));
 			

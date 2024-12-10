@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import controller.DataAccessException;
+import model.GenericMaterial;
 import model.HourLog;
 import model.Material;
 import model.MaterialLog;
@@ -20,8 +21,10 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
 	private static final String UPDATE_MATERIALQUANTITY = "UPDATE StockMaterial SET Quantity = ? WHERE MaterialNo = ? ";
 	private PreparedStatement updateMaterialQuantity;
+	private MaterialDB materialDB;
 	public MaterialLogDB() throws DataAccessException {
 		try {
+			MaterialDB materialDB = new MaterialDB();
 		insertMaterialLogIntoLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 		insertMaterialLogIntoMaterialLogs = DBConnection.getInstance().getConnection()
@@ -62,6 +65,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 					insertMaterialLogIntoMaterialLogs.executeUpdate();
 					
 					updateMaterialQuantity(materialLog);
+					addPricesFromGenericMaterial(materialLog);
 				}
 		return materialLogKey;
 		} catch (SQLException e) {
@@ -75,6 +79,13 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 			updateMaterialQuantity.setInt(2, stockMaterial.getMaterialNo());
 			updateMaterialQuantity.executeUpdate();
 			
+		}
+		
+	}
+	public void addPricesFromGenericMaterial(MaterialLog materialLog) throws SQLException, DataAccessException {
+		if(materialLog.getMaterial() instanceof GenericMaterial) {
+			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentPurchasePrice());
+			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getCurrentSalesPrice());
 		}
 		
 	}
