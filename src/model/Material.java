@@ -2,6 +2,7 @@ package model;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public abstract class Material {
@@ -78,10 +79,31 @@ public abstract class Material {
 		return materialDescription;	
 	}
 	
+	public Price getLastestPurchasePrice() {
+		ArrayList<Price> tempSortedPrices = new ArrayList<Price>(purchasePrices);
+		tempSortedPrices.sort(Comparator.comparing(Price::getTimeStamp).reversed());
+		return tempSortedPrices.get(0);
+		
+	}
+	public Price getLastestSalesPrice() {
+		ArrayList<Price> tempSortedPrices = new ArrayList<Price>(salesPrices);
+		tempSortedPrices.sort(Comparator.comparing(Price::getTimeStamp).reversed());
+		return tempSortedPrices.get(0);
+		
+	}
+	public ArrayList<Price> getSalesPrices() {
+		ArrayList<Price> tempList = salesPrices;
+		return tempList;
+	}
 	
+	public ArrayList<Price> getPurchasePrices() {
+		ArrayList<Price> tempList = purchasePrices;
+		return tempList;
+	}
 	
 	//Setters
 	
+
 	public abstract void setCurrentSalesPrice(Price newPrice);
 	
 	protected void setCurrentSalesPriceSubClasses(Price newPrice) {
