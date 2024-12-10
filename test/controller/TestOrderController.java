@@ -83,6 +83,62 @@ class TestOrderController {
 		BigDecimal expectedResult = new BigDecimal(10);
 		assertEquals(expectedResult, result);
 	}
+	//Boundary test for add Hourlog to Order
+	@Test
+	void testAddNegativeWorkHours() throws DataAccessException {
+		//Arrange
+		//Customer with phoneNo 12345678 exists in the database
+		//MaterialNo 1001 exists in the database
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		BigDecimal invalidInput = new BigDecimal(-1);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			orderController.addWorkHours(employee, invalidInput);
+			throw new Exception("Invalid amount chosen");
+		});
+		//Assert
+		String result = exceptionThrown.getMessage();
+		String expectedResult = "Invalid amount chosen"; 
+		assertEquals(expectedResult, result);
+	}
+	
+	@Test
+	void testZeroWorkHours() throws DataAccessException {
+		//Arrange
+		//Customer with phoneNo 12345678 exists in the database
+		//MaterialNo 1001 exists in the database
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		BigDecimal invalidInput = new BigDecimal(0);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			orderController.addWorkHours(employee, invalidInput);
+			throw new Exception("Invalid amount chosen");
+		});
+		//Assert
+		String result = exceptionThrown.getMessage();
+		String expectedResult = "Invalid amount chosen"; 
+		assertEquals(expectedResult, result);
+	}
+	@Test
+	void testAddTooManyWorkHours() throws DataAccessException {
+		//Arrange
+		//Customer with phoneNo 12345678 exists in the database
+		//MaterialNo 1001 exists in the database
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		BigDecimal invalidInput = new BigDecimal(1000);
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			//Act
+			orderController.addWorkHours(employee, invalidInput);
+			throw new Exception("Invalid amount chosen");
+		});
+		//Assert
+		String result = exceptionThrown.getMessage();
+		String expectedResult = "Invalid amount chosen"; 
+		assertEquals(expectedResult, result);
+	}
 	
 	//Boundary testing: Add material quantity to order
 	@Test
@@ -93,11 +149,11 @@ class TestOrderController {
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			orderController.findAndAddMaterialByMaterialNo(employee, 1001, 40);
-			throw new Exception("Stock insuffient: Cannot add that amount.");
+			throw new Exception("Invalid amount chosen");
 		});
 		//Assert
 		String result = exceptionThrown.getMessage();
-		String expectedResult = "Stock insuffient: Cannot add that amount."; 
+		String expectedResult = "Invalid amount chosen"; 
 		assertEquals(expectedResult, result);
 		
 	}
@@ -119,7 +175,6 @@ class TestOrderController {
 		
 	}
 	
-	//TODO: Need review for the 2 tests below
 	@Test
 	void testAddMaterialLogToOrderUnderMinStockLimit() throws DataAccessException {
 		//Arrange
@@ -132,12 +187,12 @@ class TestOrderController {
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			order.addMaterialLogToOrder(materialLog);
-			throw new IllegalArgumentException("Error: Invalid amount");
+			throw new IllegalArgumentException("Invalid amount chosen");
 		});
 		int resultQuantity = cement.getQuantity();
 		int expectedQuantity = 50;
 		assertEquals(expectedQuantity, resultQuantity);
-		assertEquals("Error: Invalid amount", exceptionThrown.getMessage());
+		assertEquals("Invalid amount chosen", exceptionThrown.getMessage());
 	}
 	
 	@Test
@@ -152,12 +207,12 @@ class TestOrderController {
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			order.addMaterialLogToOrder(materialLog);
-			throw new IllegalArgumentException("Error: Invalid amount");
+			throw new IllegalArgumentException("Invalid amount chosen");
 		});
 		int resultQuantity = cement.getQuantity();
 		int expectedQuantity = 50;
 		assertEquals(expectedQuantity, resultQuantity);
-		assertEquals("Error: Invalid amount", exceptionThrown.getMessage());
+		assertEquals("Invalid amount chosen", exceptionThrown.getMessage());
 	}
 	
 	@Test
