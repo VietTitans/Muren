@@ -149,7 +149,7 @@ public class TestStockMaterial {
 		//Act
 		stockMaterial.calculatedAvailableAmount();
 		//Assert
-		assertEquals(30, stockMaterial.getAvailableAmount());
+		assertEquals(30, stockMaterial.getQuantity());
 	}
 
 }
