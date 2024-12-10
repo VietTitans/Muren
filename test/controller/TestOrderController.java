@@ -113,7 +113,7 @@ class TestOrderController {
 		//Act
 		order.addMaterialLogToOrder(materialLog);
 		//Assert;
-		int result = cement.getQuantity(); //TODO: Why does this value not update to 30?
+		int result = cement.getQuantity();
 		int expectedResult = 30;
 		assertEquals(expectedResult, result);
 		

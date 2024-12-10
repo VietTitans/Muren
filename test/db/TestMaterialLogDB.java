@@ -37,7 +37,6 @@ class TestMaterialLogDB {
 		ResetDB.main(null);
 	}
 	
-
 	
 	@Test
 	void testSaveMaterialLog() throws DataAccessException {
@@ -57,21 +56,21 @@ class TestMaterialLogDB {
 		//Assert		
 		assertEquals(expectedLogId, returnedKey);
 	}
-
-//	@Test
-//	void testMaterialLogDoesntExist() throws DataAccessException {
-//		//Using NullPointerException to test for null
-//		//Arrange
-//		int orderId = 665;
-//		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
-//			//Act 
-//			//TODO: Implement getMaterialLog()
-//			materialLogDB.getMaterialLog(orderId);
-//			throw new IllegalArgumentException("Material log not found");
-//		});
-//		//Assert
-//		assertEquals("Material log not found", exceptionThrown.getMessage());
-//	}
-//	
+	
+	@Test
+	void testUpdateQuantity() throws DataAccessException {
+		//Arrange
+		StockMaterial material = new StockMaterial(0, null, null, null, null, 0, 0, 0);
+		material.setQuantity(50);
+		Employee employee = new Employee();
+		MaterialLog materialLog = new MaterialLog(employee, material, 20);
+		//Act
+		materialLog.updateQuantity(material, 20);
+		//Assert
+		int expectedResult = 30;
+		int result = materialLog.getQuantity();
+		assertEquals(expectedResult, result);
+		
+	}
 
 }

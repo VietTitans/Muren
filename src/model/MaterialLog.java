@@ -9,6 +9,21 @@ public class MaterialLog extends Logs {
 		super(employee);
 		this.material = material;
 		this.quantity = quantity;
+		updateQuantity(material, quantity);
+	}
+	
+	public void updateQuantity(Material material, int quantity) {
+		try {
+			if(material instanceof StockMaterial) {
+				StockMaterial stockMaterial = (StockMaterial) material; 
+				if(quantity <= stockMaterial.calculatedAvailableAmount()) {
+					int updatedQuantity = stockMaterial.getQuantity() - quantity; 
+					stockMaterial.setQuantity(updatedQuantity);
+				}
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Invalid quantity");
+		}
 	}
 
 	public Material getMaterial() {

@@ -24,6 +24,8 @@ public class StockMaterial extends Material {
 		stockReservations = new ArrayList<>();
 	}
 	
+
+
 	public void addStockReservation(StockReservation stockReservation) {		
 		stockReservations.add(stockReservation);
 	}
@@ -90,6 +92,10 @@ public class StockMaterial extends Material {
 	}
 	
 	//Setters
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	
 	@Override
 	public void setCurrentMaterialDescription(MaterialDescription newDescription) {
