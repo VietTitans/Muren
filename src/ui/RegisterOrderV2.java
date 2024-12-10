@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import controller.DataAccessException;
+import controller.GeneralException;
 import controller.OrderController;
 import model.Customer;
 import model.Employee;
@@ -49,8 +50,8 @@ public class RegisterOrderV2 extends JFrame {
 	private JTextField txtKundeTlf;
 	private JTextField txtProduktno;
 	private JTextField txtMedarbejderid;
-	private JTable table_1;
-	private JTable table;
+	private JTable materialTable;
+	private JTable employeeTable;
 	private JTextField txtMngde;
 	private OrderController currentOrderController;
 
@@ -237,7 +238,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_6 = new JButton("Fjern materiale");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, table_1);
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
 				removeMaterialFrame.setVisible(true);
 			}
 		});
@@ -369,9 +370,9 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_scrollPane.gridy = 1;
 		panel_3.add(scrollPane, gbc_scrollPane);
 		
-		table_1 = new JTable();
-		scrollPane.setViewportView(table_1);
-		table_1.setModel(new DefaultTableModel(
+		materialTable = new JTable();
+		scrollPane.setViewportView(materialTable);
+		materialTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -385,7 +386,7 @@ public class RegisterOrderV2 extends JFrame {
 				return columnTypes[columnIndex];
 			}
 		});
-		table_1.getColumnModel().getColumn(3).setPreferredWidth(90);
+		materialTable.getColumnModel().getColumn(3).setPreferredWidth(90);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -396,9 +397,9 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_scrollPane_1.gridy = 1;
 		panel_3.add(scrollPane_1, gbc_scrollPane_1);
 		
-		table = new JTable();
-		scrollPane_1.setViewportView(table);
-		table.setModel(new DefaultTableModel(
+		employeeTable = new JTable();
+		scrollPane_1.setViewportView(employeeTable);
+		employeeTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
@@ -454,9 +455,11 @@ public class RegisterOrderV2 extends JFrame {
 				Price purchasePrice = new Price(purchasePriceValue);
 				purchasePrices.add(purchasePrice);
 				
+				ArrayList<MaterialDescription> descriptions = new ArrayList<>();
 				MaterialDescription materialDescription = new MaterialDescription("en ting");
+				descriptions.add(materialDescription);
 				
-				StockMaterial material = new StockMaterial(10, "ting", materialDescription, salesPrices, purchasePrices, 1, 100, 55);
+				StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
 //				Employee employee = new Employee();
 //				int materialNo = Integer.parseInt(txtProduktno.getText());
 				int amountNo = Integer.parseInt(txtMngde.getText());
@@ -469,7 +472,7 @@ public class RegisterOrderV2 extends JFrame {
 							materialNotFoundDialog.setVisible(true);
 						}
 						else {
-							int newNr = table_1.getRowCount() + 1;
+							int newNr = materialTable.getRowCount() + 1;
 							BigDecimal totalBDPrice = priceValue.multiply(new BigDecimal(amountNo));
 							Double totalPrice = totalBDPrice.doubleValue();
 							Double saleprice = priceValue.doubleValue();
@@ -477,11 +480,11 @@ public class RegisterOrderV2 extends JFrame {
 							Object[] newRow = {newNr,
 									material.getMaterialNo(),
 									material.getProductName(), 
-									material.getMaterialDescription(),
+									material.getCurrentMaterialDescription(),
 									amountNo, 
 									saleprice, 
 									totalPrice};
-							DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+							DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 							model.addRow(newRow);	
 						}
 				//}
@@ -490,6 +493,30 @@ public class RegisterOrderV2 extends JFrame {
 					//e1.printStackTrace();
 				}
 			//}
+		});
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
+				try {
+					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, true);
+					System.out.println(employee.getfName());
+					if(employee.getfName() != null) {
+						
+					}
+					else {
+						System.out.println(RegisterOrderV2.this);
+						AddHoursDialog addHoursDialog = new AddHoursDialog(employee, RegisterOrderV2.this);
+						addHoursDialog.setVisible(true);
+						
+					}
+				} catch (GeneralException e1) {
+					 //TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataAccessException e1) {
+					 //TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		});
 	}
 
@@ -503,23 +530,37 @@ public class RegisterOrderV2 extends JFrame {
 
 		//}
 		// TODO Auto-generated method stub
-		DefaultTableModel model = (DefaultTableModel) table_1.getModel();
+		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		for (int i = removeList.length - 1; i >= 0; i--) {
 	        int index = removeList[i];
 	        System.out.println("index: " + index);
-	        System.out.println(table_1.getValueAt(index, 1));
+	        System.out.println(materialTable.getValueAt(index, 1));
 	        model.removeRow(index);
-	        System.out.println(table_1.getValueAt(index, 1));
+	        System.out.println(materialTable.getValueAt(index, 1));
 	        updateRowNumbers(model, index);}
 	}
+	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
+		System.out.println("timer: " +hours);
+		int newNr = employeeTable.getRowCount() + 1;
+
+		String name = employee.getfName() + " " + employee.getlName();
+		
+		Object[] newRow = {newNr,
+				employee.getEmployeeId(),
+				name, 
+				hours};
+		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+		model.addRow(newRow);
+	}
+	
 	public void updateRowNumbers(DefaultTableModel model, int index) {
 		//while (index < table_1.getRowCount()) {
 			//table_1.setValueAt(index, index, 1);
 		//}
-		for (int i = index; i < table_1.getRowCount(); i++) {
-			System.out.println(table_1.getValueAt(index, 1));
-	        table_1.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
-	        System.out.println(table_1.getValueAt(index, 1));
+		for (int i = index; i < materialTable.getRowCount(); i++) {
+			System.out.println(materialTable.getValueAt(index, 1));
+	        materialTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
+	        System.out.println(materialTable.getValueAt(index, 1));
 		}
 	}
 

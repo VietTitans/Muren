@@ -51,6 +51,7 @@ public class RemoveMaterial extends JDialog {
             listData.add(name); // Add the name to the listData
         }
 		
+		System.out.println(registerOrderV2);
 		String[] listArray = listData.toArray(new String[0]);
 		
 		setBounds(100, 100, 450, 300);
@@ -94,7 +95,7 @@ public class RemoveMaterial extends JDialog {
 			            start++;
 			            end--;
 			        }
-						registerOrderV2.removeRow(removeList);
+			        registerOrderV2.removeRow(removeList);
 						
 					}
 				});
