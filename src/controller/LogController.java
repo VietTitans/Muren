@@ -12,9 +12,6 @@ import model.MaterialLog;
 import model.StockMaterial;
 
 public class LogController{
-	private OrderController orderController;
-	private MaterialLog currentMaterialLog;
-	private HourLog currentHourLog;
 	private HourLogDBIF hourLogInterface;
 	private MaterialLogDBIF materialLogInterface;
 	
@@ -42,14 +39,14 @@ public class LogController{
 		return currentHourLog;
 	}
 	
-	public HourLog saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
-		currentHourLog = hourLogInterface.saveHourLog(hourLog, orderId);
-		return currentHourLog;
+	public int saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
+		int hourLogKey = hourLogInterface.saveHourLog(hourLog, orderId);
+		return hourLogKey;
 	}
 
-	public MaterialLog saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
-		 currentMaterialLog = materialLogInterface.saveMaterialLog(materialLog, orderId);
-		 return currentMaterialLog;
+	public int saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
+		 int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
+		 return materialLogKey;
 	}
 	
 
