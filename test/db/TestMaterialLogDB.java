@@ -25,18 +25,16 @@ class TestMaterialLogDB {
 
 	static MaterialLogDB materialLogDB;
 
-	@BeforeAll
-	static void setUp() throws Exception {
-		materialLogDB = new MaterialLogDB();
+	@BeforeEach
+	void setUp() throws Exception {
 	}
 
-	@AfterAll
-	static void tearDown() throws DataAccessException {
-	}
+
 	
 	@BeforeEach
-	public void initEach() {
+	public void initEach() throws DataAccessException {
 		ResetDB.main(null);
+		materialLogDB = new MaterialLogDB();
 	}
 	
 	
@@ -67,10 +65,10 @@ class TestMaterialLogDB {
 		Employee employee = new Employee();
 		MaterialLog materialLog = new MaterialLog(employee, material, 20);
 		//Act
-		materialLog.updateQuantity(material, 20);
 		//Assert
 		int expectedResult = 30;
-		int result = materialLog.getQuantity();
+		StockMaterial materialFromLog = (StockMaterial) material;
+		int result = materialFromLog.getQuantity();
 		assertEquals(expectedResult, result);
 		
 	}
@@ -81,18 +79,18 @@ class TestMaterialLogDB {
 		employee.setEmployeeId(1);
 		
 		ArrayList<MaterialDescription> materialDescriptions = new ArrayList<>();
-		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
+		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 11, 10, 12, 0), "This is a test");
 		materialDescriptions.add(newMaterialDescription);
 		
 		Material material = materialDB.findMaterialByMaterialNo(1003);
 		material.setCurrentMaterialDescription(newMaterialDescription);
 		Price salesPrice = new Price(BigDecimal.valueOf(100));
 		Price purchasePrice = new Price(BigDecimal.valueOf(110));
-
+		System.out.println(salesPrice.getTimeStamp());
 		material.setCurrentPurchasePrice(purchasePrice);
 		material.setCurrentSalesPrice(salesPrice);
 		MaterialLog materialLog = new MaterialLog(employee, material ,1);
-		materialLogDB.saveMaterialLog(materialLog, 1);		
+		materialLogDB.saveMaterialLog(materialLog, 2);		
 	}
 
 }
