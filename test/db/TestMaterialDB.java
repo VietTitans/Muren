@@ -16,8 +16,6 @@ import model.Material;
 import model.MaterialDescription;
 import model.Price;
 
-
-
 public class TestMaterialDB {
 	
 	static MaterialDB materialDB;
@@ -48,7 +46,6 @@ public class TestMaterialDB {
 	
 	@Test
 	public void testMaterialDoesntExists() throws DataAccessException {
-		//Using NullPointerException to test for null
 		//Arrange
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			//Act
@@ -69,8 +66,6 @@ public class TestMaterialDB {
 		
 		//Assert
 		
-		
-		
 	}
 	
 	@Test
@@ -78,13 +73,9 @@ public class TestMaterialDB {
 		//Arrange
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		Price newPurchasePrice = new Price(LocalDateTime.of(2024, 12, 10, 12, 0), new BigDecimal(180.00));
-		
 		//Act
 		materialDB.insertNewPurchasePrice(material.getMaterialNo(), newPurchasePrice);
-				
 		//Assert
-				
-				
 				
 	}
 	
@@ -93,13 +84,9 @@ public class TestMaterialDB {
 		//Arrange
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
-		
 		//Act
 		materialDB.insertNewMaterialDescription(material.getMaterialNo(), newMaterialDescription);	
-				
 		//Assert
-				
-				
 				
 	}
 	
