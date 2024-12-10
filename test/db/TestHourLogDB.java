@@ -40,19 +40,16 @@ class TestHourLogDB {
 		//Act
 		int returnedKey = hourLogDB.saveHourLog(hourLog, orderId);
 		//Assert
-		//TODO: Implement getHourLog()
 		assertEquals(expectedHourLogId, returnedKey);
 	}
 	
 	@Test
 	void testSaveHourLogDoesntExist() throws DataAccessException {
-		//Using NullPointerException to test for null
 		//Arrange
-		int orderId = 665;
+		HourLog hourLog = null;
 		Exception exceptionThrown = assertThrows(Exception .class, () -> {
 			//Act
-			//TODO: Implement getHourLog()
-//			hourLogDB.getHourLog(orderId);
+			hourLogDB.saveHourLog(hourLog, 0);
 			throw new IllegalArgumentException("Hourlog not found");
 		});
 		//Assert

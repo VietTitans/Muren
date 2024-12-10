@@ -35,37 +35,30 @@ class TestOrderController {
 	void tearDown() throws Exception {
 	}
 	
-	//TODO: Move these three test to their respected controller?
-//	@Test
-//	void testFindAndAddCustomerByPhoneNo() throws DataAccessException {
-//		//Arrange
-//		//Customer exits in the database John, Doe, phoneNo: 12345678, john.doe@example.com
-//		//Act
-//		Customer result = orderController.findAndAddCustomerByPhoneNo("12345678");
-//		//Assert
-//		assertEquals("John", result.getfName());
-//		assertEquals("Doe", result.getlName());
-//		assertEquals("john.doe@example.com", result.getEmail());
-//	}
-//	
-//	
-//	@Test
-//	void testFindAndAddMaterialByMaterialNo() throws DataAccessException {
-//		//Arrange
-//		//Material Cement with productNo 1001 exists in the DB
-//		//Act
-//		Material foundMaterial = materialController.findMaterialByMaterialNo(1001);
-//		//Assert
-//		String expextedResult = "Cement";
-//		String result = foundMaterial.getProductName();
-//		assertEquals(expextedResult, result);
-//	}
-//	
-//	@Test
-//	void testFindEmployeeByEmployeeId() throws DataAccessException, GeneralException {
-//		//TODO: This test exists in TestEmployeeDB
-//	}
-	
+	@Test
+	void testFindAndAddCustomerByPhoneNo() throws DataAccessException {
+		//Arrange
+		//Customer exits in the database John, Doe, phoneNo: 1234567s john.doe@example.com
+		//Act
+		Customer result = orderController.findAndAddCustomerByPhoneNo("12345678");
+		//Assert
+		assertEquals("John", result.getfName());
+		assertEquals("Doe", result.getlName());
+		assertEquals("john.doe@example.com", result.getEmail());
+	}
+
+	@Test
+	void testFindAndAddMaterialByMaterialNo() throws DataAccessException {
+		//Arrange
+		//Material Cement with productNo 1001 exists in the DB
+		//Act
+		Material foundMaterial = materialController.findMaterialByMaterialNo(1001);
+		//Assert
+		String expextedResult = "Cement";
+		String result = foundMaterial.getProductName();
+		assertEquals(expextedResult, result);
+	}
+
 	@Test
 	void testAddWorkHours() throws DataAccessException {
 		//Arrange
@@ -179,7 +172,6 @@ class TestOrderController {
 		assertEquals(expectedQuantity, resultQuantity);
 		assertEquals("Error: Invalid amount", exceptionThrown.getMessage());
 	}
-	
 	
 	@Test
 	void testNullMaterialInputInMaterialLogThrowsException() throws DataAccessException {
