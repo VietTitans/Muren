@@ -12,11 +12,16 @@ public abstract class Logs {
 		timeStamp = LocalDateTime.now();
 	}
 
-	public Employee getEmployee() {
+	public abstract Employee getEmployee();
+	
+	protected Employee getEmployeeSubClass() {
 		return employee;
 	}
-	public LocalDateTime getTimeStamp() {
+	
+	public abstract LocalDateTime getTimeStamp();
+
+	protected LocalDateTime getTimeStampSubClass() {
 		return timeStamp;
 	}
-
+	
 }
