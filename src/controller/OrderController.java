@@ -53,12 +53,14 @@ public class OrderController {
 		return employee;
 	}
 	
-	public void addWorkHours(Employee employee, BigDecimal hours) {
+	public void addWorkHours(Employee employee, BigDecimal hours) throws Exception {
 		BigDecimal minBoundary = new BigDecimal(0.00);
 		BigDecimal maxBoundary = new BigDecimal(99.00);
 		if(employee != null && hours.compareTo(minBoundary) > 0.00 && hours.compareTo(maxBoundary) <= 99.00) {
 		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
 		currentOrder.addHourLogToOrder(newLog);	
+		}else {
+			throw new Exception("Invalid amount chosen");
 		}
 		
 	}

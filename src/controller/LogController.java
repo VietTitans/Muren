@@ -1,4 +1,5 @@
 package controller;
+
 import java.math.BigDecimal;
 
 import db.HourLogDB;
@@ -11,43 +12,46 @@ import model.Material;
 import model.MaterialLog;
 import model.StockMaterial;
 
-public class LogController{
+public class LogController {
 	private HourLogDBIF hourLogInterface;
 	private MaterialLogDBIF materialLogInterface;
-	
+
 	public LogController() throws DataAccessException {
 		this.hourLogInterface = new HourLogDB();
 	}
 
 	public MaterialLog addMaterialToLog(Employee employee, Material material, int quantity) {
 		MaterialLog currentMaterialLog = null;
-		if(material instanceof StockMaterial){
-			//Typecast Material To access subclass methods  
-			StockMaterial stockMaterial = (StockMaterial) material;
-			if(stockMaterial.calculatedAvailableAmount() >= quantity) {
-				currentMaterialLog = new MaterialLog(employee,stockMaterial,quantity);
+		if (quantity >= 1) {
+
+			if (material instanceof StockMaterial) {
+				// Typecast Material To access subclass methods
+				StockMaterial stockMaterial = (StockMaterial) material;
+				if (stockMaterial.calculatedAvailableAmount() >= quantity) {
+					currentMaterialLog = new MaterialLog(employee, stockMaterial, quantity);
+				}
+			} else {
+				currentMaterialLog = new MaterialLog(employee, material, quantity);
 			}
-			else {
-				currentMaterialLog = new MaterialLog(employee,material,quantity);
-			}
+			return currentMaterialLog;
+		} else {
+			throw new IllegalArgumentException("Invalid amount chosen");
 		}
-		return currentMaterialLog;
 	}
-	
+
 	public HourLog addEmployeeToHourLog(Employee employee, BigDecimal hours) {
 		HourLog currentHourLog = new HourLog(employee, hours);
 		return currentHourLog;
 	}
-	
+
 	public int saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
 		int hourLogKey = hourLogInterface.saveHourLog(hourLog, orderId);
 		return hourLogKey;
 	}
 
 	public int saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
-		 int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
-		 return materialLogKey;
+		int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
+		return materialLogKey;
 	}
-	
 
 }
