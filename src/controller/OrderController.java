@@ -80,8 +80,8 @@ public class OrderController {
 	public void saveOrder() throws GeneralException, DataAccessException {
 		orderInterface.saveOrder(currentOrder);
 	}
-	public void removeCostumer() {
-		currentOrder.setCostumer(null);
+	public void removeCustomer() {
+		currentOrder.setCustomer(null);
 	}
 
 }

@@ -133,7 +133,7 @@ public class Order {
 			System.out.println(item.getHoursWorked());
 		}
 	}
-	public void setCostumer(Customer newCustomer) {
+	public void setCustomer(Customer newCustomer) {
 		customer = newCustomer;
 	}
 	
