@@ -62,6 +62,13 @@ public class OrderController {
 		}else {
 			throw new Exception("Invalid amount chosen");
 		}
+		
+	}
+	public void removeMaterialLog(int materialIndex) {
+		currentOrder.removeMaterial(materialIndex);
+	}
+	public void removeHourLog(int hourLogIndex) {
+		currentOrder.removeHourLog(hourLogIndex);
 	}
 	
 	public void saveOrder() throws GeneralException, DataAccessException {

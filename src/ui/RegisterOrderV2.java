@@ -250,6 +250,12 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(btnNewButton_6, gbc_btnNewButton_6);
 		
 		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
+				removeEmployeeDialog.setVisible(true);
+			}
+		});
 		btnNewButton_5.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
 		gbc_btnNewButton_5.gridx = 1;
@@ -549,7 +555,22 @@ public class RegisterOrderV2 extends JFrame {
 	        System.out.println(materialTable.getValueAt(index, 1));
 	        model.removeRow(index);
 	        System.out.println(materialTable.getValueAt(index, 1));
-	        updateRowNumbers(model, index);}
+	        updateRowNumbers(model, index);
+			currentOrderController.removeMaterialLog(index);
+			}
+	}
+	public void removeRowEmployee (int[] removeList) {
+		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+		for (int i = removeList.length - 1; i >= 0; i--) {
+	        int index = removeList[i];
+	        System.out.println("index: " + index);
+	        System.out.println(employeeTable.getValueAt(index, 1));
+	        model.removeRow(index);
+	        System.out.println(employeeTable.getValueAt(index, 1));
+	        updateRowNumbersEmployee(model, index);
+			currentOrderController.removeHourLog(index);
+			}
+		
 	}
 	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
 		System.out.println("timer: " +hours);
@@ -575,6 +596,14 @@ public class RegisterOrderV2 extends JFrame {
 	        materialTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
 	        System.out.println(materialTable.getValueAt(index, 1));
 		}
+	}
+	public void updateRowNumbersEmployee(DefaultTableModel model, int index) {
+		for (int i = index; i < employeeTable.getRowCount(); i++) {
+			System.out.println(employeeTable.getValueAt(index, 1));
+	        employeeTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
+	        System.out.println(employeeTable.getValueAt(index, 1));
+		}
+		
 	}
 
 }
