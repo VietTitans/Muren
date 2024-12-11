@@ -244,6 +244,7 @@ public class MaterialDB implements MaterialDBIF {
 				throw new DataAccessException("Cant find purchasePrice", e);
 			}
 		 
+			
 		return price;
 	}
 

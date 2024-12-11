@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class HourLog extends Logs {
 
@@ -16,6 +17,16 @@ public class HourLog extends Logs {
 	}
 	public void setHoursWorked(BigDecimal hoursWorked) {
 		this.hoursWorked = hoursWorked;
+	}
+
+	@Override
+	public Employee getEmployee() {
+		return super.getEmployeeSubClass();
+	}
+
+	@Override
+	public LocalDateTime getTimeStamp() {
+		return super.getTimeStampSubClass();
 	}
 
 }
