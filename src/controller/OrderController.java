@@ -70,8 +70,8 @@ public class OrderController {
 	}
 
 
-	public void removeMaterialLog(int materialIndex) {
-		currentOrder.removeMaterial(materialIndex);
+	public void removeMaterialLog(int materialLogIndex) {
+		currentOrder.removeMaterial(materialLogIndex);
 	}
 	public void removeHourLog(int hourLogIndex) {
 		currentOrder.removeHourLog(hourLogIndex);
