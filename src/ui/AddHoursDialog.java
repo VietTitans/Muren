@@ -72,12 +72,7 @@ public class AddHoursDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Annuler");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
+				//TODO ryk til controller
 				JButton cancelButton = new JButton("Bekræft");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -88,39 +83,38 @@ public class AddHoursDialog extends JDialog {
 						System.out.println(conversionNo);
 						if (conversionNo > 0 && conversionNo <= 0.25) {
 							result = hours + 0.25;
-							System.out.println("timer er rundet op til 0.25");
 							returnHours(result);
 						}
 						else if(conversionNo > 0.25 && conversionNo <= 0.50) {
 							result = hours + 0.50;
-							System.out.println("timer er rundet op til 0.50");
 							returnHours(result);
 						}
 						else if (conversionNo > 0.50 && conversionNo <= 0.75) {
 							result = hours + 0.75;
-							System.out.println("timer er rundet op til 0.70");
 							returnHours(result);
 						}
 						else if (conversionNo > 0.75 && conversionNo <= 1.0) {
 							result = hours + 1;
-							System.out.println("timer er rundet op til 1.0");
 							returnHours(result);
 						}
 						else if (conversionNo < 0.0 || conversionNo > 1.0) {
-							System.out.println ("minuts must be between 0 and 60");
 						}
 					}
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+			{
+				JButton okButton = new JButton("Annuler");
+				okButton.setActionCommand("OK");
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
 			}
 		}
 
 	public void returnHours(double result) {
-		System.out.println("jeg virker");
 		BigDecimal hours = new BigDecimal(result);
-		System.out.println("jeg virker også og kan vise timer: " + hours);
 		registerOrderV2.addEmployeeAndHours(employee, hours);
 	}
 }

@@ -445,68 +445,67 @@ public class RegisterOrderV2 extends JFrame {
 		addMaterialBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ArrayList<Price> salesPrices = new ArrayList<>();
-				BigDecimal priceValue = new BigDecimal(10);
-				Price salesPrice = new Price(priceValue);
-				salesPrices.add(salesPrice);
+				//ArrayList<Price> salesPrices = new ArrayList<>();
+				//BigDecimal priceValue = new BigDecimal(10);
+				//Price salesPrice = new Price(priceValue);
+				//salesPrices.add(salesPrice);
 				
-				ArrayList<Price> purchasePrices = new ArrayList<>();
-				BigDecimal purchasePriceValue = new BigDecimal(5);
-				Price purchasePrice = new Price(purchasePriceValue);
-				purchasePrices.add(purchasePrice);
+				//ArrayList<Price> purchasePrices = new ArrayList<>();
+				//BigDecimal purchasePriceValue = new BigDecimal(5);
+				//Price purchasePrice = new Price(purchasePriceValue);
+				//purchasePrices.add(purchasePrice);
 				
-				ArrayList<MaterialDescription> descriptions = new ArrayList<>();
-				MaterialDescription materialDescription = new MaterialDescription("en ting");
-				descriptions.add(materialDescription);
+				//ArrayList<MaterialDescription> descriptions = new ArrayList<>();
+				//MaterialDescription materialDescription = new MaterialDescription("en ting");
+				//descriptions.add(materialDescription);
 				
-				StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
-//				Employee employee = new Employee();
-//				int materialNo = Integer.parseInt(txtProduktno.getText());
+				//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
+				Employee employee = new Employee();
+				int materialNo = Integer.parseInt(txtProduktno.getText());
 				int amountNo = Integer.parseInt(txtMngde.getText());
 				
 				
-				//try {
-					//Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
+				try {
+					Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
 						if (material.getProductName() == null) {
 							MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
 							materialNotFoundDialog.setVisible(true);
 						}
 						else {
 							int newNr = materialTable.getRowCount() + 1;
-							BigDecimal totalBDPrice = priceValue.multiply(new BigDecimal(amountNo));
+							BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
 							Double totalPrice = totalBDPrice.doubleValue();
-							Double saleprice = priceValue.doubleValue();
+							Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
 							
 							Object[] newRow = {newNr,
 									material.getMaterialNo(),
 									material.getProductName(), 
-									material.getCurrentMaterialDescription(),
+									material.getCurrentMaterialDescription().getDescription(),
 									amountNo, 
 									saleprice, 
 									totalPrice};
 							DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 							model.addRow(newRow);	
 						}
-				//}
-			//catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
-					//e1.printStackTrace();
 				}
-			//}
+			catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		});
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
 				try {
-					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, true);
+					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, false);
 					System.out.println(employee.getfName());
-					if(employee.getfName() != null) {
+					if(employee.getfName() == null) {
 						
 					}
 					else {
-						System.out.println(RegisterOrderV2.this);
-						AddHoursDialog addHoursDialog = new AddHoursDialog(employee, RegisterOrderV2.this);
-						addHoursDialog.setVisible(true);
+						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderV2.this);
+						confirmEmployeeDialog.setVisible(true);
 						
 					}
 				} catch (GeneralException e1) {
@@ -514,6 +513,19 @@ public class RegisterOrderV2 extends JFrame {
 					e1.printStackTrace();
 				} catch (DataAccessException e1) {
 					 //TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					currentOrderController.saveOrder();
+				} catch (GeneralException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -551,6 +563,7 @@ public class RegisterOrderV2 extends JFrame {
 				hours};
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
 		model.addRow(newRow);
+		currentOrderController.addWorkHours(employee, hours);
 	}
 	
 	public void updateRowNumbers(DefaultTableModel model, int index) {
