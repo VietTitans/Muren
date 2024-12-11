@@ -60,6 +60,13 @@ public class OrderController {
 		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
 		currentOrder.addHourLogToOrder(newLog);	
 		}
+		
+	}
+	public void removeMaterialLog(int materialIndex) {
+		currentOrder.removeMaterial(materialIndex);
+	}
+	public void removeHourLog(int hourLogIndex) {
+		currentOrder.removeHourLog(hourLogIndex);
 	}
 	
 	public void saveOrder() throws GeneralException, DataAccessException {

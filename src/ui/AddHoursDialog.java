@@ -116,5 +116,6 @@ public class AddHoursDialog extends JDialog {
 	public void returnHours(double result) {
 		BigDecimal hours = new BigDecimal(result);
 		registerOrderV2.addEmployeeAndHours(employee, hours);
+		dispose();
 	}
 }
