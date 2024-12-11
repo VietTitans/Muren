@@ -584,7 +584,12 @@ public class RegisterOrderV2 extends JFrame {
 				hours};
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
 		model.addRow(newRow);
-		currentOrderController.addWorkHours(employee, hours);
+		try {
+			currentOrderController.addWorkHours(employee, hours);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateRowNumbers(DefaultTableModel model, int index) {
