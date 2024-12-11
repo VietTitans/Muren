@@ -150,7 +150,7 @@ class TestOrderController {
 		//Cement (materialNo 1001) has a maximum stock of 75 in database
 		
 		//Act
-		orderController.findAndAddMaterialByMaterialNo(employee,1001 , 50);
+		orderController.findAndAddMaterialByMaterialNo(employee,1001 , 500);
 		
 		//Assert
 		assertTrue(orderController.getCurrentOrder().getMaterialLogs().size() == 0);

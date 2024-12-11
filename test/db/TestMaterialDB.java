@@ -62,10 +62,12 @@ public class TestMaterialDB {
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		Price newSalesPrice = new Price(LocalDateTime.of(2024, 12, 10, 12, 0), new BigDecimal(150.00));
 		//Act
-		materialDB.insertNewSalesPrice(material.getMaterialNo(), newSalesPrice);
+		assertDoesNotThrow(() -> {
+		 materialDB.insertNewSalesPrice(material.getMaterialNo(), newSalesPrice);
+		}, "Error inserting sales price");
 		
 		//Assert
-		
+//		assertEquals(returnedKey,2 );
 	}
 	
 	@Test
@@ -74,8 +76,10 @@ public class TestMaterialDB {
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		Price newPurchasePrice = new Price(LocalDateTime.of(2024, 12, 10, 12, 0), new BigDecimal(180.00));
 		//Act
-		materialDB.insertNewPurchasePrice(material.getMaterialNo(), newPurchasePrice);
 		//Assert
+		assertDoesNotThrow(() -> {
+		materialDB.insertNewPurchasePrice(material.getMaterialNo(), newPurchasePrice);
+		},"Error inserting purchase price");
 				
 	}
 	
@@ -85,9 +89,10 @@ public class TestMaterialDB {
 		Material material = materialDB.findMaterialByMaterialNo(1001);
 		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
 		//Act
+		assertDoesNotThrow(() -> {
 		materialDB.insertNewMaterialDescription(material.getMaterialNo(), newMaterialDescription);	
-		//Assert
-				
+		},"Error inserting material description");
+		
 	}
 	
 }

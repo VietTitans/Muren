@@ -57,7 +57,7 @@ public class OrderController {
 	public void addWorkHours(Employee employee, BigDecimal hours) throws Exception {
 		BigDecimal minBoundary = new BigDecimal(0.00);
 		BigDecimal maxBoundary = new BigDecimal(99.00);
-		if(employee != null && hours.compareTo(minBoundary) > 0.00 && hours.compareTo(maxBoundary) <= 99.00) {
+		if(employee != null && hours.compareTo(minBoundary) >= 0.00 && hours.compareTo(maxBoundary) <= 0) {
 		HourLog newLog = logController.addEmployeeToHourLog(employee, hours);
 		currentOrder.addHourLogToOrder(newLog);	
 		}else {
@@ -82,12 +82,8 @@ public class OrderController {
 	}
 	public void removeCustomer() {
 		currentOrder.setCustomer(null);
-<<<<<<< Updated upstream
-=======
 	}
 	public Customer getCustomer() {
 		return currentOrder.getCustomer();
->>>>>>> Stashed changes
 	}
-
 }

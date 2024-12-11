@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 import controller.DataAccessException;
@@ -64,9 +65,9 @@ public class MaterialDB implements MaterialDBIF {
 			psSelectMaterialNoSalesPrice = connection.prepareStatement(PS_SELECT_FROM_SALES_PRICE);
 			psSelectMaterialNoPurchasePrice = connection.prepareStatement(PS_SELECT_FROM_PURCHASE_PRICE);
 			psSelectStockMaterialIdStockReservation = connection.prepareStatement(PS_SELECT_FROM_STOCK_RESERVATION);
-			psInsertIntoMaterialDescription = connection.prepareStatement(PS_INSERT_INTO_MATERIAL_DESCRIPTION);
-			psInsertIntoSalesPrice = connection.prepareStatement(PS_INSERT_INTO_SALES_PRICE);
-			psInsertIntoPurchasePrice = connection.prepareStatement(PS_INSERT_INTO_PURCHASE_PRICE);
+			psInsertIntoMaterialDescription = connection.prepareStatement(PS_INSERT_INTO_MATERIAL_DESCRIPTION,java.sql.Statement.RETURN_GENERATED_KEYS);
+			psInsertIntoSalesPrice = connection.prepareStatement(PS_INSERT_INTO_SALES_PRICE,java.sql.Statement.RETURN_GENERATED_KEYS);
+			psInsertIntoPurchasePrice = connection.prepareStatement(PS_INSERT_INTO_PURCHASE_PRICE,java.sql.Statement.RETURN_GENERATED_KEYS);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -142,9 +143,10 @@ public class MaterialDB implements MaterialDBIF {
 			psInsertIntoSalesPrice.setTimestamp(2,timeStamp);
 			psInsertIntoSalesPrice.setInt(3,materialNo);
 			psInsertIntoSalesPrice.executeUpdate();
+
 		} catch (SQLException e) {
 	        throw new DataAccessException("Error inserting sales price", e);
-	    }
+	    };
 	}
 	
 	@Override
