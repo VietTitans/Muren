@@ -38,40 +38,40 @@ class TestMaterialLogDB {
 	}
 	
 	
-//	@Test
-//	void testSaveMaterialLog() throws DataAccessException {
-//		//Arrange
-//		Employee employee = new Employee();
-//		employee.setEmployeeId(1);
-//		int expectedLogId = 6;
-//		ArrayList<MaterialDescription> materialDescriptions = new ArrayList<>();
-//		ArrayList<Price> salesPrices = new ArrayList<>();
-//		ArrayList<Price> purchasePrices = new ArrayList<>();
-//
-//		StockMaterial stockMaterial = new StockMaterial(1001 , "Spand", materialDescriptions, salesPrices, purchasePrices, 1, 5, 2);
-//		int orderId = 1; 
-//		MaterialLog expectedResult = new MaterialLog(employee, stockMaterial, orderId);
-//		//Act
-//		int returnedKey = materialLogDB.saveMaterialLog(expectedResult, orderId);
-//		//Assert		
-//		assertEquals(expectedLogId, returnedKey);
-//	}
-//	
-//	@Test
-//	void testUpdateQuantity() throws DataAccessException {
-//		//Arrange
-//		StockMaterial material = new StockMaterial(0, null, null, null, null, 0, 0, 0);
-//		material.setQuantity(50);
-//		Employee employee = new Employee();
-//		MaterialLog materialLog = new MaterialLog(employee, material, 20);
-//		//Act
-//		//Assert
-//		int expectedResult = 30;
-//		StockMaterial materialFromLog = (StockMaterial) material;
-//		int result = materialFromLog.getQuantity();
-//		assertEquals(expectedResult, result);
-//		
-//	}
+	@Test
+	void testSaveMaterialLog() throws DataAccessException {
+		//Arrange
+		Employee employee = new Employee();
+		employee.setEmployeeId(1);
+		int expectedLogId = 6;
+		ArrayList<MaterialDescription> materialDescriptions = new ArrayList<>();
+		ArrayList<Price> salesPrices = new ArrayList<>();
+		ArrayList<Price> purchasePrices = new ArrayList<>();
+
+		StockMaterial stockMaterial = new StockMaterial(1001 , "Spand", materialDescriptions, salesPrices, purchasePrices, 1, 5, 2);
+		int orderId = 1; 
+		MaterialLog expectedResult = new MaterialLog(employee, stockMaterial, orderId);
+		//Act
+		int returnedKey = materialLogDB.saveMaterialLog(expectedResult, orderId);
+		//Assert		
+		assertEquals(expectedLogId, returnedKey);
+	}
+	
+	@Test
+	void testUpdateQuantity() throws DataAccessException {
+		//Arrange
+		StockMaterial material = new StockMaterial(0, null, null, null, null, 0, 0, 0);
+		material.setQuantity(50);
+		Employee employee = new Employee();
+		MaterialLog materialLog = new MaterialLog(employee, material, 20);
+		//Act
+		//Assert
+		int expectedResult = 30;
+		StockMaterial materialFromLog = (StockMaterial) material;
+		int result = materialFromLog.getQuantity();
+		assertEquals(expectedResult, result);
+		
+	}
 	@Test
 	void testSaveMaterialLogWithGenericMaterial() throws DataAccessException{
 		MaterialDB materialDB = new MaterialDB();
