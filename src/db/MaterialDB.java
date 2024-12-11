@@ -32,14 +32,10 @@ public class MaterialDB implements MaterialDBIF {
 	private static final String PS_SELECT_FROM_PURCHASE_PRICE = " SELECT * FROM PurchasePrice WHERE MaterialNo = ?\r\n"
 			+ "ORDER BY PurchasePriceTimeStamp DESC;";
 	private static final String PS_SELECT_FROM_STOCK_RESERVATION = "Select * FROM StockReservation WHERE StockMaterialId = ?;";
-	
-
-	private static final String PS_INSERT_INTO_MATERIAL_DESCRIPTION = "INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, MaterialNo) VALUES (?, ?, ?);";
-	
+	private static final String PS_INSERT_INTO_MATERIAL_DESCRIPTION = "INSERT INTO MaterialDescription (Description, MaterialDescriptionTimeStamp, MaterialNo) "
+			+ "VALUES (?, ?, ?);";
 	private static final String PS_INSERT_INTO_SALES_PRICE ="INSERT INTO SalesPrice (Price, SalesPriceTimeStamp, MaterialNo) VALUES (?, ?, ?);";
-	
 	private static final String PS_INSERT_INTO_PURCHASE_PRICE ="INSERT INTO PurchasePrice (Price, PurchasePriceTimeStamp, MaterialNo) VALUES (?, ?, ?);";
-	
 	
 	private PreparedStatement psSelectMaterialNoMaterial;
 	private PreparedStatement psSelectMaterialNoMaterialDescription;
@@ -56,7 +52,7 @@ public class MaterialDB implements MaterialDBIF {
 		try {
 		initPreparedStatements();
 		}
-		catch (DataAccessException e){ //Ændret fra SQL-Exception til DataAccessException for at matche "throws" 
+		catch (DataAccessException e){
 			throw new DataAccessException("Statement could not be prepared", e);
 		}
 	} 
@@ -140,15 +136,11 @@ public class MaterialDB implements MaterialDBIF {
 	@Override
 	public void insertNewSalesPrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
 		try {
-			//Added prints for debugging
 			BigDecimal value = newPrice.getPreVATValue();
 			psInsertIntoSalesPrice.setBigDecimal(1, value);
-			System.out.println("Value = " + value);
 			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
 			psInsertIntoSalesPrice.setTimestamp(2,timeStamp);
-			System.out.println("Timestamp = " + timeStamp);
 			psInsertIntoSalesPrice.setInt(3,materialNo);
-			System.out.println("MaterialNo = " + materialNo);
 			psInsertIntoSalesPrice.executeUpdate();
 		} catch (SQLException e) {
 	        throw new DataAccessException("Error inserting sales price", e);
@@ -157,19 +149,13 @@ public class MaterialDB implements MaterialDBIF {
 	
 	@Override
 	public void insertNewPurchasePrice(int materialNo, Price newPrice) throws SQLException, DataAccessException {
-		
-		
 		try {
 			if(newPrice != null) {
-			//Added prints for debugging
 			BigDecimal adjustedValue = newPrice.getPreVATValue();
 			psInsertIntoPurchasePrice.setBigDecimal(1, adjustedValue);
-			System.out.println("Value = " + adjustedValue);
 			Timestamp timeStamp = Timestamp.valueOf(newPrice.getTimeStamp());
 			psInsertIntoPurchasePrice.setTimestamp(2,timeStamp);
-			System.out.println("Value = " + timeStamp);
 			psInsertIntoPurchasePrice.setInt(3,materialNo);
-			System.out.println("Value = " + materialNo);
 			psInsertIntoPurchasePrice.executeUpdate();
 			}
 		} catch (SQLException e) {
@@ -205,10 +191,12 @@ public class MaterialDB implements MaterialDBIF {
 	}
 
 	
-	private StockMaterial buildObjectStockMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, int stockMaterialId) throws DataAccessException {
+	private StockMaterial buildObjectStockMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, 
+															ArrayList<Price> purchasePrices, int stockMaterialId) throws DataAccessException {
 		StockMaterial stockMaterial = null;
 		try {
-			stockMaterial = new StockMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescriptions, salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
+			stockMaterial = new StockMaterial(rs.getInt("MaterialNo"), rs.getString("ProductName"), materialDescriptions,
+														salesPrices, purchasePrices, rs.getInt("MinStock"), rs.getInt("MaxStock"), rs.getInt("Quantity"));	
 			
 			psSelectStockMaterialIdStockReservation.setInt(1,stockMaterialId);
 			ResultSet rsStockReservation = psSelectStockMaterialIdStockReservation.executeQuery();
@@ -231,13 +219,12 @@ public class MaterialDB implements MaterialDBIF {
 	}
 	
 
-	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
+	private GenericMaterial buildObjectGenericMaterial(ResultSet rs, ArrayList<MaterialDescription> materialDescriptions, 
+																ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices) throws DataAccessException {
 		GenericMaterial genericMaterial = null;
 		try {
-			System.out.println("GenericMaterialId: " + rs.getString("GenericMaterialId"));
-			System.out.println("MaterialNo "+ rs.getInt(7));
-			genericMaterial = new GenericMaterial(rs.getInt(7), rs.getString("ProductName"), materialDescriptions, salesPrices, purchasePrices, rs.getString("ProductType"));
-			
+			genericMaterial = new GenericMaterial(rs.getInt(7), rs.getString("ProductName"), materialDescriptions, 
+															salesPrices, purchasePrices, rs.getString("ProductType"));
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException("Cant create GenericMaterial", e);
