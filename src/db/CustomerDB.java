@@ -54,7 +54,7 @@ public class CustomerDB implements CustomerDBIF {
 			customer.setlName(resultSet.getString("LastName"));
 			customer.setPhoneNo(resultSet.getString("PhoneNo"));
 			customer.setEmail(resultSet.getString("Email"));
-			
+			customer.setCustomerId(resultSet.getInt("CustomerNo"));
 		if (fullAssertion = true) {
 			// TODO Finish Method when a method requires the use of an Address
 		}

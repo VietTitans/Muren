@@ -21,6 +21,10 @@ public class Order {
 		hourLogs = new ArrayList<>();
 	}
 	
+	public void setOrderMadeBy(Employee orderMadeBy) {
+		OrderMadeBy = orderMadeBy;
+	}
+
 	public void addMaterialLogToOrder(MaterialLog materialLog) {
 		materialLogs.add(materialLog);
 	}

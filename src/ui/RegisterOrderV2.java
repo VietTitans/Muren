@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -54,6 +55,7 @@ public class RegisterOrderV2 extends JFrame {
 	private JTable employeeTable;
 	private JTextField txtMngde;
 	private OrderController currentOrderController;
+	private Employee placeHolderEmployee;
 
 	/**
 	 * Launch the application.
@@ -72,6 +74,9 @@ public class RegisterOrderV2 extends JFrame {
 	public RegisterOrderV2() {
 		try {
 		this.currentOrderController = new OrderController();
+		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
+		placeHolderEmployee = new Employee();
+		placeHolderEmployee.setEmployeeId(1);
 		} catch (Exception e) {
 			 e.printStackTrace();  // Log the exception
 		      //  JOptionPane.showMessageDialog(this, "Failed to initialize OrderController.");
@@ -466,13 +471,12 @@ public class RegisterOrderV2 extends JFrame {
 				//descriptions.add(materialDescription);
 				
 				//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
-				Employee employee = new Employee();
 				int materialNo = Integer.parseInt(txtProduktno.getText());
 				int amountNo = Integer.parseInt(txtMngde.getText());
 				
 				
 				try {
-					Material material = currentOrderController.findAndAddMaterialByMaterialNo(employee,materialNo,amountNo);
+					Material material = currentOrderController.findAndAddMaterialByMaterialNo(placeHolderEmployee,materialNo,amountNo);
 						if (material.getProductName() == null) {
 							MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
 							materialNotFoundDialog.setVisible(true);
@@ -526,6 +530,7 @@ public class RegisterOrderV2 extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
 					currentOrderController.saveOrder();
 				} catch (GeneralException e1) {
 					// TODO Auto-generated catch block

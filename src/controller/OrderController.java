@@ -25,6 +25,7 @@ public class OrderController {
 		employeeController = new EmployeeController();
 		materialController = new MaterialController();
 		currentOrder = new Order(null);
+		orderInterface = new OrderDB();
 	}
 	
 	

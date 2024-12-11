@@ -152,9 +152,8 @@ class TestOrderController {
 		//Act
 		orderController.findAndAddMaterialByMaterialNo(employee,1001 , 50);
 		
-		
 		//Assert
-		assertNull(material);
+		assertTrue(orderController.getCurrentOrder().getMaterialLogs().size() == 0);
 	}
 	
 	@Test
