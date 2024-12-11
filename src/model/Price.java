@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Price {
-	/*
-	 * timeStamp 
-	 */
+
 	private LocalDateTime priceTimeStamp;
 	private BigDecimal preVATValue;
 	
