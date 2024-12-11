@@ -33,7 +33,7 @@ class TestMaterialLogDB {
 	
 	@BeforeEach
 	public void initEach() throws DataAccessException {
-//		ResetDB.main(null);
+		ResetDB.main(null);
 		materialLogDB = new MaterialLogDB();
 	}
 	
@@ -73,7 +73,9 @@ class TestMaterialLogDB {
 		
 	}
 	@Test
-	void testSaveMaterialLogWithGenericMaterial() throws DataAccessException{
+	void testSaveMaterialLogWithGenericMaterial() throws DataAccessException, InterruptedException{
+		//Sleeps for 1000 milisekunder otherwise the MaterialLog is insert with dublicate key (Same timeStamp) as testData
+		Thread.sleep(1000);
 		MaterialDB materialDB = new MaterialDB();
 		Employee employee = new Employee();
 		employee.setEmployeeId(1);
