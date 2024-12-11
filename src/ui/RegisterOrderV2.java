@@ -29,6 +29,7 @@ import model.Customer;
 import model.Employee;
 import model.Material;
 import model.MaterialDescription;
+import model.MaterialLog;
 import model.Price;
 import model.StockMaterial;
 
@@ -334,7 +335,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_2 = new JButton("Fjern kunde");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentOrderController.removeCostumer();
+				currentOrderController.removeCustomer();
 				customerLabel.setText("kunde");
 			}
 		});
@@ -543,8 +544,25 @@ public class RegisterOrderV2 extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-					currentOrderController.saveOrder();
+					Customer customer = currentOrderController.getCustomer();
+					System.out.println(customer.getfName());
+					if (customer != null && materialTable.getRowCount() > 0) {
+						
+						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
+						//ArrayList<MaterialLog> materialLogs = currentOrderController.getCurrentOrder().getMaterialLogs();
+						//for (Material : materiakLogs) {
+							
+						//}
+						currentOrderController.saveOrder();
+					}
+					else if (customer != null && employeeTable.getRowCount() > 0) {
+						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
+						currentOrderController.saveOrder();
+					}
+					else {
+						OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
+						orderNotCompleteDialog.setVisible(true);
+					}
 				} catch (GeneralException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -82,6 +82,12 @@ public class OrderController {
 	}
 	public void removeCustomer() {
 		currentOrder.setCustomer(null);
+<<<<<<< Updated upstream
+=======
+	}
+	public Customer getCustomer() {
+		return currentOrder.getCustomer();
+>>>>>>> Stashed changes
 	}
 
 }
