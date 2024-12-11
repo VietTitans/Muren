@@ -64,6 +64,11 @@ public class OrderController {
 		}
 		
 	}
+	public Order getCurrentOrder() {
+		return currentOrder;
+	}
+
+
 	public void removeMaterialLog(int materialIndex) {
 		currentOrder.removeMaterial(materialIndex);
 	}
