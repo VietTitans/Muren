@@ -81,7 +81,11 @@ public class AddHoursDialog extends JDialog {
 						double conversionNo = minutes / 60;
 						double result = 0;
 						System.out.println(conversionNo);
-						if (conversionNo > 0 && conversionNo <= 0.25) {
+	
+						if (conversionNo == 0 ) {
+							returnHours(hours);
+						}
+						else if (conversionNo > 0 && conversionNo <= 0.25) {
 							result = hours + 0.25;
 							returnHours(result);
 						}
