@@ -18,26 +18,20 @@ class TestEmployeeController {
 		ResetDB.main(null);
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+
 
 	@Test
 	void testFindEmployeeByEmployeeId() throws GeneralException, DataAccessException {
 		//Arrange
-		/*Employee exists in the database
-		Michael Scott 
-		CPR: 1234567890	
-		personId: 9
-		*/
-		//Act
-		int validEmployeeId = 1;
-		Employee result = employeeController.findEmployeeByEmployeeId(validEmployeeId, false);
-		//Assert
 		String expectedFName = "Michael";
 		String expectedLName = "Scott";
 		String expectedCPR = "1234567890";
 		int expectedEmployeeId = 1;
+		
+		//Act
+		int validEmployeeId = 1;
+		Employee result = employeeController.findEmployeeByEmployeeId(validEmployeeId, false);
+		//Assert
 		assertEquals(expectedFName, result.getfName());
 		assertEquals(expectedLName, result.getlName());
 		assertEquals(expectedCPR, result.getCpr());
@@ -45,17 +39,15 @@ class TestEmployeeController {
 	}
 	
 	@Test
-	void testEmployeeDoesntExists() throws NullPointerException {
+	void testEmployeeDoesntExists() throws  GeneralException, DataAccessException {
 		//Arrange
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+		int invalidEmployeeId = 9;
 			//Act
-			int invalidEmployeeId = 9;
-			employeeController.findEmployeeByEmployeeId(invalidEmployeeId, false);
-			throw new NullPointerException("Employee not found");
-		});
-		//Assert
-		assertEquals("Employee not found", exceptionThrown.getMessage());
-	}
+			Employee employee = employeeController.findEmployeeByEmployeeId(invalidEmployeeId, false);
+			
+			//Assert
+			assertNull(employee);
+		}
 
 
 }

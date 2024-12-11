@@ -40,9 +40,10 @@ class TestOrderController {
 	@Test
 	void testFindAndAddCustomerByPhoneNo() throws DataAccessException {
 		//Arrange
+		String validPhoneNo = "12345678";
 		//Customer exits in the database John, Doe, phoneNo: 1234567s john.doe@example.com
 		//Act
-		Customer result = orderController.findAndAddCustomerByPhoneNo("12345678");
+		Customer result = orderController.findAndAddCustomerByPhoneNo(validPhoneNo);
 		//Assert
 		assertEquals("John", result.getfName());
 		assertEquals("Doe", result.getlName());
@@ -52,9 +53,10 @@ class TestOrderController {
 	@Test
 	void testFindAndAddMaterialByMaterialNo() throws DataAccessException {
 		//Arrange
+		int validMaterialNo = 1001;
 		//Material Cement with productNo 1001 exists in the DB
 		//Act
-		Material foundMaterial = materialController.findMaterialByMaterialNo(1001);
+		Material foundMaterial = materialController.findMaterialByMaterialNo(validMaterialNo);
 		//Assert
 		String expextedResult = "Cement";
 		String result = foundMaterial.getProductName();
@@ -95,7 +97,7 @@ class TestOrderController {
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			orderController.addWorkHours(employee, invalidInput);
-			throw new Exception("Invalid amount chosen");
+//			throw new Exception("Invalid amount chosen");
 		});
 		//Assert
 		String result = exceptionThrown.getMessage();
@@ -132,7 +134,6 @@ class TestOrderController {
 		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
 			orderController.addWorkHours(employee, invalidInput);
-			throw new Exception("Invalid amount chosen");
 		});
 		//Assert
 		String result = exceptionThrown.getMessage();
@@ -142,20 +143,18 @@ class TestOrderController {
 	
 	//Boundary testing: Add material quantity to order
 	@Test
-	void testAddMaterialLogToOrderOverMaxStockLimitThrowsException() throws DataAccessException {
+	void testAddMaterialLogToOrderOverMaterialQuantity() throws DataAccessException {
 		//Arrange
 		Employee employee = new Employee();
+		employee.setEmployeeId(1);
 		//Cement (materialNo 1001) has a maximum stock of 75 in database
-		Exception exceptionThrown = assertThrows(Exception.class, () -> {
-			//Act
-			orderController.findAndAddMaterialByMaterialNo(employee, 1001, 40);
-			throw new Exception("Invalid amount chosen");
-		});
-		//Assert
-		String result = exceptionThrown.getMessage();
-		String expectedResult = "Invalid amount chosen"; 
-		assertEquals(expectedResult, result);
 		
+		//Act
+		orderController.findAndAddMaterialByMaterialNo(employee,1001 , 50);
+		
+		
+		//Assert
+		assertNull(material);
 	}
 	
 	@Test
@@ -164,13 +163,16 @@ class TestOrderController {
 		Employee employee = new Employee();
 		Order order = new Order(employee);
 		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
-		//Cement has available quantity of 50 in database
+		//Cement has a quantity of 50 in database
+		//Cement has StockReservations with a total quantity of 10 
+		//Cement therefore has 40 available 
+		
 		MaterialLog materialLog = new MaterialLog(employee, cement, 20);
 		//Act
 		order.addMaterialLogToOrder(materialLog);
 		//Assert;
 		int result = cement.getQuantity();
-		int expectedResult = 30;
+		int expectedResult = 20;
 		assertEquals(expectedResult, result);
 		
 	}
@@ -179,18 +181,18 @@ class TestOrderController {
 	void testAddMaterialLogToOrderUnderMinStockLimit() throws DataAccessException {
 		//Arrange
 		Employee employee = new Employee();
-		Order order = new Order(employee);
 		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
 		//Cement has available quantity of 50 in database
 		int invalidInput = 0;
-		MaterialLog materialLog = new MaterialLog(employee, cement, invalidInput);
-		Exception exceptionThrown = assertThrows(Exception.class, () -> {
-			//Act
-			order.addMaterialLogToOrder(materialLog);
-			throw new IllegalArgumentException("Invalid amount chosen");
-		});
-		int resultQuantity = cement.getQuantity();
+		LogController logController = new LogController();
 		int expectedQuantity = 50;
+		
+		//Act
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			logController.addMaterialToLog(employee, cement, invalidInput);
+		});
+		//Assert
+		int resultQuantity = cement.getQuantity();
 		assertEquals(expectedQuantity, resultQuantity);
 		assertEquals("Invalid amount chosen", exceptionThrown.getMessage());
 	}
@@ -199,18 +201,18 @@ class TestOrderController {
 	void testAddMaterialLogToOrderNegativeInput() throws DataAccessException {
 		//Arrange
 		Employee employee = new Employee();
-		Order order = new Order(employee);
 		StockMaterial cement = (StockMaterial)materialController.findMaterialByMaterialNo(1001);
 		//Cement has available quantity of 50 in database
 		int invalidInput = -1;
-		MaterialLog materialLog = new MaterialLog(employee, cement, invalidInput);
-		Exception exceptionThrown = assertThrows(Exception.class, () -> {
-			//Act
-			order.addMaterialLogToOrder(materialLog);
-			throw new IllegalArgumentException("Invalid amount chosen");
-		});
-		int resultQuantity = cement.getQuantity();
+		LogController logController = new LogController();
 		int expectedQuantity = 50;
+		
+		//Act
+		Exception exceptionThrown = assertThrows(Exception.class, () -> {
+			logController.addMaterialToLog(employee, cement, invalidInput);
+		});
+		//Assert
+		int resultQuantity = cement.getQuantity();
 		assertEquals(expectedQuantity, resultQuantity);
 		assertEquals("Invalid amount chosen", exceptionThrown.getMessage());
 	}
@@ -221,12 +223,10 @@ class TestOrderController {
 		Employee employee = new Employee();
 		Order order = new Order(employee);
 		Material invalidInput = null;
-		MaterialLog materialLog = new MaterialLog(employee, invalidInput, 20);
-		Exception exceptionThrown = assertThrows(Exception.class, () -> {
-			//Act
-			order.addMaterialLogToOrder(materialLog);
-			throw new Exception("Error: Material is null");
-		});
-		assertEquals("Error: Material is null", exceptionThrown.getMessage());
+		LogController logController = new LogController();
+		//Act
+		logController.addMaterialToLog(employee, invalidInput, 1);
+			System.out.println(order.getMaterialLogs().size());
+		assertTrue(order.getMaterialLogs().size() == 0);
 	}
 }

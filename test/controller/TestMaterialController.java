@@ -25,7 +25,6 @@ class TestMaterialController {
 	@Test
 	void testFindMaterialByMaterialNo() throws Exception {
 		//Arrange
-		//Material(int, string) material (1001, "cement") exists in the DB:
 		//Act
 		int materialNo = 1001;
 		Material result = materialController.findMaterialByMaterialNo(materialNo);
@@ -35,16 +34,13 @@ class TestMaterialController {
 	}
 	
 	@Test
-	void testMaterialDoesntExists() throws NullPointerException {
+	void testMaterialDoesntExists() throws  DataAccessException {
 		//Arrange
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+		int invalidMaterialNo = 0005;
 			//Act
-			int invalidMaterialNo = 0005;
-			materialController.findMaterialByMaterialNo(invalidMaterialNo);
-			throw new NullPointerException("Material not found");
-		});
+			Material material = materialController.findMaterialByMaterialNo(invalidMaterialNo);
 		//Assert
-		assertEquals("Material not found", exceptionThrown.getMessage());
+			assertNull(material);
 	}
 	
 

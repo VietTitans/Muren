@@ -19,10 +19,7 @@ class TestCustomerController {
 		ResetDB.main(null);
 	}
 
-	@AfterEach
-	void tearDown() throws DataAccessException {
-	}
-	
+
 	@Test
 	void testFindCustomerByPhoneNo() throws DataAccessException {
 		//Arrange
@@ -40,16 +37,14 @@ class TestCustomerController {
 	
 	@Test
 	//Integration test
-	void testCustomerDoesntExists() throws NullPointerException {
-		//Using NullPointerException to test for null
+	void testCustomerDoesntExists() throws DataAccessException   {
 		//Arrange
-		NullPointerException exceptionThrown = assertThrows(NullPointerException.class, () -> {
+		String invalidPhoneNo = "66656666";
 			//Act
-			customerController.findCustomerByPhoneNo("66656666", false);
-			throw new NullPointerException("Customer not found");
-		});
+			Customer customer = customerController.findCustomerByPhoneNo(invalidPhoneNo, false);
+		
 		//Assert
-		assertEquals("Customer not found", exceptionThrown.getMessage());
+			assertNull(customer);
 	}
 	
 }
