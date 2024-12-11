@@ -17,36 +17,65 @@ public abstract class Person {
 		this.email = email;
 		this.address = address;
 	}
-	public String getfName() {
+	public abstract String getfName();
+	
+	protected String getfNameSub() {
 		return fName;
 	}
-	public void setfName(String fName) {
+	
+	public abstract void setfName(String fName);
+	
+	protected void setfNameSub(String fName) {
 		this.fName = fName;
 	}
-	public String getlName() {
+	
+	public abstract String getlName();
+	
+	protected String getlNameSub() {
 		return lName;
 	}
-	public void setlName(String lName) {
+	
+	public abstract void setlName(String lName);
+	
+	protected void setlNameSub(String lName) {
 		this.lName = lName;
 	}
-	public String getPhoneNo() {
+	
+	public abstract String getPhoneNo();
+	
+	protected String getPhoneNoSub() {
 		return phoneNo;
 	}
-	public void setPhoneNo(String phoneNo) {
+	
+	public abstract void setPhoneNo(String phoneNo);
+	
+	protected void setPhoneNoSub(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public String getEmail() {
+	
+	public abstract String getEmail();
+	
+	protected String getEmailSub() {
 		return email;
 	}
-	public void setEmail(String email) {
+	
+	public abstract void setEmail(String email);
+	
+	protected void setEmailSub(String email) {
 		this.email = email;
 	}
-	public Address getAddress() {
+	
+	public abstract Address getAddress();
+	
+	protected Address getAddressSub() {
 		return address;
 	}
-	public void setAddress(Address address) {
+	
+	public abstract void setAddress(Address address);
+	
+	protected void setAddressSub(Address address) {
 		this.address = address;
-	} 
+	}
 	
 
 }
