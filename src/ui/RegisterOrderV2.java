@@ -97,9 +97,9 @@ public class RegisterOrderV2 extends JFrame {
 		contentPane.add(panel, BorderLayout.WEST);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{30, 0, 0};
-		gbl_panel.rowHeights = new int[]{30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 30, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 30, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		txtKundeTlf = new JTextField();
@@ -143,6 +143,22 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_customerLabel.gridx = 1;
 		gbc_customerLabel.gridy = 3;
 		panel.add(customerLabel, gbc_customerLabel);
+		
+		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
+				removeEmployeeDialog.setVisible(true);
+			}
+		});
+		
+		JButton btnNewButton_6 = new JButton("Fjern materiale");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
+				removeMaterialFrame.setVisible(true);
+			}
+		});
 		
 		txtProduktno = new JTextField();
 		txtProduktno.addFocusListener(new FocusAdapter() {
@@ -206,6 +222,58 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_addMaterialBtn.gridy = 7;
 		panel.add(addMaterialBtn, gbc_addMaterialBtn);
 		
+				addMaterialBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						//ArrayList<Price> salesPrices = new ArrayList<>();
+						//BigDecimal priceValue = new BigDecimal(10);
+						//Price salesPrice = new Price(priceValue);
+						//salesPrices.add(salesPrice);
+						
+						//ArrayList<Price> purchasePrices = new ArrayList<>();
+						//BigDecimal purchasePriceValue = new BigDecimal(5);
+						//Price purchasePrice = new Price(purchasePriceValue);
+						//purchasePrices.add(purchasePrice);
+						
+						//ArrayList<MaterialDescription> descriptions = new ArrayList<>();
+						//MaterialDescription materialDescription = new MaterialDescription("en ting");
+						//descriptions.add(materialDescription);
+						
+						//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
+						int materialNo = Integer.parseInt(txtProduktno.getText());
+						int amountNo = Integer.parseInt(txtMngde.getText());
+						
+						
+						try {
+							Material material = currentOrderController.findAndAddMaterialByMaterialNo(placeHolderEmployee,materialNo,amountNo);
+								if (material == null) {
+									MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
+									materialNotFoundDialog.setVisible(true);
+								}
+								else {
+									int newNr = materialTable.getRowCount() + 1;
+									BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
+									Double totalPrice = totalBDPrice.doubleValue();
+									Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
+									
+									Object[] newRow = {newNr,
+											material.getMaterialNo(),
+											material.getProductName(), 
+											material.getCurrentMaterialDescription().getDescription(),
+											amountNo, 
+											saleprice, 
+											totalPrice};
+									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+									model.addRow(newRow);	
+								}
+						}
+					catch (DataAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+		
 		txtMedarbejderid = new JTextField();
 		txtMedarbejderid.addFocusListener(new FocusAdapter() {
 			@Override
@@ -239,32 +307,52 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_btnNewButton_4.gridx = 1;
 		gbc_btnNewButton_4.gridy = 10;
 		panel.add(btnNewButton_4, gbc_btnNewButton_4);
-		
-		JButton btnNewButton_6 = new JButton("Fjern materiale");
-		btnNewButton_6.addActionListener(new ActionListener() {
+		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
-				removeMaterialFrame.setVisible(true);
+				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
+				try {
+					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, false);
+					System.out.println(employee.getfName());
+					if(employee.getfName() == null) {
+						
+					}
+					else {
+						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderV2.this);
+						confirmEmployeeDialog.setVisible(true);
+						
+					}
+				} catch (GeneralException e1) {
+					 //TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (DataAccessException e1) {
+					 //TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
+		
+		JButton btnNewButton_2 = new JButton("Fjern kunde");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentOrderController.removeCostumer();
+				customerLabel.setText("kunde");
+			}
+		});
+		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
+		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton_2.gridx = 1;
+		gbc_btnNewButton_2.gridy = 12;
+		panel.add(btnNewButton_2, gbc_btnNewButton_2);
 		btnNewButton_6.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 1;
-		gbc_btnNewButton_6.gridy = 12;
+		gbc_btnNewButton_6.gridy = 13;
 		panel.add(btnNewButton_6, gbc_btnNewButton_6);
-		
-		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
-		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
-				removeEmployeeDialog.setVisible(true);
-			}
-		});
 		btnNewButton_5.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
 		gbc_btnNewButton_5.gridx = 1;
-		gbc_btnNewButton_5.gridy = 13;
+		gbc_btnNewButton_5.gridy = 14;
 		panel.add(btnNewButton_5, gbc_btnNewButton_5);
 		
 		JPanel panel_1 = new JPanel();
@@ -436,7 +524,7 @@ public class RegisterOrderV2 extends JFrame {
 
 				try {
 					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-						if (customer.getfName() == null) {
+						if (customer == null) {
 							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
 							customerNotFoundDialog.setVisible(true);
 							
@@ -449,81 +537,6 @@ public class RegisterOrderV2 extends JFrame {
 				} 
 				catch (Exception b) {
 					b.printStackTrace();  // This will print the stack trace of the exception to the console
-				}
-			}
-		});
-
-		addMaterialBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//ArrayList<Price> salesPrices = new ArrayList<>();
-				//BigDecimal priceValue = new BigDecimal(10);
-				//Price salesPrice = new Price(priceValue);
-				//salesPrices.add(salesPrice);
-				
-				//ArrayList<Price> purchasePrices = new ArrayList<>();
-				//BigDecimal purchasePriceValue = new BigDecimal(5);
-				//Price purchasePrice = new Price(purchasePriceValue);
-				//purchasePrices.add(purchasePrice);
-				
-				//ArrayList<MaterialDescription> descriptions = new ArrayList<>();
-				//MaterialDescription materialDescription = new MaterialDescription("en ting");
-				//descriptions.add(materialDescription);
-				
-				//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
-				int materialNo = Integer.parseInt(txtProduktno.getText());
-				int amountNo = Integer.parseInt(txtMngde.getText());
-				
-				
-				try {
-					Material material = currentOrderController.findAndAddMaterialByMaterialNo(placeHolderEmployee,materialNo,amountNo);
-						if (material.getProductName() == null) {
-							MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
-							materialNotFoundDialog.setVisible(true);
-						}
-						else {
-							int newNr = materialTable.getRowCount() + 1;
-							BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
-							Double totalPrice = totalBDPrice.doubleValue();
-							Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
-							
-							Object[] newRow = {newNr,
-									material.getMaterialNo(),
-									material.getProductName(), 
-									material.getCurrentMaterialDescription().getDescription(),
-									amountNo, 
-									saleprice, 
-									totalPrice};
-							DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
-							model.addRow(newRow);	
-						}
-				}
-			catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
-				try {
-					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, false);
-					System.out.println(employee.getfName());
-					if(employee.getfName() == null) {
-						
-					}
-					else {
-						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderV2.this);
-						confirmEmployeeDialog.setVisible(true);
-						
-					}
-				} catch (GeneralException e1) {
-					 //TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataAccessException e1) {
-					 //TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 			}
 		});

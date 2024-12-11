@@ -133,5 +133,9 @@ public class Order {
 			System.out.println(item.getHoursWorked());
 		}
 	}
+	public void setCostumer(Customer newCustomer) {
+		customer = newCustomer;
+	}
+	
 
 }
