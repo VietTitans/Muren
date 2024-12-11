@@ -31,7 +31,7 @@ public class StockMaterial extends Material {
 	}
 	
 
-	public int calculatedAvailableAmount() {
+	public int calculateAvailableAmount() {
 		int currentlyReserved = 0;
 		
 		for (StockReservation reservation : stockReservations) {

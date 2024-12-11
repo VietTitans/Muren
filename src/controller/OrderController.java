@@ -82,8 +82,11 @@ public class OrderController {
 	}
 	public void removeCustomer() {
 		currentOrder.setCustomer(null);
+
 	}
 	public Customer getCustomer() {
 		return currentOrder.getCustomer();
+
+
 	}
 }

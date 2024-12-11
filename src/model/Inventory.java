@@ -14,7 +14,7 @@ public abstract class Inventory {
 	
 	public abstract void addMaterialToInventory(Material material);
 	
-	public abstract Material getMaterialByProductNo(int productNo);
+	public abstract Material getMaterialByMaterialNo(int materialNo);
 	
 	public abstract HashMap<Integer, Material> getInventory();
 }

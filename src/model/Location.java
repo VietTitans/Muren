@@ -21,8 +21,8 @@ public class Location extends Inventory{
 	}
 
 	@Override
-	public Material getMaterialByProductNo(int productNo) {
-		Material material = materialsInInventory.get(productNo);
+	public Material getMaterialByMaterialNo(int materialNo) {
+		Material material = materialsInInventory.get(materialNo);
 		return material;
 	}
 	
