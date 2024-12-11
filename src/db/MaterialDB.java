@@ -20,11 +20,11 @@ import controller.DataAccessException;
 
 public class MaterialDB implements MaterialDBIF {
 
-	private static final String PS_SELECT_FROM_MATERIAL = "SELECT StockMaterial.*, GenericMaterial.*, Material.ProductName\r\n"
-			+ "FROM Material\r\n"
-			+ "FULL JOIN StockMaterial ON Material.MaterialNo = StockMaterial.MaterialNo\r\n"
-			+ "FULL JOIN GenericMaterial ON Material.MaterialNo = GenericMaterial.MaterialNo\r\n"
-			+ "WHERE Material.MaterialNo = ? ;"; 
+	private static final String PS_SELECT_FROM_MATERIAL = "SELECT Material.*, StockMaterial.MinStock, StockMaterial.MaxStock, StockMaterial.quantity, StockMaterial.StockMaterialId, GenericMaterial.GenericMaterialId, GenericMaterial.ProductType\r\n"
+			+ "		FROM Material\r\n"
+			+ "		LEFT JOIN StockMaterial ON Material.MaterialNo = StockMaterial.MaterialNo\r\n"
+			+ "		LEFT JOIN GenericMaterial ON Material.MaterialNo = GenericMaterial.MaterialNo\r\n"
+			+ "		WHERE Material.MaterialNo = 1001;"; 
 	private static final String PS_SELECT_FROM_MATERIAL_DESCRIPTION = " SELECT * FROM MaterialDescription WHERE MaterialNo = ?\r\n"
 			+ "ORDER BY MaterialDescriptionTimeStamp DESC;";
 	private static final String PS_SELECT_FROM_SALES_PRICE = " SELECT * FROM SalesPrice WHERE MaterialNo = ?\r\n"
