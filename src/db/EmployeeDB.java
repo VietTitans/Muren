@@ -69,7 +69,7 @@ public class EmployeeDB implements EmployeeDBIF {
 					foundAddress.setBuildingNo(addressResultSet.getString("BuildingNo"));
 					foundAddress.setFloor(addressResultSet.getInt("FloorNo"));
 					foundAddress.setZipCode(addressResultSet.getString("zipcode"));
-					foundAddress.setCity(addressResultSet.getString("City"));
+					foundAddress.setCity(addressResultSet.getString("CityName"));
 					foundAddress.setCountry(addressResultSet.getString("Country"));
 					foundEmployee.setAddress(foundAddress);
 
