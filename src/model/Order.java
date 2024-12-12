@@ -136,6 +136,18 @@ public class Order {
 	public void setCustomer(Customer newCustomer) {
 		customer = newCustomer;
 	}
-	
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setMaterialLogs(ArrayList<MaterialLog> materialLogs) {
+		this.materialLogs = materialLogs;
+	}
+
+	public void setHourLogs(ArrayList<HourLog> hourLogs) {
+		this.hourLogs = hourLogs;
+	}
+
 
 }
