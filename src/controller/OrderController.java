@@ -89,4 +89,7 @@ public class OrderController {
 
 
 	}
+	public BigDecimal calculateTotalHoursPrice() {
+		return currentOrder.calculateTotalHoursPrice();
+	}
 }

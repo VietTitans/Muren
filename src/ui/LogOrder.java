@@ -45,11 +45,10 @@ import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
 import java.awt.Color;
 
-public class RegisterOrderV2 extends JFrame {
+public class LogOrder extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtKundeTlf;
 	private JTextField txtProduktno;
 	private JTextField txtMedarbejderid;
 	private JTable materialTable;
@@ -57,9 +56,6 @@ public class RegisterOrderV2 extends JFrame {
 	private JTextField txtMngde;
 	private OrderController currentOrderController;
 	private Employee placeHolderEmployee;
-	private JLabel materialPriceTotal;
-	private JLabel totalOverallPrice;
-	private JLabel hoursTotalPrice;
 
 	/**
 	 * Launch the application.
@@ -67,7 +63,7 @@ public class RegisterOrderV2 extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-					RegisterOrderV2 frame = new RegisterOrderV2();
+					LogOrder frame = new LogOrder();
 					frame.setVisible(true);
 				
 			}
@@ -75,7 +71,7 @@ public class RegisterOrderV2 extends JFrame {
 	}
 
 
-	public RegisterOrderV2() {
+	public LogOrder() {
 		try {
 		this.currentOrderController = new OrderController();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
@@ -106,41 +102,6 @@ public class RegisterOrderV2 extends JFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		txtKundeTlf = new JTextField();
-		txtKundeTlf.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				txtKundeTlf.setText("");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				String str = txtKundeTlf.getText();
-				int strLenght = str.length();
-				if(strLenght < 1) {
-					txtKundeTlf.setText("Kunde Tlf:");
-				} else {
-					
-				}
-			}
-		});
-		txtKundeTlf.setHorizontalAlignment(SwingConstants.LEFT);
-		txtKundeTlf.setText("Kunde Tlf:");
-		GridBagConstraints gbc_txtKundeTlf = new GridBagConstraints();
-		gbc_txtKundeTlf.insets = new Insets(0, 0, 5, 0);
-		gbc_txtKundeTlf.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtKundeTlf.gridx = 1;
-		gbc_txtKundeTlf.gridy = 1;
-		panel.add(txtKundeTlf, gbc_txtKundeTlf);
-		txtKundeTlf.setColumns(10);
-		
-		JButton addCustomerButton = new JButton("Tilføj kunde");
-		GridBagConstraints gbc_addCustomerButton = new GridBagConstraints();
-		gbc_addCustomerButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addCustomerButton.insets = new Insets(0, 0, 5, 0);
-		gbc_addCustomerButton.gridx = 1;
-		gbc_addCustomerButton.gridy = 2;
-		panel.add(addCustomerButton, gbc_addCustomerButton);
-		
 		JLabel customerLabel = new JLabel("Kunde");
 		GridBagConstraints gbc_customerLabel = new GridBagConstraints();
 		gbc_customerLabel.insets = new Insets(0, 0, 5, 0);
@@ -151,7 +112,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
+				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(LogOrder.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
 		});
@@ -159,7 +120,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_6 = new JButton("Fjern materiale");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(LogOrder.this, materialTable);
 				removeMaterialFrame.setVisible(true);
 			}
 		});
@@ -269,7 +230,6 @@ public class RegisterOrderV2 extends JFrame {
 											totalPrice};
 									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 									model.addRow(newRow);	
-									addToMaterialTotal(totalPrice);
 								}
 						}
 					catch (DataAccessException e1) {
@@ -322,7 +282,7 @@ public class RegisterOrderV2 extends JFrame {
 						
 					}
 					else {
-						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderV2.this);
+						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, LogOrder.this);
 						confirmEmployeeDialog.setVisible(true);
 						
 					}
@@ -335,19 +295,6 @@ public class RegisterOrderV2 extends JFrame {
 				}
 			}
 		});
-		
-		JButton btnNewButton_2 = new JButton("Fjern kunde");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				currentOrderController.removeCustomer();
-				customerLabel.setText("kunde");
-			}
-		});
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 12;
-		panel.add(btnNewButton_2, gbc_btnNewButton_2);
 		btnNewButton_6.setForeground(new Color(255, 0, 0));
 		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
@@ -377,28 +324,22 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_lblNewLabel_6.gridy = 0;
 		panel_1.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		materialPriceTotal = new JLabel("0");
-		GridBagConstraints gbc_MaterialPriceTotal = new GridBagConstraints();
-		gbc_MaterialPriceTotal.insets = new Insets(0, 0, 5, 5);
-		gbc_MaterialPriceTotal.gridx = 1;
-		gbc_MaterialPriceTotal.gridy = 0;
-		panel_1.add(materialPriceTotal, gbc_MaterialPriceTotal);
+		JLabel lblNewLabel_7 = new JLabel("0 KR.");
+		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
+		gbc_lblNewLabel_7.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_7.gridx = 1;
+		gbc_lblNewLabel_7.gridy = 0;
+		panel_1.add(lblNewLabel_7, gbc_lblNewLabel_7);
 		
-		JLabel lblNewLabel_1 = new JLabel("DKK.");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 2;
-		gbc_lblNewLabel_1.gridy = 0;
-		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		hoursTotalPrice = new JLabel("0");
-		GridBagConstraints gbc_hoursTotalPrice = new GridBagConstraints();
-		gbc_hoursTotalPrice.anchor = GridBagConstraints.EAST;
-		gbc_hoursTotalPrice.insets = new Insets(0, 0, 5, 5);
-		gbc_hoursTotalPrice.gridx = 11;
-		gbc_hoursTotalPrice.gridy = 0;
-		panel_1.add(hoursTotalPrice, gbc_hoursTotalPrice);
-		hoursTotalPrice.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblNewLabel_3 = new JLabel("Total Timer:");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 11;
+		gbc_lblNewLabel_3.gridy = 0;
+		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JLabel lblNewLabel_4 = new JLabel("0 KR.");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
@@ -417,29 +358,22 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_lblNewLabel_5.gridy = 1;
 		panel_1.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
-		totalOverallPrice = new JLabel("0");
-		GridBagConstraints gbc_totalOverallPrice = new GridBagConstraints();
-		gbc_totalOverallPrice.anchor = GridBagConstraints.WEST;
-		gbc_totalOverallPrice.insets = new Insets(0, 0, 0, 5);
-		gbc_totalOverallPrice.gridx = 1;
-		gbc_totalOverallPrice.gridy = 1;
-		panel_1.add(totalOverallPrice, gbc_totalOverallPrice);
+		JLabel lblNewLabel_8 = new JLabel("0 KR.");
+		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
+		gbc_lblNewLabel_8.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_8.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_8.gridx = 1;
+		gbc_lblNewLabel_8.gridy = 1;
+		panel_1.add(lblNewLabel_8, gbc_lblNewLabel_8);
 		
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(RegisterOrderV2.this);
+				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(LogOrder.this);
 					cancelOrderFrame.setVisible(true);
 			}
 			
 		});
-		
-		JLabel lblNewLabel_7 = new JLabel("DKK.");
-		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-		gbc_lblNewLabel_7.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_7.gridx = 2;
-		gbc_lblNewLabel_7.gridy = 1;
-		panel_1.add(lblNewLabel_7, gbc_lblNewLabel_7);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
@@ -536,28 +470,6 @@ public class RegisterOrderV2 extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		
-		addCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-						if (customer == null) {
-							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
-							customerNotFoundDialog.setVisible(true);
-							
-						} 
-						else {
-							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
-							customerLabel.setText(name);
-							txtKundeTlf.setText("Kunde Tlf:");	
-						}
-				} 
-				catch (Exception b) {
-					b.printStackTrace();  // This will print the stack trace of the exception to the console
-				}
-			}
-		});
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -637,7 +549,6 @@ public class RegisterOrderV2 extends JFrame {
 				hours};
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
 		model.addRow(newRow);
-		addToHoursTotal();
 		try {
 			currentOrderController.addWorkHours(employee, hours);
 		} catch (Exception e) {
@@ -662,26 +573,6 @@ public class RegisterOrderV2 extends JFrame {
 	        employeeTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
-		
-	}
-	
-	public void addToMaterialTotal(double amount) {
-		double price = Double.parseDouble(materialPriceTotal.getText());
-		double totalPrice = price + amount;
-		materialPriceTotal.setText("" + totalPrice);
-		addToTotalPrice(amount);
-	}
-	
-	public void addToTotalPrice(double amount) {
-		double price = Double.parseDouble(totalOverallPrice.getText());
-		double totalPrice = price + amount;
-		totalOverallPrice.setText("" + totalPrice);
-	}
-	
-	public void addToHoursTotal() {
-		BigDecimal price = currentOrderController.calculateTotalHoursPrice();
-		Double totalPrice = price.doubleValue();
-		hoursTotalPrice.setText("" + totalPrice);
 		
 	}
 
