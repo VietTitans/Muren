@@ -3,12 +3,14 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 
 
 import controller.DataAccessException;
-
+import model.Employee;
 import model.HourLog;
+import model.MaterialLog;
 
 public class HourLogDB implements HourLogDBIF {
 
@@ -16,13 +18,15 @@ public class HourLogDB implements HourLogDBIF {
 	private PreparedStatement insertHourLogIntoLogs;
 	private static final String INSERT_HOURLOG_INTO_HOURLOG = "INSERT INTO HourLogs(HoursWorked, LogId) VALUES (?, ?);";
 	private PreparedStatement insertHourLogIntoHourLogs;
-	
+	private static final String SELECT_HOURlOGS_FROM_ORDERNO = " SELECT * FROM Logs,HourLogs  WHERE Logs.OrderNo = ? AND HourLogs.LogId = Logs.LogId";
+	private PreparedStatement selectHourLogsFromOrderNo;
 	public HourLogDB() throws DataAccessException {
 		try {
 	insertHourLogIntoLogs = DBConnection.getInstance().getConnection()
 			.prepareStatement(INSERT_HOURLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 	insertHourLogIntoHourLogs = DBConnection.getInstance().getConnection()
 			.prepareStatement(INSERT_HOURLOG_INTO_HOURLOG);
+	selectHourLogsFromOrderNo = DBConnection.getInstance().getConnection().prepareStatement(SELECT_HOURlOGS_FROM_ORDERNO);
 	}
 	catch (SQLException e) {
 		throw new DataAccessException("Statement Could Not Be Prepared", e);
@@ -54,7 +58,37 @@ public class HourLogDB implements HourLogDBIF {
 			throw new DataAccessException("HourLog Could Not Be Saved", e);
 		}
 		return hourLogKey;
+	}
+	public ArrayList<HourLog> findHourLogsByOrderNo(int orderNo) throws DataAccessException{
+		
+		ArrayList<HourLog> hourLogs = new ArrayList<HourLog>();
+		try {
+			selectHourLogsFromOrderNo.setInt(1, orderNo);
+			ResultSet resultSet = selectHourLogsFromOrderNo.executeQuery();
+			
+			while(resultSet.next()) {
+				HourLog foundHourLog = buildObject(resultSet);
+				hourLogs.add(foundHourLog);
+				
+			}
+			
+		} catch(SQLException e) {
+			throw new DataAccessException("MaterialLogs not found", e);
+		}
+		
+		return hourLogs;
+	}
+public HourLog buildObject(ResultSet resultSet) throws SQLException {
 	
+	Employee employee = new Employee();
+	employee.setEmployeeId(resultSet.getInt("EmployeeId"));
+	BigDecimal hours = resultSet.getBigDecimal("HoursWorked");
+	HourLog hourLog = new HourLog(employee, hours); 
+	
+	
+	
+	return hourLog;
+	
+}
+}
 
-}
-}

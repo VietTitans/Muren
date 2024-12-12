@@ -130,6 +130,8 @@ public class OrderDB implements OrderDBIF {
 				customer = customerDB.findCustomerByCustomerNo(resultSet.getInt("CustomerNo"), false);
 				ArrayList<MaterialLog> materialLogs = materialLogDB.findMaterialLogsByOrderNo(orderNo);
 				foundOrder.setMaterialLogs(materialLogs);
+				ArrayList<HourLog> hourLogs = hourLogDB.findHourLogsByOrderNo(orderNo);
+				foundOrder.setHourLogs(hourLogs);
 				
 			}
 			
