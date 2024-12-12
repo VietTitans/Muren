@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import controller.DataAccessException;
+import controller.GeneralException;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
@@ -16,16 +18,21 @@ import model.Order;
 public class OrderDB implements OrderDBIF {
 	private static final String INSERT_ORDER_INTO_DATABASE = " INSERT INTO ORDERS (StartDate, Deadline, EmployeeId, CustomerNo, IsFinished) VALUES (?, ?, ?, ?, ?);";
 	private static final String SELECT_ORDER_BY_ORDERNO = "SELECT * FROM Orders WHERE OrderNo = ?";
+	
 			
 	private PreparedStatement insertIntoDatabase;
 	private PreparedStatement selectOrderByOrderNo;
 	
 	private MaterialLogDB materialLogDB;
 	private HourLogDB hourLogDB;
+	private EmployeeDB employeeDB;
+	private CustomerDB customerDB;
 
 	public OrderDB() throws DataAccessException, SQLException {
 		materialLogDB = new MaterialLogDB();
 		hourLogDB = new HourLogDB();
+		employeeDB = new EmployeeDB();
+		customerDB = new CustomerDB();
 		
 		insertIntoDatabase = DBConnection.getInstance().getConnection().prepareStatement(INSERT_ORDER_INTO_DATABASE,
 				java.sql.Statement.RETURN_GENERATED_KEYS);
@@ -87,14 +94,14 @@ public class OrderDB implements OrderDBIF {
 	}
 
 	@Override
-	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) throws DataAccessException {
+	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) throws DataAccessException, GeneralException {
 		Order foundOrder = null;
 		try {
 			selectOrderByOrderNo.setString(1, String.valueOf(orderNo));
 			ResultSet resultSet = selectOrderByOrderNo.executeQuery();
 			
 			if(resultSet.next()) {
-				foundOrder = buildObject(resultSet, fullAssociation);
+				foundOrder = buildObject(orderNo, resultSet, fullAssociation);
 			}
 		} catch(SQLException e) {
 			throw new DataAccessException("Order not found", e);
@@ -103,9 +110,9 @@ public class OrderDB implements OrderDBIF {
 		return foundOrder;
 	}
 
-	private Order buildObject(ResultSet resultSet, boolean fullAssociation) throws DataAccessException{
-		Order foundOrder = null;
+	private Order buildObject(int orderNo, ResultSet resultSet, boolean fullAssociation) throws DataAccessException, GeneralException{
 		Employee employee = new Employee();
+		Order foundOrder = new Order(employee);
 		Customer customer = new Customer();
 		try {
 			employee.setEmployeeId(resultSet.getInt("EmployeeId"));
@@ -119,9 +126,13 @@ public class OrderDB implements OrderDBIF {
 			foundOrder.setDeadLine(deadLine);
 			
 			if(fullAssociation == true) {
+				employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
+				customer = customerDB.findCustomerByCustomerNo(resultSet.getInt("CustomerNo"), false);
+				ArrayList<MaterialLog> materialLogs = materialLogDB.findMaterialLogsByOrderNo(orderNo);
 				
 			}
 			
+	
 		}catch(SQLException e) {
 			throw new DataAccessException("Could Not Build", e);
 		}

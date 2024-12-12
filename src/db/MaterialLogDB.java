@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import controller.DataAccessException;
+import model.Employee;
 import model.GenericMaterial;
 import model.HourLog;
 import model.Material;
@@ -21,7 +23,11 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	private PreparedStatement insertMaterialLogIntoMaterialLogs;
 	private static final String UPDATE_MATERIALQUANTITY = "UPDATE StockMaterial SET Quantity = ? WHERE MaterialNo = ? ";
 	private PreparedStatement updateMaterialQuantity;
+	private static final String SELECT_MATERIALLOG_BY_ORDERNO = "SELECT * FROM Logs, MaterialLogs WHERE Logs.OrderNo = ? AND MaterialLogs.LogId = Logs.LogId";
+	private PreparedStatement findMaterialLogByOrderNo;
+	
 	private MaterialDB materialDB;
+	
 	public MaterialLogDB() throws DataAccessException {
 		try {
 			MaterialDB materialDB = new MaterialDB();
@@ -30,6 +36,8 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 		insertMaterialLogIntoMaterialLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_MATERIALLOG);
 		updateMaterialQuantity = DBConnection.getInstance().getConnection().prepareStatement(UPDATE_MATERIALQUANTITY);
+		findMaterialLogByOrderNo = DBConnection.getInstance().getConnection().prepareStatement(SELECT_MATERIALLOG_BY_ORDERNO);
+		
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not prepare Statement", e);
 		}
@@ -91,6 +99,40 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestSalesPrice());
 		}
 		
+	}
+	
+	public ArrayList<MaterialLog> findMaterialLogsByOrderNo(int orderNo) throws DataAccessException{
+			ArrayList<MaterialLog> MaterialLogs = new ArrayList<>();
+			
+		try {
+			findMaterialLogByOrderNo.setInt(1, orderNo);
+			ResultSet resultSet = findMaterialLogByOrderNo.executeQuery();
+			
+			while(resultSet.next()) {
+				MaterialLog foundMaterialLog = buildObject(resultSet, false);
+				MaterialLogs.add(foundMaterialLog);
+			}
+			
+		} catch(SQLException e) {
+			throw new DataAccessException("MaterialLogs not found", e);
+		}
+		
+		return MaterialLogs;
+	}
+
+	private MaterialLog buildObject(ResultSet resultSet, boolean fullAssociation) throws DataAccessException {
+		MaterialLog materialLog = null; 
+		try {
+			Material material = materialDB.findMaterialByMaterialNo(resultSet.getInt("MaterialNo"));
+			Employee employee = new Employee();
+			employee.setEmployeeId(resultSet.getInt("EmployeeId"));
+			int quantity = resultSet.getInt("Quantity");
+			materialLog = new MaterialLog(employee, material, quantity);
+		
+		} catch (SQLException e) {
+			throw new DataAccessException("Could not build object", e);
+		}
+		return materialLog;
 	}
 
 }

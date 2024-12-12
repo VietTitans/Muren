@@ -16,12 +16,16 @@ public class CustomerDB implements CustomerDBIF {
 	private static final String FIND_BY_PHONENO = FIND_CUSTOMER + "where Customer.PersonId = Person.PersonId AND phoneNo = ?";
 	private PreparedStatement findByPhoneNo;
 	
+	private static final String FIND_BY_CUSTOMERNO = "SELECT * FROM Customer WHERE CustomerId = ?";
+	private PreparedStatement findByCustomerNo;
+	
 	public CustomerDB() throws DataAccessException {
 		try {
 			findAllCustomers = DBConnection.getInstance().getConnection()
 					.prepareStatement(FIND_CUSTOMER);
 			findByPhoneNo = DBConnection.getInstance().getConnection()
 					.prepareStatement(FIND_BY_PHONENO);
+			findByCustomerNo = DBConnection.getInstance().getConnection().prepareStatement(FIND_BY_CUSTOMERNO);
 		}
 		catch (SQLException e) {
 			throw new DataAccessException("Statement could not be prepared", e);
@@ -40,6 +44,24 @@ public class CustomerDB implements CustomerDBIF {
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not find Customer by PhoneNo", e);
+		}
+		return foundCustomer;
+		
+	
+	}
+	
+	@Override
+	public Customer findCustomerByCustomerNo(int customerNo, boolean fullAssociation) throws DataAccessException {
+		Customer foundCustomer = null;
+		try {
+			findByCustomerNo.setInt(1, customerNo);
+			ResultSet resultSet = findByPhoneNo.executeQuery();
+			
+			if (resultSet.next()) {
+				foundCustomer = buildObject(resultSet, false);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException("Could not find Customer", e);
 		}
 		return foundCustomer;
 		
