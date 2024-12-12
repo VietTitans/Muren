@@ -39,8 +39,7 @@ public class StockMaterial extends Material {
 				currentlyReserved =+ reservation.getQuantity();
 			}
 		}
-		quantity = quantity - currentlyReserved;
-		return quantity;
+		return quantity - currentlyReserved;
 	}
 	
 	//Getters

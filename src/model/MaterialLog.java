@@ -19,7 +19,7 @@ public class MaterialLog extends Logs {
 		try {
 			if(material instanceof StockMaterial) {
 				StockMaterial stockMaterial = (StockMaterial) material; 
-				if(quantity <= stockMaterial.calculatedAvailableAmount()) {
+				if(quantity <= stockMaterial.calculateAvailableAmount()) {
 					int updatedQuantity = stockMaterial.getQuantity() - quantity; 
 					stockMaterial.setQuantity(updatedQuantity);
 				}

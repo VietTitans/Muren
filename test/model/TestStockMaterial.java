@@ -147,7 +147,7 @@ public class TestStockMaterial {
 		StockReservation stockReservation = new StockReservation(reserveAmount, LocalDateTime.now());
 		stockMaterial.addStockReservation(stockReservation);
 		//Act
-		stockMaterial.calculatedAvailableAmount();
+		stockMaterial.calculateAvailableAmount();
 		//Assert
 		assertEquals(30, stockMaterial.getQuantity());
 	}

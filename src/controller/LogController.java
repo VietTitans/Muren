@@ -27,7 +27,7 @@ public class LogController {
 			if (material instanceof StockMaterial) {
 				// Typecast Material To access subclass methods
 				StockMaterial stockMaterial = (StockMaterial) material;
-				if (stockMaterial.calculatedAvailableAmount() >= quantity) {
+				if (stockMaterial.calculateAvailableAmount() >= quantity) {
 					currentMaterialLog = new MaterialLog(employee, stockMaterial, quantity);
 				}
 			} else {
