@@ -76,11 +76,12 @@ class TestOrderDB {
 	}
 	
 	@Test
-	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException, GeneralException {
 		OrderDB orderDB = new OrderDB();
-		Order foundOrder = orderDB.findOrderByOrderNo(1, false);
+		Order foundOrder = orderDB.findOrderByOrderNo(1, true);
 		System.out.println(foundOrder.getStartDate());
-		
+		System.out.println(foundOrder.isFinished());
+		System.out.println(foundOrder.getMaterialLogs().size());
 	}
 
 }

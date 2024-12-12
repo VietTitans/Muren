@@ -97,7 +97,7 @@ public class OrderDB implements OrderDBIF {
 	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) throws DataAccessException, GeneralException {
 		Order foundOrder = null;
 		try {
-			selectOrderByOrderNo.setString(1, String.valueOf(orderNo));
+			selectOrderByOrderNo.setInt(1, orderNo);
 			ResultSet resultSet = selectOrderByOrderNo.executeQuery();
 			
 			if(resultSet.next()) {
@@ -117,7 +117,7 @@ public class OrderDB implements OrderDBIF {
 		try {
 			employee.setEmployeeId(resultSet.getInt("EmployeeId"));
 			foundOrder.setOrderMadeBy(employee);
-			customer.setCustomerId(resultSet.getInt("CustomerId"));
+			customer.setCustomerId(resultSet.getInt("CustomerNo"));
 			foundOrder.setCustomer(customer);
 			foundOrder.setFinished(resultSet.getBoolean("IsFinished"));
 			LocalDate startDate = resultSet.getTimestamp("StartDate").toLocalDateTime().toLocalDate();
@@ -129,6 +129,7 @@ public class OrderDB implements OrderDBIF {
 				employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
 				customer = customerDB.findCustomerByCustomerNo(resultSet.getInt("CustomerNo"), false);
 				ArrayList<MaterialLog> materialLogs = materialLogDB.findMaterialLogsByOrderNo(orderNo);
+				foundOrder.setMaterialLogs(materialLogs);
 				
 			}
 			

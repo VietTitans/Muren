@@ -122,6 +122,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 
 	private MaterialLog buildObject(ResultSet resultSet, boolean fullAssociation) throws DataAccessException {
 		MaterialLog materialLog = null; 
+		MaterialDB materialDB = new MaterialDB();
 		try {
 			Material material = materialDB.findMaterialByMaterialNo(resultSet.getInt("MaterialNo"));
 			Employee employee = new Employee();

@@ -16,7 +16,7 @@ public class CustomerDB implements CustomerDBIF {
 	private static final String FIND_BY_PHONENO = FIND_CUSTOMER + "where Customer.PersonId = Person.PersonId AND phoneNo = ?";
 	private PreparedStatement findByPhoneNo;
 	
-	private static final String FIND_BY_CUSTOMERNO = "SELECT * FROM Customer WHERE CustomerId = ?";
+	private static final String FIND_BY_CUSTOMERNO = "SELECT * FROM Customer,Person  WHERE CustomerNo = ?";
 	private PreparedStatement findByCustomerNo;
 	
 	public CustomerDB() throws DataAccessException {
@@ -55,7 +55,7 @@ public class CustomerDB implements CustomerDBIF {
 		Customer foundCustomer = null;
 		try {
 			findByCustomerNo.setInt(1, customerNo);
-			ResultSet resultSet = findByPhoneNo.executeQuery();
+			ResultSet resultSet = findByCustomerNo.executeQuery();
 			
 			if (resultSet.next()) {
 				foundCustomer = buildObject(resultSet, false);
