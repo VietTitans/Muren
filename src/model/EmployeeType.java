@@ -1,6 +1,6 @@
 package model;
 
-enum EmployeeType {
+public enum EmployeeType {
 	APPRENTICE,
 	JOURNEYMAN,
 	OWNER

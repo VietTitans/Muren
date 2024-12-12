@@ -8,15 +8,16 @@ import controller.DataAccessException;
 import controller.GeneralException;
 import model.Address;
 import model.Employee;
+import model.EmployeeType;
 
 public class EmployeeDB implements EmployeeDBIF {
 
-	private static final String FIND_EMPLOYEE = " select * FROM Employee,Person";
+	private static final String FIND_EMPLOYEE = " select * FROM Employee,Person,EmployeeType ";
 	private PreparedStatement findAllEmployees;
 	private static final String FIND_ADDRESS = " select * FROM Address,Zipcodes where AddressId = ?";
 	private PreparedStatement findAddress;
 	private static final String FIND_BY_EMPLOYEEID = FIND_EMPLOYEE
-			+ " where Employee.PersonId = Person.PersonId AND employeeId = ? ";
+			+ " where Employee.PersonId = Person.PersonId AND  Employee.EmployeeTypeNo = EmployeeType.EmployeeTypeNo AND employeeId = ?  ";
 	private PreparedStatement find_by_id;
 
 	public EmployeeDB() throws SQLException, DataAccessException {
@@ -53,8 +54,10 @@ public class EmployeeDB implements EmployeeDBIF {
 			foundEmployee.setPhoneNo(resultSet.getString("phoneNo"));
 			foundEmployee.setEmail(resultSet.getString("Email"));
 			foundEmployee.setAddress(null);
-			// Enum i dette tilfælge er et problem
-			//foundEmployee.setEmployeeType(resultSet.getString("EmployeeType"));
+			String employeeTypeString = resultSet.getString("EmployeeTypeName");
+	        if (employeeTypeString != null) {
+	            foundEmployee.setEmployeeType(EmployeeType.valueOf(employeeTypeString.toUpperCase()));
+	        }
 			foundEmployee.setCpr(resultSet.getString("cpr"));
 			foundEmployee.setEmployeeId(resultSet.getInt("EmployeeId"));
 
