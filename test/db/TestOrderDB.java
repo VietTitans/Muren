@@ -74,5 +74,13 @@ class TestOrderDB {
 		// Assert
 		assertEquals(6, returnedKey);
 	}
+	
+	@Test
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
+		OrderDB orderDB = new OrderDB();
+		Order foundOrder = orderDB.findOrderByOrderNo(1, false);
+		System.out.println(foundOrder.getStartDate());
+		
+	}
 
 }
