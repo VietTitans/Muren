@@ -27,6 +27,7 @@ import controller.GeneralException;
 import controller.OrderController;
 import model.Customer;
 import model.Employee;
+import model.GenericMaterial;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
@@ -60,6 +61,7 @@ public class RegisterOrderV2 extends JFrame {
 	private JLabel materialPriceTotal;
 	private JLabel totalOverallPrice;
 	private JLabel hoursTotalPrice;
+	private JLabel priceWithVAT;
 
 	/**
 	 * Launch the application.
@@ -254,7 +256,7 @@ public class RegisterOrderV2 extends JFrame {
 									MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
 									materialNotFoundDialog.setVisible(true);
 								}
-								else {
+								else if (material instanceof StockMaterial) {
 									int newNr = materialTable.getRowCount() + 1;
 									BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
 									Double totalPrice = totalBDPrice.doubleValue();
@@ -270,6 +272,10 @@ public class RegisterOrderV2 extends JFrame {
 									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 									model.addRow(newRow);	
 									addToMaterialTotal(totalPrice);
+								}
+								else if (material instanceof GenericMaterial) {
+									AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this);
+									addGenericMaterial.setVisible(true);
 								}
 						}
 					catch (DataAccessException e1) {
@@ -400,7 +406,7 @@ public class RegisterOrderV2 extends JFrame {
 		panel_1.add(hoursTotalPrice, gbc_hoursTotalPrice);
 		hoursTotalPrice.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		JLabel lblNewLabel_4 = new JLabel("0 KR.");
+		JLabel lblNewLabel_4 = new JLabel("DKK.");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 0);
@@ -440,6 +446,27 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_lblNewLabel_7.gridx = 2;
 		gbc_lblNewLabel_7.gridy = 1;
 		panel_1.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		
+		JLabel lblNewLabel_3 = new JLabel("Inkl. Moms:");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_3.gridx = 4;
+		gbc_lblNewLabel_3.gridy = 1;
+		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		priceWithVAT = new JLabel("0");
+		GridBagConstraints gbc_priceWithVAT = new GridBagConstraints();
+		gbc_priceWithVAT.insets = new Insets(0, 0, 0, 5);
+		gbc_priceWithVAT.gridx = 5;
+		gbc_priceWithVAT.gridy = 1;
+		panel_1.add(priceWithVAT, gbc_priceWithVAT);
+		
+		JLabel lblNewLabel_8 = new JLabel("DKK:");
+		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
+		gbc_lblNewLabel_8.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_8.gridx = 6;
+		gbc_lblNewLabel_8.gridy = 1;
+		panel_1.add(lblNewLabel_8, gbc_lblNewLabel_8);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
@@ -561,8 +588,8 @@ public class RegisterOrderV2 extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					int orderNo = 0;
 					Customer customer = currentOrderController.getCustomer();
-					System.out.println(customer.getfName());
 					if (customer != null && materialTable.getRowCount() > 0) {
 						
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
@@ -570,16 +597,23 @@ public class RegisterOrderV2 extends JFrame {
 						//for (Material : materiakLogs) {
 							
 						//}
-						currentOrderController.saveOrder();
+						orderNo = currentOrderController.saveOrder();
+						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderV2.this);
+						saveOrder.setVisible(true);
 					}
 					else if (customer != null && employeeTable.getRowCount() > 0) {
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-						currentOrderController.saveOrder();
+						orderNo = currentOrderController.saveOrder();
+						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderV2.this);
+						saveOrder.setVisible(true);
 					}
 					else {
 						OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
 						orderNotCompleteDialog.setVisible(true);
 					}
+					
+					
+					
 				} catch (GeneralException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -590,17 +624,7 @@ public class RegisterOrderV2 extends JFrame {
 			}
 		});
 	}
-
-
 	public void removeRow(int[] removeList) {
-		//for (int index : removeList) {
-			//System.out.println("index: " + index);
-			//DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-			//model.removeRow(index);
-			//updateRowNumbers(table_1, index);
-
-		//}
-		// TODO Auto-generated method stub
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		for (int i = removeList.length - 1; i >= 0; i--) {
 	        int index = removeList[i];
@@ -610,6 +634,7 @@ public class RegisterOrderV2 extends JFrame {
 	        System.out.println(materialTable.getValueAt(index, 1));
 	        updateRowNumbers(model, index);
 			currentOrderController.removeMaterialLog(index);
+			addToHoursTotal();
 			}
 	}
 	public void removeRowEmployee (int[] removeList) {
@@ -622,8 +647,8 @@ public class RegisterOrderV2 extends JFrame {
 	        System.out.println(employeeTable.getValueAt(index, 1));
 	        updateRowNumbersEmployee(model, index);
 			currentOrderController.removeHourLog(index);
+			addToHoursTotal();
 			}
-		
 	}
 	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
 		System.out.println("timer: " +hours);
@@ -637,19 +662,15 @@ public class RegisterOrderV2 extends JFrame {
 				hours};
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
 		model.addRow(newRow);
-		addToHoursTotal();
 		try {
 			currentOrderController.addWorkHours(employee, hours);
+			addToHoursTotal();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 	public void updateRowNumbers(DefaultTableModel model, int index) {
-		//while (index < table_1.getRowCount()) {
-			//table_1.setValueAt(index, index, 1);
-		//}
 		for (int i = index; i < materialTable.getRowCount(); i++) {
 			System.out.println(materialTable.getValueAt(index, 1));
 	        materialTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
@@ -662,27 +683,28 @@ public class RegisterOrderV2 extends JFrame {
 	        employeeTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
-		
 	}
-	
 	public void addToMaterialTotal(double amount) {
-		double price = Double.parseDouble(materialPriceTotal.getText());
-		double totalPrice = price + amount;
+		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
+		double totalPrice = price.doubleValue();
 		materialPriceTotal.setText("" + totalPrice);
-		addToTotalPrice(amount);
+		addToTotalPrice();
 	}
-	
-	public void addToTotalPrice(double amount) {
-		double price = Double.parseDouble(totalOverallPrice.getText());
-		double totalPrice = price + amount;
+	public void addToTotalPrice() {
+		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
+		double totalPrice = price.doubleValue();
 		totalOverallPrice.setText("" + totalPrice);
+		addPriceWithVAT(price);
 	}
-	
 	public void addToHoursTotal() {
 		BigDecimal price = currentOrderController.calculateTotalHoursPrice();
-		Double totalPrice = price.doubleValue();
+		double totalPrice = price.doubleValue();
 		hoursTotalPrice.setText("" + totalPrice);
-		
+		addToTotalPrice();
 	}
-
+	public void addPriceWithVAT(BigDecimal price) {
+		BigDecimal totalPriceWithVATBD = price.multiply(new BigDecimal(1.25));
+		double totalPriceWithVAT = totalPriceWithVATBD.doubleValue();
+		priceWithVAT.setText("" + totalPriceWithVAT);
+	}
 }

@@ -77,8 +77,8 @@ public class OrderController {
 		currentOrder.removeHourLog(hourLogIndex);
 	}
 	
-	public void saveOrder() throws GeneralException, DataAccessException {
-		orderInterface.saveOrder(currentOrder);
+	public int saveOrder() throws GeneralException, DataAccessException {
+		 return orderInterface.saveOrder(currentOrder);
 	}
 	public void removeCustomer() {
 		currentOrder.setCustomer(null);
@@ -91,5 +91,11 @@ public class OrderController {
 	}
 	public BigDecimal calculateTotalHoursPrice() {
 		return currentOrder.calculateTotalHoursPrice();
+	}
+	public BigDecimal calculateTotalMaterialPrice() {
+		return currentOrder.calculateTotalMaterialPrice();
+	}
+	public BigDecimal calculateTotalOrderPrice() {
+		return currentOrder.calculateTotalOrderPrice(); 
 	}
 }
