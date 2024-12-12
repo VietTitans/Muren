@@ -30,7 +30,7 @@ public class OrderNotCompleteDialog extends JDialog {
 	}
 
 	/**
-	 * Create the dialog.
+	 * Create the dialog..
 	 */
 	public OrderNotCompleteDialog() {
 		setBounds(100, 100, 450, 106);
