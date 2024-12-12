@@ -42,7 +42,7 @@ public class Order {
 	}
 
 	public BigDecimal calculateTotalHoursPrice() {
-		BigDecimal sum = null;
+		BigDecimal sum = new BigDecimal(0);
 		BigDecimal hourrate = null;
 		try {
 				for (HourLog hourLog : hourLogs) {
@@ -72,7 +72,7 @@ public class Order {
 	}
 	
 	public BigDecimal calculateTotalMaterialPrice() {
-		BigDecimal sum = null;
+		BigDecimal sum = new BigDecimal(0);
 		for (MaterialLog ml : materialLogs) {
 			sum = sum.add(ml.getMaterial().getCurrentSalesPrice().getPreVATValue().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
 		}
