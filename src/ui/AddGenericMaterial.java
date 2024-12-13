@@ -24,13 +24,14 @@ public class AddGenericMaterial extends JDialog {
 	private JTextField txtBeskrivelse;
 	private static RegisterOrderV2 registerOrderV2;
 	private static Material material;
+	private static int amountNo;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			AddGenericMaterial dialog = new AddGenericMaterial(material, registerOrderV2);
+			AddGenericMaterial dialog = new AddGenericMaterial(material, registerOrderV2, amountNo);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -42,20 +43,24 @@ public class AddGenericMaterial extends JDialog {
 	 * Create the dialog.
 	 * @param registerOrderV2 
 	 * @param material 
+	 * @param amountNo 
 	 */
-	public AddGenericMaterial(Material material, RegisterOrderV2 registerOrderV2) {
+	public AddGenericMaterial(Material material, RegisterOrderV2 registerOrderV2, int amountNo) {
 		setBounds(100, 100, 207, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
+			JLabel lblNewLabel_3 = new JLabel("Du har valgt: " + material.getProductName());
+			contentPanel.add(lblNewLabel_3);
+		}
+		{
 			JLabel lblNewLabel = new JLabel("Intast købs pris: ");
 			contentPanel.add(lblNewLabel);
 		}
 		{
 			txtPris = new JTextField();
-			txtPris.setText("Pris");
 			contentPanel.add(txtPris);
 			txtPris.setColumns(10);
 		}
@@ -65,7 +70,6 @@ public class AddGenericMaterial extends JDialog {
 		}
 		{
 			txtSalgsPris = new JTextField();
-			txtSalgsPris.setText("Salgspris");
 			contentPanel.add(txtSalgsPris);
 			txtSalgsPris.setColumns(10);
 		}
@@ -75,7 +79,6 @@ public class AddGenericMaterial extends JDialog {
 		}
 		{
 			txtBeskrivelse = new JTextField();
-			txtBeskrivelse.setText("Beskrivelse");
 			contentPanel.add(txtBeskrivelse);
 			txtBeskrivelse.setColumns(10);
 		}
@@ -90,6 +93,8 @@ public class AddGenericMaterial extends JDialog {
 						double purchasePrice = Double.parseDouble(txtPris.getText());
 						double salesPrice = Double.parseDouble(txtSalgsPris.getText());
 						String description = txtBeskrivelse.getText(); 
+						registerOrderV2.addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");

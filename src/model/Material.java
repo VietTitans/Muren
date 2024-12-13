@@ -128,7 +128,7 @@ public abstract class Material {
 	
 	
 	private void addPurchasePriceToPurchasePricesSubClasses(Price purchasePrice) {
-		purchasePrices.add(0, salesPrice);
+		purchasePrices.add(0, purchasePrice);
 	}
 	
 	public abstract void setCurrentMaterialDescription(MaterialDescription newDescription);

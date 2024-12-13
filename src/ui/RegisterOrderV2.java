@@ -220,7 +220,7 @@ public class RegisterOrderV2 extends JFrame {
 		txtMngde.setColumns(10);
 		
 		JButton addMaterialBtn = new JButton("Tilføj materiale");
-		addMaterialBtn.setForeground(new Color(255, 0, 0));
+		addMaterialBtn.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_addMaterialBtn = new GridBagConstraints();
 		gbc_addMaterialBtn.fill = GridBagConstraints.HORIZONTAL;
 		gbc_addMaterialBtn.insets = new Insets(0, 0, 5, 0);
@@ -274,7 +274,7 @@ public class RegisterOrderV2 extends JFrame {
 									addToMaterialTotal(totalPrice);
 								}
 								else if (material instanceof GenericMaterial) {
-									AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this);
+									AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this, amountNo);
 									addGenericMaterial.setVisible(true);
 								}
 						}
@@ -669,6 +669,33 @@ public class RegisterOrderV2 extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void addGenericMaterial(double price, double price2, String description, Material material, int amountNo) {
+		int newNr = materialTable.getRowCount() + 1;
+		BigDecimal totalPriceDB = new BigDecimal(price2).multiply(new BigDecimal(amountNo));
+		double totalPrice = totalPriceDB.doubleValue();
+		
+		BigDecimal purchasePriceBD = new BigDecimal(price);
+		Price purchasePrice = new Price(purchasePriceBD);
+		material.setCurrentPurchasePrice(purchasePrice);
+		
+		BigDecimal salesPriceDB = new BigDecimal(price2);
+		Price salesPrice = new Price(salesPriceDB);
+		material.setCurrentSalesPrice(salesPrice);
+		
+		MaterialDescription materialDescription = new MaterialDescription(description);
+		material.setCurrentMaterialDescription(materialDescription);
+		
+		Object[] newRow = {newNr,
+				material.getMaterialNo(),
+				material.getProductName(), 
+				description,
+				amountNo, 
+				price2, 
+				totalPrice};
+		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+		model.addRow(newRow);	
+		addToMaterialTotal(totalPrice);
 	}
 	public void updateRowNumbers(DefaultTableModel model, int index) {
 		for (int i = index; i < materialTable.getRowCount(); i++) {

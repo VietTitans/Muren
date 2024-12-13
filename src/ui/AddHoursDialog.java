@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class AddHoursDialog extends JDialog {
 
@@ -57,12 +59,34 @@ public class AddHoursDialog extends JDialog {
 		}
 		{
 			txtTimer = new JTextField();
+			txtTimer.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					txtTimer.setText("");
+				}
+				@Override
+				public void focusLost(FocusEvent e) {
+					String str = txtTimer.getText();
+					int strLenght = str.length();
+					if(strLenght < 1) {
+						txtTimer.setText("Timer:");
+					} else {
+						
+					}
+				}
+			});
 			txtTimer.setText("Timer:");
 			contentPanel.add(txtTimer);
 			txtTimer.setColumns(10);
 		}
 		{
 			txtMinutter = new JTextField();
+			txtMinutter.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					txtMinutter.setText("");
+				}
+			});
 			txtMinutter.setText("Minutter:");
 			contentPanel.add(txtMinutter);
 			txtMinutter.setColumns(10);
@@ -107,12 +131,6 @@ public class AddHoursDialog extends JDialog {
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
-			}
-			{
-				JButton okButton = new JButton("Annuler");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
 			}
 			}
 		}
