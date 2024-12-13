@@ -170,7 +170,7 @@ class TestOrderController {
 		//Act
 		order.addMaterialLogToOrder(materialLog);
 		//Assert;
-		int result = cement.getQuantity();
+		int result = cement.calculateAvailableAmount();
 		int expectedResult = 20;
 		assertEquals(expectedResult, result);
 		
