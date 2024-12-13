@@ -79,8 +79,10 @@ public class RemoveEmployeeDialog extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						int [] removeList = list.getSelectedIndices();
+						System.out.println("removeList: " + removeList);
 						
-						 // Reverse the array in place
+
+						// Reverse the array in place
 				        int start = 0;
 				        int end = removeList.length - 1;
 
@@ -96,6 +98,7 @@ public class RemoveEmployeeDialog extends JDialog {
 				        registerOrderV2.removeRowEmployee(removeList);
 				        dispose();
 					}
+					
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);

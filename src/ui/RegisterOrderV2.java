@@ -62,7 +62,9 @@ public class RegisterOrderV2 extends JFrame {
 	private JLabel totalOverallPrice;
 	private JLabel hoursTotalPrice;
 	private JLabel priceWithVAT;
-
+	private JButton btnRemoveMaterial;
+	private JButton btnRemoveHourLog;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -150,16 +152,19 @@ public class RegisterOrderV2 extends JFrame {
 		gbc_customerLabel.gridy = 3;
 		panel.add(customerLabel, gbc_customerLabel);
 		
-		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
-		btnNewButton_5.addActionListener(new ActionListener() {
+		btnRemoveHourLog = new JButton("Fjern medarbejder");
+		btnRemoveHourLog.setEnabled(false);
+		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Row count: " + employeeTable.getRowCount());
 				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
 		});
 		
-		JButton btnNewButton_6 = new JButton("Fjern materiale");
-		btnNewButton_6.addActionListener(new ActionListener() {
+		btnRemoveMaterial = new JButton("Fjern materiale");
+		btnRemoveMaterial.setEnabled(false);
+		btnRemoveMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
 				removeMaterialFrame.setVisible(true);
@@ -167,6 +172,7 @@ public class RegisterOrderV2 extends JFrame {
 		});
 		
 		txtProduktno = new JTextField();
+		txtProduktno.setEnabled(false);
 		txtProduktno.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -194,6 +200,7 @@ public class RegisterOrderV2 extends JFrame {
 		txtProduktno.setColumns(10);
 		
 		txtMngde = new JTextField();
+		txtMngde.setEnabled(false);
 		txtMngde.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -219,16 +226,17 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(txtMngde, gbc_txtMngde);
 		txtMngde.setColumns(10);
 		
-		JButton addMaterialBtn = new JButton("Tilføj materiale");
-		addMaterialBtn.setForeground(new Color(0, 0, 0));
-		GridBagConstraints gbc_addMaterialBtn = new GridBagConstraints();
-		gbc_addMaterialBtn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addMaterialBtn.insets = new Insets(0, 0, 5, 0);
-		gbc_addMaterialBtn.gridx = 1;
-		gbc_addMaterialBtn.gridy = 7;
-		panel.add(addMaterialBtn, gbc_addMaterialBtn);
+		JButton btnAddMaterial = new JButton("Tilføj materiale");
+		btnAddMaterial.setEnabled(false);
+		btnAddMaterial.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnAddMaterial = new GridBagConstraints();
+		gbc_btnAddMaterial.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnAddMaterial.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddMaterial.gridx = 1;
+		gbc_btnAddMaterial.gridy = 7;
+		panel.add(btnAddMaterial, gbc_btnAddMaterial);
 		
-				addMaterialBtn.addActionListener(new ActionListener() {
+				btnAddMaterial.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
 						//ArrayList<Price> salesPrices = new ArrayList<>();
@@ -272,6 +280,7 @@ public class RegisterOrderV2 extends JFrame {
 									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 									model.addRow(newRow);	
 									addToMaterialTotal(totalPrice);
+									btnRemoveMaterial.setEnabled(true);
 								}
 								else if (material instanceof GenericMaterial) {
 									AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this, amountNo);
@@ -286,6 +295,7 @@ public class RegisterOrderV2 extends JFrame {
 				});
 		
 		txtMedarbejderid = new JTextField();
+		txtMedarbejderid.setEnabled(false);
 		txtMedarbejderid.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -311,14 +321,15 @@ public class RegisterOrderV2 extends JFrame {
 		panel.add(txtMedarbejderid, gbc_txtMedarbejderid);
 		txtMedarbejderid.setColumns(10);
 		
-		JButton btnNewButton_4 = new JButton("Tilføj medarbejder");
-		btnNewButton_4.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_4.gridx = 1;
-		gbc_btnNewButton_4.gridy = 10;
-		panel.add(btnNewButton_4, gbc_btnNewButton_4);
-		btnNewButton_4.addActionListener(new ActionListener() {
+		JButton btnAddEmployee = new JButton("Tilføj medarbejder");
+		btnAddEmployee.setEnabled(false);
+		btnAddEmployee.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnAddEmployee = new GridBagConstraints();
+		gbc_btnAddEmployee.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddEmployee.gridx = 1;
+		gbc_btnAddEmployee.gridy = 10;
+		panel.add(btnAddEmployee, gbc_btnAddEmployee);
+		btnAddEmployee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
 				try {
@@ -342,29 +353,36 @@ public class RegisterOrderV2 extends JFrame {
 			}
 		});
 		
-		JButton btnNewButton_2 = new JButton("Fjern kunde");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton btnRemoveCustomer = new JButton("Fjern kunde");
+		btnRemoveCustomer.setEnabled(false);
+		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentOrderController.removeCustomer();
 				customerLabel.setText("kunde");
+				btnRemoveCustomer.setEnabled(false);;
+				btnAddMaterial.setEnabled(false);
+				btnAddEmployee.setEnabled(false);
+				txtProduktno.setEnabled(false);
+				txtMngde.setEnabled(false);
+				txtMedarbejderid.setEnabled(false);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 12;
-		panel.add(btnNewButton_2, gbc_btnNewButton_2);
-		btnNewButton_6.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
-		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_6.gridx = 1;
-		gbc_btnNewButton_6.gridy = 13;
-		panel.add(btnNewButton_6, gbc_btnNewButton_6);
-		btnNewButton_5.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
-		gbc_btnNewButton_5.gridx = 1;
-		gbc_btnNewButton_5.gridy = 14;
-		panel.add(btnNewButton_5, gbc_btnNewButton_5);
+		GridBagConstraints gbc_btnRemoveCustomer = new GridBagConstraints();
+		gbc_btnRemoveCustomer.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRemoveCustomer.gridx = 1;
+		gbc_btnRemoveCustomer.gridy = 12;
+		panel.add(btnRemoveCustomer, gbc_btnRemoveCustomer);
+		btnRemoveMaterial.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnRemoveMaterial = new GridBagConstraints();
+		gbc_btnRemoveMaterial.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRemoveMaterial.gridx = 1;
+		gbc_btnRemoveMaterial.gridy = 13;
+		panel.add(btnRemoveMaterial, gbc_btnRemoveMaterial);
+		btnRemoveHourLog.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnRemoveHourLog = new GridBagConstraints();
+		gbc_btnRemoveHourLog.gridx = 1;
+		gbc_btnRemoveHourLog.gridy = 14;
+		panel.add(btnRemoveHourLog, gbc_btnRemoveHourLog);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -475,7 +493,7 @@ public class RegisterOrderV2 extends JFrame {
 		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		JButton btnNewButton = new JButton("Gem ordre");
-		btnNewButton.setForeground(new Color(255, 0, 0));
+		btnNewButton.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton.gridx = 12;
@@ -577,7 +595,15 @@ public class RegisterOrderV2 extends JFrame {
 						else {
 							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
 							customerLabel.setText(name);
-							txtKundeTlf.setText("Kunde Tlf:");	
+							txtKundeTlf.setText("Kunde Tlf:");
+							btnRemoveCustomer.setEnabled(true);
+							btnAddMaterial.setEnabled(true);
+							btnAddEmployee.setEnabled(true);
+							txtProduktno.setEnabled(true);
+							txtMngde.setEnabled(true);
+							txtMedarbejderid.setEnabled(true);
+							
+							
 						}
 				} 
 				catch (Exception b) {
@@ -628,14 +654,14 @@ public class RegisterOrderV2 extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		for (int i = removeList.length - 1; i >= 0; i--) {
 	        int index = removeList[i];
-	        System.out.println("index: " + index);
-	        System.out.println(materialTable.getValueAt(index, 1));
 	        model.removeRow(index);
-	        System.out.println(materialTable.getValueAt(index, 1));
 	        updateRowNumbers(model, index);
 			currentOrderController.removeMaterialLog(index);
 			addToHoursTotal();
 			}
+		if (materialTable.getRowCount() < 1) {
+			btnRemoveMaterial.setEnabled(false);
+		}
 	}
 	public void removeRowEmployee (int[] removeList) {
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
@@ -644,11 +670,13 @@ public class RegisterOrderV2 extends JFrame {
 	        System.out.println("index: " + index);
 	        System.out.println(employeeTable.getValueAt(index, 1));
 	        model.removeRow(index);
-	        System.out.println(employeeTable.getValueAt(index, 1));
 	        updateRowNumbersEmployee(model, index);
 			currentOrderController.removeHourLog(index);
 			addToHoursTotal();
+			if (employeeTable.getRowCount() < 1) {
+				btnRemoveHourLog.setEnabled(false);
 			}
+		}
 	}
 	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
 		System.out.println("timer: " +hours);
@@ -665,6 +693,7 @@ public class RegisterOrderV2 extends JFrame {
 		try {
 			currentOrderController.addWorkHours(employee, hours);
 			addToHoursTotal();
+			btnRemoveHourLog.setEnabled(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -696,6 +725,7 @@ public class RegisterOrderV2 extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		model.addRow(newRow);	
 		addToMaterialTotal(totalPrice);
+		btnRemoveMaterial.setEnabled(true);
 	}
 	public void updateRowNumbers(DefaultTableModel model, int index) {
 		for (int i = index; i < materialTable.getRowCount(); i++) {
