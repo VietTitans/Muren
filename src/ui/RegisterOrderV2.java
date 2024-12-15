@@ -64,6 +64,7 @@ public class RegisterOrderV2 extends JFrame {
 	private JLabel priceWithVAT;
 	private JButton btnRemoveMaterial;
 	private JButton btnRemoveHourLog;
+	private JLabel lblCheckConnection;
 	
 	/**
 	 * Launch the application.
@@ -71,15 +72,27 @@ public class RegisterOrderV2 extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-					RegisterOrderV2 frame = new RegisterOrderV2();
-					frame.setVisible(true);
+				
+						
+						try {
+							RegisterOrderV2 frame = new RegisterOrderV2();
+							frame.setVisible(true);
+						}
+						 catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+			
+			
+					
 				
 			}
 		});
 	}
 
 
-	public RegisterOrderV2() {
+	public RegisterOrderV2() throws Exception {
 		try {
 		this.currentOrderController = new OrderController();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
@@ -127,6 +140,13 @@ public class RegisterOrderV2 extends JFrame {
 				}
 			}
 		});
+		
+		lblCheckConnection = new JLabel("New label");
+		GridBagConstraints gbc_lblCheckConnection = new GridBagConstraints();
+		gbc_lblCheckConnection.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCheckConnection.gridx = 1;
+		gbc_lblCheckConnection.gridy = 0;
+		panel.add(lblCheckConnection, gbc_lblCheckConnection);
 		txtKundeTlf.setHorizontalAlignment(SwingConstants.LEFT);
 		txtKundeTlf.setText("Kunde Tlf:");
 		GridBagConstraints gbc_txtKundeTlf = new GridBagConstraints();
@@ -238,59 +258,46 @@ public class RegisterOrderV2 extends JFrame {
 		
 				btnAddMaterial.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						//ArrayList<Price> salesPrices = new ArrayList<>();
-						//BigDecimal priceValue = new BigDecimal(10);
-						//Price salesPrice = new Price(priceValue);
-						//salesPrices.add(salesPrice);
-						
-						//ArrayList<Price> purchasePrices = new ArrayList<>();
-						//BigDecimal purchasePriceValue = new BigDecimal(5);
-						//Price purchasePrice = new Price(purchasePriceValue);
-						//purchasePrices.add(purchasePrice);
-						
-						//ArrayList<MaterialDescription> descriptions = new ArrayList<>();
-						//MaterialDescription materialDescription = new MaterialDescription("en ting");
-						//descriptions.add(materialDescription);
-						
-						//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
 						int materialNo = Integer.parseInt(txtProduktno.getText());
 						int amountNo = Integer.parseInt(txtMngde.getText());
-						
-						
+						SwingWorkerFindAndAddMaterial swingWorker = new SwingWorkerFindAndAddMaterial(currentOrderController,materialNo,placeHolderEmployee,amountNo);
+						Material material;
 						try {
-							Material material = currentOrderController.findAndAddMaterialByMaterialNo(placeHolderEmployee,materialNo,amountNo);
-								if (material == null) {
-									MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
-									materialNotFoundDialog.setVisible(true);
-								}
-								else if (material instanceof StockMaterial) {
-									int newNr = materialTable.getRowCount() + 1;
-									BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
-									Double totalPrice = totalBDPrice.doubleValue();
-									Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
-									
-									Object[] newRow = {newNr,
-											material.getMaterialNo(),
-											material.getProductName(), 
-											material.getCurrentMaterialDescription().getDescription(),
-											amountNo, 
-											saleprice, 
-											totalPrice};
-									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
-									model.addRow(newRow);	
-									addToMaterialTotal(totalPrice);
-									btnRemoveMaterial.setEnabled(true);
-								}
-								else if (material instanceof GenericMaterial) {
-									AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this, amountNo);
-									addGenericMaterial.setVisible(true);
-								}
-						}
-					catch (DataAccessException e1) {
+							material = swingWorker.doInBackground();
+							
+							
+							if (material == null) {
+								MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
+								materialNotFoundDialog.setVisible(true);
+							}
+							else if (material instanceof StockMaterial) {
+								int newNr = materialTable.getRowCount() + 1;
+								BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
+								Double totalPrice = totalBDPrice.doubleValue();
+								Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
+								
+								Object[] newRow = {newNr,
+										material.getMaterialNo(),
+										material.getProductName(), 
+										material.getCurrentMaterialDescription().getDescription(),
+										amountNo, 
+										saleprice, 
+										totalPrice};
+								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+								model.addRow(newRow);	
+								addToMaterialTotal(totalPrice);
+								btnRemoveMaterial.setEnabled(true);
+							}
+							else if (material instanceof GenericMaterial) {
+								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this, amountNo);
+								addGenericMaterial.setVisible(true);
+							}
+						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+
+						
 					}
 				});
 		
@@ -649,6 +656,9 @@ public class RegisterOrderV2 extends JFrame {
 				}
 			}
 		});
+		
+		updateConnectionLabel(lblCheckConnection);
+		
 	}
 	public void removeRow(int[] removeList) {
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
@@ -727,6 +737,7 @@ public class RegisterOrderV2 extends JFrame {
 		addToMaterialTotal(totalPrice);
 		btnRemoveMaterial.setEnabled(true);
 	}
+
 	public void updateRowNumbers(DefaultTableModel model, int index) {
 		for (int i = index; i < materialTable.getRowCount(); i++) {
 			System.out.println(materialTable.getValueAt(index, 1));
@@ -764,4 +775,10 @@ public class RegisterOrderV2 extends JFrame {
 		double totalPriceWithVAT = totalPriceWithVATBD.doubleValue();
 		priceWithVAT.setText("" + totalPriceWithVAT);
 	}
+public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
+	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLable);
+	 checkConnection.doInBackground();
+
+	}
 }
+
