@@ -281,6 +281,7 @@ public class RegisterOrderV2 extends JFrame {
 										material.getProductName(), 
 										material.getCurrentMaterialDescription().getDescription(),
 										amountNo, 
+										(((StockMaterial) material).getAvailableAmount()),
 										saleprice, 
 										totalPrice};
 								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
@@ -545,11 +546,11 @@ public class RegisterOrderV2 extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:", "Stk pris:", "Total pris:"
+				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:","Tilgængelig", "Stk pris:", "Total pris:"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, Integer.class, String.class, String.class, Integer.class, Double.class, Double.class
+				Integer.class, Integer.class, String.class, String.class, Integer.class,Integer.class, Double.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -656,8 +657,8 @@ public class RegisterOrderV2 extends JFrame {
 				}
 			}
 		});
-		
-		updateConnectionLabel(lblCheckConnection);
+		updateTableMaterial();
+//		updateConnectionLabel(lblCheckConnection);
 		
 	}
 	public void removeRow(int[] removeList) {
@@ -780,5 +781,10 @@ public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
 	 checkConnection.doInBackground();
 
 	}
+public void updateTableMaterial() throws Exception {
+	SwingWorkerUpdateMaterial updateWorker = new SwingWorkerUpdateMaterial(materialTable);
+	updateWorker.doInBackground();
+	
+}
 }
 

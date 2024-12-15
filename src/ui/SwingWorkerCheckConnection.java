@@ -32,6 +32,7 @@ public class SwingWorkerCheckConnection extends SwingWorker<Void, Boolean> {
              public void run() {
 
                  try {
+                	 System.out.println(System.currentTimeMillis());
                      CheckDatabaseConnection();
                  } catch (SQLException | DataAccessException e) {
                      e.printStackTrace();
