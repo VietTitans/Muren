@@ -3,6 +3,7 @@ package controller;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -228,4 +229,17 @@ class TestOrderController {
 			System.out.println(order.getMaterialLogs().size());
 		assertTrue(order.getMaterialLogs().size() == 0);
 	}
+	
+	@Test
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
+		//Arrange
+		
+		
+		//Act
+		Order order = orderController.findOrderByOrderNo(1, false);
+		
+		//Assert
+		assertNotNull(order);
+	}
+	
 }
