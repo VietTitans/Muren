@@ -70,7 +70,7 @@ public class FindOrder extends JDialog {
 							OrderController currentOrderController = new OrderController();
 							Order currentOrder = currentOrderController.findOrderByOrderNo(orderNo);
 							try {
-								LogOrder logOrder = new LogOrder(currentOrder, currentOrderController);
+								LogOrder logOrder = new LogOrder(currentOrder, currentOrderController,orderNo);
 								logOrder.setVisible(true);
 								previousScreen.dispose();
 								dispose();

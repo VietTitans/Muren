@@ -1,6 +1,8 @@
 package controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import db.HourLogDB;
 import db.HourLogDBIF;
@@ -53,5 +55,13 @@ public class LogController {
 		int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
 		return materialLogKey;
 	}
+	public void saveHourLogs(ArrayList<HourLog> logs,int orderId , LocalDateTime orderDate ) throws DataAccessException {
+		for(HourLog log : logs) {
+			if(log.getTimeStamp().isAfter(orderDate)) {
+			hourLogInterface.saveHourLog(log , orderId);
+			
+		}
+	}
 
+}
 }

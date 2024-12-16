@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.DataAccessException;
 import controller.GeneralException;
+import controller.LogController;
 import controller.OrderController;
 import model.Customer;
 import model.Employee;
@@ -69,7 +70,8 @@ public class LogOrder extends JFrame {
 	private JLabel lblCheckConnection;
 	private static Order currentOrder;
 	private LocalDateTime orderDate;
-	private ArrayList<MaterialLog> oldMaterials;
+	private static int orderId;
+	private LocalDateTime windowMadeAt;
 	/**
 	 * Launch the application.
 	 */
@@ -80,7 +82,7 @@ public class LogOrder extends JFrame {
 						
 						try {
 
-							LogOrder frame = new LogOrder(currentOrder, currentOrderController);
+							LogOrder frame = new LogOrder(currentOrder, currentOrderController,orderId);
 
 							frame.setVisible(true);
 						}
@@ -98,10 +100,12 @@ public class LogOrder extends JFrame {
 	}
 
 
-	public LogOrder(Order currentOrder, OrderController currentOrderController) throws Exception {
+	public LogOrder(Order currentOrder, OrderController currentOrderController, int orderId) throws Exception {
 		try {
+			LocalDateTime windowMadeAt = LocalDateTime.now();
 		this.currentOrder = currentOrder;
 		this.currentOrderController = currentOrderController;
+		this.orderId = orderId;
 		orderDate = currentOrder.getStartDate();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
 		placeHolderEmployee = new Employee();
@@ -508,7 +512,7 @@ public class LogOrder extends JFrame {
 		
 		for (MaterialLog materialLog : oldMaterialLogs) {
 			Material material = materialLog.getMaterial();
-			BigDecimal materialSalePriceBD = material.getPurchasePriceByDate(orderDate).getPreVATValue();
+			BigDecimal materialSalePriceBD = material.getSalesPriceByDate(orderDate).getPreVATValue();
 			double materialSalePrice = materialSalePriceBD.doubleValue();
 			BigDecimal totalPriceBD = materialSalePriceBD.multiply(new BigDecimal(materialLog.getQuantity()));
 			double totalPrice = totalPriceBD.doubleValue();
@@ -525,7 +529,7 @@ public class LogOrder extends JFrame {
 						totalPrice};
 				DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 				model.addRow(newRow);	
-				addToMaterialTotal(totalPrice);
+				addToMaterialTotal();
 				}
 				else if (material instanceof GenericMaterial) {
 					Object[] newRow = {newNr,
@@ -538,7 +542,7 @@ public class LogOrder extends JFrame {
 							totalPrice};
 					DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 					model.addRow(newRow);	
-					addToMaterialTotal(totalPrice);
+					addToMaterialTotal();
 				}
 				btnRemoveMaterial.setEnabled(true);
 		}
@@ -579,21 +583,21 @@ public class LogOrder extends JFrame {
 		addHourLogsFromOrder();
 		
 		btnNewButton.addActionListener(new ActionListener() {
+			
+
 			public void actionPerformed(ActionEvent e) {
 				try {
 					int orderNo = 0;
 					Customer customer = currentOrderController.getCustomer();
+					LogController logController = new LogController();
 					if (customer != null && materialTable.getRowCount() > 0) {
-						
-						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-						//ArrayList<MaterialLog> materialLogs = currentOrderController.getCurrentOrder().getMaterialLogs();
-						//for (Material : materiakLogs) {
-							
-						//}
-						orderNo = currentOrderController.saveOrder();
-						SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
-						saveOrder.setVisible(true);
-					}
+						logController.saveHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
+			
+		}
+									
+								
+
+					
 					else if (customer != null && employeeTable.getRowCount() > 0) {
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
 						orderNo = currentOrderController.saveOrder();
