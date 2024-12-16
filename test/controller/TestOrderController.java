@@ -233,20 +233,20 @@ class TestOrderController {
 	@Test
 	void testFindOrderByOrderNo() throws DataAccessException, SQLException, GeneralException {
 		//Arrange
-		
-		
+		//OrderNo with value 1 exists with an customerNo 1 associated
 		//Act
 		Order order = orderController.findOrderByOrderNo(1);
-		
 		//Assert
-		assertNotNull(order);
+		Customer result = order.getCustomer();
+		result.getCustomerId();
+		int expectedResult = 1;
+		assertEquals(expectedResult, result);
 	}
 	
 	@Test
 	void testOrderDoesntExist() throws DataAccessException, SQLException {
 		//Arrange
-		
-		
+		//No action
 		//Act
 		DataAccessException exceptionThrown = assertThrows(DataAccessException.class, () -> {
 			orderController.findOrderByOrderNo(47);
