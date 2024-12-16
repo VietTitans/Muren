@@ -20,6 +20,7 @@ public class LogController {
 
 	public LogController() throws DataAccessException {
 		this.hourLogInterface = new HourLogDB();
+		this.materialLogInterface = new MaterialLogDB();
 	}
 
 	public MaterialLog addMaterialToLog(Employee employee, Material material, int quantity) {
@@ -55,16 +56,24 @@ public class LogController {
 		int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
 		return materialLogKey;
 	}
-	public void saveHourLogs(ArrayList<HourLog> logs,int orderId , LocalDateTime orderDate ) throws DataAccessException {
+	public void saveNewHourLogs(ArrayList<HourLog> logs,int orderId , LocalDateTime time ) throws DataAccessException {
 		for(HourLog log : logs) {
-			System.out.println(log.getTimeStamp());
-			System.out.println(orderDate);
-			if(log.getTimeStamp().isAfter(orderDate)) {
+			if(log.getTimeStamp().isAfter(time)) {
 			hourLogInterface.saveHourLog(log , orderId);
 			
 		}
 	}
 
 }
+	public void saveNewMaterialLogs(ArrayList<MaterialLog>  logs,int orderId, LocalDateTime time) throws DataAccessException {
+		for(MaterialLog log : logs) {
+			if(log.getTimeStamp().isAfter(time)) {
+				materialLogInterface.saveMaterialLog(log, orderId);
+				
+			}
+		}
+	}
+
+
 }
 

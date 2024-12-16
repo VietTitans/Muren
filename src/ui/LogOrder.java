@@ -258,7 +258,7 @@ public class LogOrder extends JFrame {
 										totalPrice};
 								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 								model.addRow(newRow);	
-								addToMaterialTotal();
+//								addToMaterialTotal();
 								btnRemoveMaterial.setEnabled(true);
 							}
 							else if (material instanceof GenericMaterial) {
@@ -529,7 +529,7 @@ public class LogOrder extends JFrame {
 						totalPrice};
 				DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 				model.addRow(newRow);	
-				addToMaterialTotal();
+//				addToMaterialTotal();
 				}
 				else if (material instanceof GenericMaterial) {
 					Object[] newRow = {newNr,
@@ -542,7 +542,7 @@ public class LogOrder extends JFrame {
 							totalPrice};
 					DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 					model.addRow(newRow);	
-					addToMaterialTotal();
+//					addToMaterialTotal();
 				}
 				btnRemoveMaterial.setEnabled(true);
 		}
@@ -586,7 +586,13 @@ public class LogOrder extends JFrame {
 			
 
 			public void actionPerformed(ActionEvent e) {
-				saveNewHourLog();
+				try {
+					saveNewHourLog();
+					saveNewMaterialLog();
+				} catch (DataAccessException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -689,7 +695,7 @@ public class LogOrder extends JFrame {
 				totalPrice};
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		model.addRow(newRow);	
-		addToMaterialTotal();
+//		addToMaterialTotal();
 		btnRemoveMaterial.setEnabled(true);
 	}
 
@@ -707,23 +713,24 @@ public class LogOrder extends JFrame {
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
 	}
-	public void addToMaterialTotal() {
-		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
-		double totalPrice = price.doubleValue();
-		materialPriceTotal.setText("" + totalPrice);
-		addToTotalPrice();
-	}
-	public void addToTotalPrice() {
-		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
-		double totalPrice = price.doubleValue();
-		totalOverallPrice.setText("" + totalPrice);
-		addPriceWithVAT(price);
-	}
+//	public void addToMaterialTotal() {
+//		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
+//		double totalPrice = price.doubleValue();
+//		materialPriceTotal.setText("" + totalPrice);
+//		addToTotalPrice();
+//	}
+//
+//	public void addToTotalPrice() {
+//		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
+//		double totalPrice = price.doubleValue();
+//		totalOverallPrice.setText("" + totalPrice);
+//		addPriceWithVAT(price);
+//	}
 	public void addToHoursTotal() {
 		BigDecimal price = currentOrderController.calculateTotalHoursPrice();
 		double totalPrice = price.doubleValue();
 		hoursTotalPrice.setText("" + totalPrice);
-		addToTotalPrice();
+//		addToTotalPrice();
 	}
 	public void addPriceWithVAT(BigDecimal price) {
 		BigDecimal totalPriceWithVATBD = price.multiply(new BigDecimal(1.25));
@@ -746,7 +753,7 @@ public void saveNewHourLog() {
 		Customer customer = currentOrderController.getCustomer();
 		LogController logController = new LogController();
 		if (customer != null && materialTable.getRowCount() > 0) {
-			logController.saveHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
+			logController.saveNewHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
 
 }
 						
@@ -772,6 +779,14 @@ public void saveNewHourLog() {
 	} catch (DataAccessException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
+	}
+}
+public void saveNewMaterialLog() throws DataAccessException {
+	LogController logController = new LogController();
+	Customer customer = currentOrderController.getCustomer();
+	
+	if (customer != null && materialTable.getRowCount() > 0) {
+		logController.saveNewMaterialLogs(currentOrder.getMaterialLogs(), orderId, windowMadeAt );
 	}
 }
 }
