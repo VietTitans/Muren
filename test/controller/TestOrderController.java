@@ -250,6 +250,7 @@ class TestOrderController {
 		DataAccessException exceptionThrown = assertThrows(DataAccessException.class, () -> {
 			orderController.findOrderByOrderNo(47);
 		});
+		
 		String expectedResult = "Order not found";
 		//Assert
 		assertEquals(expectedResult, exceptionThrown.getMessage());
