@@ -20,7 +20,7 @@ public class DBConnection {
 	private static final String USERNAME = "DMA-CSD-V24_10519153";
 	private static final String PASSWORD = "Password1!";
 
-	public DBConnection() throws DataAccessException {
+	private DBConnection() throws DataAccessException {
 
 		String urlString = String.format("jdbc:sqlserver://%s:%s;databaseName=%s;encrypt=false", SERVERNAME, PORTNUMBER,
 				DBNAME);
