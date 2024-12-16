@@ -51,7 +51,6 @@ public class LogOrder extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtKundeTlf;
 	private JTextField txtProduktno;
 	private JTextField txtMedarbejderid;
 	private JTable materialTable;
@@ -113,7 +112,7 @@ public class LogOrder extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Registrer ordre:");
+		JLabel lblNewLabel = new JLabel("Log ordre");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(lblNewLabel, BorderLayout.NORTH);
 		
@@ -126,49 +125,14 @@ public class LogOrder extends JFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		txtKundeTlf = new JTextField();
-		txtKundeTlf.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				txtKundeTlf.setText("");
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				String str = txtKundeTlf.getText();
-				int strLenght = str.length();
-				if(strLenght < 1) {
-					txtKundeTlf.setText("Kunde Tlf:");
-				} else {
-					
-				}
-			}
-		});
-		
 		lblCheckConnection = new JLabel("New label");
 		GridBagConstraints gbc_lblCheckConnection = new GridBagConstraints();
 		gbc_lblCheckConnection.insets = new Insets(0, 0, 5, 0);
 		gbc_lblCheckConnection.gridx = 1;
 		gbc_lblCheckConnection.gridy = 0;
 		panel.add(lblCheckConnection, gbc_lblCheckConnection);
-		txtKundeTlf.setHorizontalAlignment(SwingConstants.LEFT);
-		txtKundeTlf.setText("Kunde Tlf:");
-		GridBagConstraints gbc_txtKundeTlf = new GridBagConstraints();
-		gbc_txtKundeTlf.insets = new Insets(0, 0, 5, 0);
-		gbc_txtKundeTlf.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtKundeTlf.gridx = 1;
-		gbc_txtKundeTlf.gridy = 1;
-		panel.add(txtKundeTlf, gbc_txtKundeTlf);
-		txtKundeTlf.setColumns(10);
 		
-		JButton addCustomerButton = new JButton("Tilføj kunde");
-		GridBagConstraints gbc_addCustomerButton = new GridBagConstraints();
-		gbc_addCustomerButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addCustomerButton.insets = new Insets(0, 0, 5, 0);
-		gbc_addCustomerButton.gridx = 1;
-		gbc_addCustomerButton.gridy = 2;
-		panel.add(addCustomerButton, gbc_addCustomerButton);
-		
-		JLabel customerLabel = new JLabel(currentOrder.getCustomer().getfName() + " " + currentOrder.getCustomer().getfName());
+		JLabel customerLabel = new JLabel(currentOrder.getCustomer().getfName() + " " + currentOrder.getCustomer().getlName());
 		GridBagConstraints gbc_customerLabel = new GridBagConstraints();
 		gbc_customerLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_customerLabel.gridx = 1;
@@ -363,26 +327,6 @@ public class LogOrder extends JFrame {
 				}
 			}
 		});
-		
-		JButton btnRemoveCustomer = new JButton("Fjern kunde");
-		btnRemoveCustomer.setEnabled(false);
-		btnRemoveCustomer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				currentOrderController.removeCustomer();
-				customerLabel.setText("kunde");
-				btnRemoveCustomer.setEnabled(false);;
-				btnAddMaterial.setEnabled(false);
-				btnAddEmployee.setEnabled(false);
-				txtProduktno.setEnabled(false);
-				txtMngde.setEnabled(false);
-				txtMedarbejderid.setEnabled(false);
-			}
-		});
-		GridBagConstraints gbc_btnRemoveCustomer = new GridBagConstraints();
-		gbc_btnRemoveCustomer.insets = new Insets(0, 0, 5, 0);
-		gbc_btnRemoveCustomer.gridx = 1;
-		gbc_btnRemoveCustomer.gridy = 12;
-		panel.add(btnRemoveCustomer, gbc_btnRemoveCustomer);
 		btnRemoveMaterial.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_btnRemoveMaterial = new GridBagConstraints();
 		gbc_btnRemoveMaterial.insets = new Insets(0, 0, 5, 0);
@@ -510,7 +454,7 @@ public class LogOrder extends JFrame {
 		gbc_btnNewButton.gridx = 12;
 		gbc_btnNewButton.gridy = 1;
 		panel_1.add(btnNewButton, gbc_btnNewButton);
-		
+	
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
@@ -561,6 +505,36 @@ public class LogOrder extends JFrame {
 		});
 		materialTable.getColumnModel().getColumn(3).setPreferredWidth(90);
 		
+		ArrayList<MaterialLog> materialLogs = currentOrder.getMaterialLogs();
+		
+		for (MaterialLog materialLog : materialLogs) {
+			Material material = materialLog.getMaterial();
+			if (material instanceof StockMaterial) {
+				int newNr = materialTable.getRowCount() + 1;
+				BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
+				Double totalPrice = totalBDPrice.doubleValue();
+				Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
+				
+				Object[] newRow = {newNr,
+						material.getMaterialNo(),
+						material.getProductName(), 
+						material.getCurrentMaterialDescription().getDescription(),
+						materialLog.getQuantity(), 
+						(((StockMaterial) material).getAvailableAmount()),
+						material.get
+						totalPrice};
+				DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+				model.addRow(newRow);	
+				addToMaterialTotal(totalPrice);
+				btnRemoveMaterial.setEnabled(true);
+			}
+			else if (material instanceof GenericMaterial) {
+				AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , LogOrder.this, amountNo);
+				addGenericMaterial.setVisible(true);
+			}
+		}
+		
+		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
@@ -590,36 +564,6 @@ public class LogOrder extends JFrame {
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
-			}
-		});
-		
-		addCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
-						if (customer == null) {
-							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
-							customerNotFoundDialog.setVisible(true);
-							
-						} 
-						else {
-							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
-							customerLabel.setText(name);
-							txtKundeTlf.setText("Kunde Tlf:");
-							btnRemoveCustomer.setEnabled(true);
-							btnAddMaterial.setEnabled(true);
-							btnAddEmployee.setEnabled(true);
-							txtProduktno.setEnabled(true);
-							txtMngde.setEnabled(true);
-							txtMedarbejderid.setEnabled(true);
-							
-							
-						}
-				} 
-				catch (Exception b) {
-					b.printStackTrace();  // This will print the stack trace of the exception to the console
-				}
 			}
 		});
 		btnNewButton.addActionListener(new ActionListener() {

@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 public class Order {
@@ -9,14 +10,14 @@ public class Order {
 	
 	private Customer customer;
 	private boolean isFinished;
-	private LocalDate startDate;
+	private LocalDateTime startDate;
 	private LocalDate deadLine;
 	private ArrayList<MaterialLog> materialLogs;
 	private ArrayList<HourLog> hourLogs;
 	
 	public Order (Employee employee) {
 		this.OrderMadeBy = employee;
-		startDate = LocalDate.now();
+		startDate = LocalDateTime.now();
 		materialLogs = new ArrayList<>();
 		hourLogs = new ArrayList<>();
 	}
@@ -95,7 +96,7 @@ public class Order {
 		this.isFinished = isFinished;
 	}
 
-	public LocalDate getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
@@ -137,7 +138,7 @@ public class Order {
 		customer = newCustomer;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 

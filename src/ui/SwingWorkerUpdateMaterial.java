@@ -46,9 +46,9 @@ protected Object doInBackground() throws Exception {
          public void run() {
              try {
             	 System.out.println(LocalDate.now());
-            	 checkIfNewChanges();
+         //   	 checkIfNewChanges();
             	 updateTables(materialTable);
-             } catch (SQLException | DataAccessException e) {
+             } catch (DataAccessException e) {
                  e.printStackTrace();
          }
             

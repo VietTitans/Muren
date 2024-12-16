@@ -46,7 +46,7 @@ public class OrderDB implements OrderDBIF {
 		
 		int orderNoReturned = -1;
 		// Sets up values to be used in prepared statement
-		java.sql.Date startDate = java.sql.Date.valueOf(currentOrder.getStartDate());
+		java.sql.Timestamp startDate = java.sql.Timestamp.valueOf(currentOrder.getStartDate());
 		java.sql.Date deadline = java.sql.Date.valueOf(currentOrder.getDeadLine());
 		int employeeId = currentOrder.getOrderMadeBy().getEmployeeId();
 		int customerNo = currentOrder.getCustomer().getCustomerId();
@@ -62,7 +62,7 @@ public class OrderDB implements OrderDBIF {
 			DBConnection.getInstance().startTransaction();
 
 			// Inserts values into prepared statement
-			insertIntoDatabase.setDate(1, startDate);
+			insertIntoDatabase.setTimestamp(1, startDate);
 			insertIntoDatabase.setDate(2, deadline);
 			insertIntoDatabase.setInt(3, employeeId);
 			insertIntoDatabase.setInt(4, customerNo);

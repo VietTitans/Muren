@@ -41,6 +41,7 @@ public class FindOrder extends JDialog {
 
 
 	public FindOrder(JFrame previousScreen) {
+		this.previousScreen = previousScreen;
 		setBounds(100, 100, 266, 122);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -69,6 +70,7 @@ public class FindOrder extends JDialog {
 							Order currentOrder = currentOrderController.findOrderByOrderNo(orderNo);
 							try {
 								LogOrder logOrder = new LogOrder(currentOrder, currentOrderController);
+								logOrder.setVisible(true);
 								previousScreen.dispose();
 								dispose();
 							} catch (Exception e1) {
