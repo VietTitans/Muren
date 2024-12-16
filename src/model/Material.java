@@ -93,14 +93,14 @@ public abstract class Material {
 		
 	}
 	
-	public abstract Price getSalesPriceByDate(LocalDateTime date);
+	public abstract Price getSalesPriceByDate(LocalDateTime timeStamp);
 	
-	protected Price getSalesPriceByDateSubClasses(LocalDateTime date) {
+	protected Price getSalesPriceByDateSubClasses(LocalDateTime timeStamp) {
 		Price tempPrice = null;
 		boolean found = false;
 		int index = 0;
 		while(!found && index < salesPrices.size()) {
-			if(salesPrices.get(index).getTimeStamp().isEqual(date) || salesPrices.get(index).getTimeStamp().isBefore(date)) {
+			if(salesPrices.get(index).getTimeStamp().isEqual(timeStamp) || salesPrices.get(index).getTimeStamp().isBefore(timeStamp)) {
 				tempPrice = salesPrices.get(index);
 				found = true;
 			} else {
@@ -110,14 +110,14 @@ public abstract class Material {
 		return tempPrice;
 	}
 	
-	public abstract Price getPurchasePriceByDate(LocalDateTime date);
+	public abstract Price getPurchasePriceByDate(LocalDateTime timeStamp);
 	
-	protected Price getPurchasePriceByDateSubClasses(LocalDateTime date) {
+	protected Price getPurchasePriceByDateSubClasses(LocalDateTime timeStamp) {
 		Price tempPrice = null;
 		boolean found = false;
 		int index = 0;
 		while(!found && index < purchasePrices.size()) {
-			if(purchasePrices.get(index).getTimeStamp().isEqual(date) || purchasePrices.get(index).getTimeStamp().isBefore(date)) {
+			if(purchasePrices.get(index).getTimeStamp().isEqual(timeStamp) || purchasePrices.get(index).getTimeStamp().isBefore(timeStamp)) {
 				tempPrice = purchasePrices.get(index);
 				found = true;
 			} else {
@@ -127,14 +127,14 @@ public abstract class Material {
 		return tempPrice;
 	}
 	
-	public abstract MaterialDescription getMaterialDescriptionByDate(LocalDateTime date);
+	public abstract MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp);
 	
-	protected MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime date) {
+	protected MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime timeStamp) {
 		MaterialDescription tempDescription = null;
 		boolean found = false;
 		int index = 0;
 		while(!found && index < materialDescriptions.size()) {
-			if(materialDescriptions.get(index).getTimeStamp().isEqual(date) || materialDescriptions.get(index).getTimeStamp().isBefore(date)) {
+			if(materialDescriptions.get(index).getTimeStamp().isEqual(timeStamp) || materialDescriptions.get(index).getTimeStamp().isBefore(timeStamp)) {
 				tempDescription = materialDescriptions.get(index);
 				found = true;
 			} else {
