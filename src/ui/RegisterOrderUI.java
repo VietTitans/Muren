@@ -46,7 +46,7 @@ import java.awt.event.FocusEvent;
 import java.math.BigDecimal;
 import java.awt.Color;
 
-public class RegisterOrderV2 extends JFrame {
+public class RegisterOrderUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -75,7 +75,7 @@ public class RegisterOrderV2 extends JFrame {
 				
 						
 						try {
-							RegisterOrderV2 frame = new RegisterOrderV2();
+							RegisterOrderUI frame = new RegisterOrderUI();
 							frame.setVisible(true);
 						}
 						 catch (Exception e) {
@@ -92,7 +92,7 @@ public class RegisterOrderV2 extends JFrame {
 	}
 
 
-	public RegisterOrderV2() throws Exception {
+	public RegisterOrderUI() throws Exception {
 		try {
 		this.currentOrderController = new OrderController();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
@@ -177,7 +177,7 @@ public class RegisterOrderV2 extends JFrame {
 		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Row count: " + employeeTable.getRowCount());
-				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderV2.this, employeeTable);
+				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(RegisterOrderUI.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
 		});
@@ -186,7 +186,7 @@ public class RegisterOrderV2 extends JFrame {
 		btnRemoveMaterial.setEnabled(false);
 		btnRemoveMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderV2.this, materialTable);
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(RegisterOrderUI.this, materialTable);
 				removeMaterialFrame.setVisible(true);
 			}
 		});
@@ -290,7 +290,7 @@ public class RegisterOrderV2 extends JFrame {
 								btnRemoveMaterial.setEnabled(true);
 							}
 							else if (material instanceof GenericMaterial) {
-								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderV2.this, amountNo);
+								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , RegisterOrderUI.this, amountNo);
 								addGenericMaterial.setVisible(true);
 							}
 						} catch (Exception e1) {
@@ -347,7 +347,7 @@ public class RegisterOrderV2 extends JFrame {
 						
 					}
 					else {
-						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderV2.this);
+						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, RegisterOrderUI.this);
 						confirmEmployeeDialog.setVisible(true);
 						
 					}
@@ -460,7 +460,7 @@ public class RegisterOrderV2 extends JFrame {
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(RegisterOrderV2.this);
+				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(RegisterOrderUI.this);
 					cancelOrderFrame.setVisible(true);
 			}
 			
@@ -632,13 +632,13 @@ public class RegisterOrderV2 extends JFrame {
 							
 						//}
 						orderNo = currentOrderController.saveOrder();
-						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderV2.this);
+						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderUI.this);
 						saveOrder.setVisible(true);
 					}
 					else if (customer != null && employeeTable.getRowCount() > 0) {
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
 						orderNo = currentOrderController.saveOrder();
-						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderV2.this);
+						SaveOrder saveOrder = new SaveOrder(orderNo, RegisterOrderUI.this);
 						saveOrder.setVisible(true);
 					}
 					else {

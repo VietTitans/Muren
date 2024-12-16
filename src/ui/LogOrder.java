@@ -75,7 +75,7 @@ public class LogOrder extends JFrame {
 				
 						
 						try {
-							RegisterOrderV2 frame = new RegisterOrderV2();
+							RegisterOrderUI frame = new RegisterOrderUI();
 							frame.setVisible(true);
 						}
 						 catch (Exception e) {

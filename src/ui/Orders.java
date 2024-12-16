@@ -65,9 +65,9 @@ public class Orders extends JFrame {
 		JButton btnNewButton = new JButton("Registrer ordre");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegisterOrderV2 registerOrderFrame;
+				RegisterOrderUI registerOrderFrame;
 				try {
-					registerOrderFrame = new RegisterOrderV2();
+					registerOrderFrame = new RegisterOrderUI();
 					registerOrderFrame.setVisible(true);
 					dispose();
 				} catch (Exception e1 ) {

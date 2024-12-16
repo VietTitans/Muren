@@ -96,8 +96,8 @@ public class RemoveEmployeeDialog extends JDialog {
 				            start++;
 				            end--;
 				        }
-				        if(previousScreen instanceof RegisterOrderV2) {
-				        	((RegisterOrderV2) previousScreen).removeRowEmployee(removeList);
+				        if(previousScreen instanceof RegisterOrderUI) {
+				        	((RegisterOrderUI) previousScreen).removeRowEmployee(removeList);
 				        	dispose();
 				        }
 				        else if (previousScreen instanceof LogOrder) {
