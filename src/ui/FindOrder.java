@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.DataAccessException;
+import controller.GeneralException;
 import controller.OrderController;
 import model.Order;
 
@@ -83,6 +84,9 @@ public class FindOrder extends JDialog {
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
+						} catch (GeneralException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
 						}
 					}
 				});

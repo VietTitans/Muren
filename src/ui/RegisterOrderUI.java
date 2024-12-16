@@ -261,9 +261,8 @@ public class RegisterOrderUI extends JFrame {
 						int materialNo = Integer.parseInt(txtProduktno.getText());
 						int amountNo = Integer.parseInt(txtMngde.getText());
 						SwingWorkerFindAndAddMaterial swingWorker = new SwingWorkerFindAndAddMaterial(currentOrderController,materialNo,placeHolderEmployee,amountNo);
-						Material material;
 						try {
-							material = swingWorker.doInBackground();
+							Material material = swingWorker.doInBackground();
 							
 							
 							if (material == null) {
@@ -658,7 +657,7 @@ public class RegisterOrderUI extends JFrame {
 			}
 		});
 		updateTableMaterial();
-//		updateConnectionLabel(lblCheckConnection);
+		updateConnectionLabel(lblCheckConnection);
 		
 	}
 	public void removeRow(int[] removeList) {

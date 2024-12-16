@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 
 import controller.DataAccessException;
+import controller.GeneralException;
 import model.Employee;
 import model.HourLog;
 import model.MaterialLog;
@@ -59,7 +60,7 @@ public class HourLogDB implements HourLogDBIF {
 		}
 		return hourLogKey;
 	}
-	public ArrayList<HourLog> findHourLogsByOrderNo(int orderNo) throws DataAccessException{
+	public ArrayList<HourLog> findHourLogsByOrderNo(int orderNo) throws DataAccessException, GeneralException{
 		
 		ArrayList<HourLog> hourLogs = new ArrayList<HourLog>();
 		try {
@@ -78,10 +79,9 @@ public class HourLogDB implements HourLogDBIF {
 		
 		return hourLogs;
 	}
-public HourLog buildObject(ResultSet resultSet) throws SQLException {
-	
-	Employee employee = new Employee();
-	employee.setEmployeeId(resultSet.getInt("EmployeeId"));
+public HourLog buildObject(ResultSet resultSet) throws SQLException, GeneralException, DataAccessException {
+	EmployeeDB employeeDB = new EmployeeDB();
+	Employee employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
 	BigDecimal hours = resultSet.getBigDecimal("HoursWorked");
 	HourLog hourLog = new HourLog(employee, hours); 
 	

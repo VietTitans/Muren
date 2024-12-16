@@ -28,6 +28,7 @@ import controller.OrderController;
 import model.Customer;
 import model.Employee;
 import model.GenericMaterial;
+import model.HourLog;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
@@ -40,6 +41,7 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -66,6 +68,8 @@ public class LogOrder extends JFrame {
 	private JButton btnRemoveHourLog;
 	private JLabel lblCheckConnection;
 	private static Order currentOrder;
+	private LocalDateTime orderDate;
+	private ArrayList<MaterialLog> oldMaterials;
 	/**
 	 * Launch the application.
 	 */
@@ -96,7 +100,9 @@ public class LogOrder extends JFrame {
 
 	public LogOrder(Order currentOrder, OrderController currentOrderController) throws Exception {
 		try {
+		this.currentOrder = currentOrder;
 		this.currentOrderController = currentOrderController;
+		orderDate = currentOrder.getStartDate();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
 		placeHolderEmployee = new Employee();
 		placeHolderEmployee.setEmployeeId(1);
@@ -140,7 +146,6 @@ public class LogOrder extends JFrame {
 		panel.add(customerLabel, gbc_customerLabel);
 		
 		btnRemoveHourLog = new JButton("Fjern medarbejder");
-		btnRemoveHourLog.setEnabled(false);
 		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Row count: " + employeeTable.getRowCount());
@@ -150,7 +155,6 @@ public class LogOrder extends JFrame {
 		});
 		
 		btnRemoveMaterial = new JButton("Fjern materiale");
-		btnRemoveMaterial.setEnabled(false);
 		btnRemoveMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RemoveMaterial removeMaterialFrame= new RemoveMaterial(LogOrder.this, materialTable);
@@ -159,7 +163,6 @@ public class LogOrder extends JFrame {
 		});
 		
 		txtProduktno = new JTextField();
-		txtProduktno.setEnabled(false);
 		txtProduktno.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -187,7 +190,6 @@ public class LogOrder extends JFrame {
 		txtProduktno.setColumns(10);
 		
 		txtMngde = new JTextField();
-		txtMngde.setEnabled(false);
 		txtMngde.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -214,7 +216,6 @@ public class LogOrder extends JFrame {
 		txtMngde.setColumns(10);
 		
 		JButton btnAddMaterial = new JButton("Tilføj materiale");
-		btnAddMaterial.setEnabled(false);
 		btnAddMaterial.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_btnAddMaterial = new GridBagConstraints();
 		gbc_btnAddMaterial.fill = GridBagConstraints.HORIZONTAL;
@@ -270,7 +271,6 @@ public class LogOrder extends JFrame {
 				});
 		
 		txtMedarbejderid = new JTextField();
-		txtMedarbejderid.setEnabled(false);
 		txtMedarbejderid.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -297,7 +297,6 @@ public class LogOrder extends JFrame {
 		txtMedarbejderid.setColumns(10);
 		
 		JButton btnAddEmployee = new JButton("Tilføj medarbejder");
-		btnAddEmployee.setEnabled(false);
 		btnAddEmployee.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_btnAddEmployee = new GridBagConstraints();
 		gbc_btnAddEmployee.insets = new Insets(0, 0, 5, 0);
@@ -505,33 +504,43 @@ public class LogOrder extends JFrame {
 		});
 		materialTable.getColumnModel().getColumn(3).setPreferredWidth(90);
 		
-		ArrayList<MaterialLog> materialLogs = currentOrder.getMaterialLogs();
+		ArrayList<MaterialLog> oldMaterialLogs = currentOrder.getMaterialLogs();
 		
-		for (MaterialLog materialLog : materialLogs) {
+		for (MaterialLog materialLog : oldMaterialLogs) {
 			Material material = materialLog.getMaterial();
-			if (material instanceof StockMaterial) {
+			BigDecimal materialSalePriceBD = material.getPurchasePriceByDate(orderDate).getPreVATValue();
+			double materialSalePrice = materialSalePriceBD.doubleValue();
+			BigDecimal totalPriceBD = materialSalePriceBD.multiply(new BigDecimal(materialLog.getQuantity()));
+			double totalPrice = totalPriceBD.doubleValue();
+			String description = material.getMaterialDescriptionByDate(orderDate).getDescription();
 				int newNr = materialTable.getRowCount() + 1;
-				BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
-				Double totalPrice = totalBDPrice.doubleValue();
-				Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
-				
+				if (material instanceof StockMaterial) {
 				Object[] newRow = {newNr,
 						material.getMaterialNo(),
 						material.getProductName(), 
-						material.getCurrentMaterialDescription().getDescription(),
-						materialLog.getQuantity(), 
+						description,
+						materialLog.getQuantity(),
 						(((StockMaterial) material).getAvailableAmount()),
-						material.get
+						materialSalePrice,
 						totalPrice};
 				DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 				model.addRow(newRow);	
 				addToMaterialTotal(totalPrice);
+				}
+				else if (material instanceof GenericMaterial) {
+					Object[] newRow = {newNr,
+							material.getMaterialNo(),
+							material.getProductName(), 
+							description,
+							materialLog.getQuantity(),
+							0,
+							materialSalePrice,
+							totalPrice};
+					DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+					model.addRow(newRow);	
+					addToMaterialTotal(totalPrice);
+				}
 				btnRemoveMaterial.setEnabled(true);
-			}
-			else if (material instanceof GenericMaterial) {
-				AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , LogOrder.this, amountNo);
-				addGenericMaterial.setVisible(true);
-			}
 		}
 		
 		
@@ -566,6 +575,9 @@ public class LogOrder extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		
+		addHourLogsFromOrder();
+		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -605,7 +617,7 @@ public class LogOrder extends JFrame {
 			}
 		});
 		updateTableMaterial();
-//		updateConnectionLabel(lblCheckConnection);
+		updateConnectionLabel(lblCheckConnection);
 		
 	}
 	public void removeRow(int[] removeList) {
@@ -637,7 +649,6 @@ public class LogOrder extends JFrame {
 		}
 	}
 	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
-		System.out.println("timer: " +hours);
 		int newNr = employeeTable.getRowCount() + 1;
 
 		String name = employee.getfName() + " " + employee.getlName();
@@ -657,6 +668,28 @@ public class LogOrder extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addHourLogsFromOrder() {
+		ArrayList<HourLog> hourLogs = currentOrder.getHourLogs();
+		
+		for(HourLog hourLog : hourLogs) {
+			int newNr = employeeTable.getRowCount() + 1;
+			Employee employee = hourLog.getEmployee();
+			String employeeName = employee.getfName() + " " + employee.getlName();
+			BigDecimal hoursWorkedBD = (hourLog.getHoursWorked());
+			double hoursWorked = hoursWorkedBD.doubleValue();
+			Object[] newRow = {newNr,
+					employee.getEmployeeId(),
+					employeeName, 
+					hoursWorked};
+			DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+			model.addRow(newRow);
+				addToHoursTotal();
+				btnRemoveHourLog.setEnabled(true);
+		}
+	}
+	
+	
 	public void addGenericMaterial(double price, double price2, String description, Material material, int amountNo) {
 		int newNr = materialTable.getRowCount() + 1;
 		BigDecimal totalPriceDB = new BigDecimal(price2).multiply(new BigDecimal(amountNo));
