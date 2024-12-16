@@ -94,8 +94,8 @@ public class AddGenericMaterial extends JDialog {
 						double purchasePrice = Double.parseDouble(txtPris.getText());
 						double salesPrice = Double.parseDouble(txtSalgsPris.getText());
 						String description = txtBeskrivelse.getText(); 
-						if (previousScreen instanceof RegisterOrderV2) {
-							((RegisterOrderV2) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
+						if (previousScreen instanceof RegisterOrderUI) {
+							((RegisterOrderUI) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
 							dispose();
 						}
 						else if (previousScreen instanceof LogOrder) {

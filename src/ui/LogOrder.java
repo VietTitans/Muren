@@ -76,7 +76,9 @@ public class LogOrder extends JFrame {
 				
 						
 						try {
+
 							LogOrder frame = new LogOrder(currentOrder, currentOrderController);
+
 							frame.setVisible(true);
 						}
 						 catch (Exception e) {

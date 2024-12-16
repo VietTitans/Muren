@@ -44,7 +44,7 @@ public class OrderDB implements OrderDBIF {
 	public int saveOrder(Order currentOrder) throws DataAccessException {
 		DBConnection.getInstance().startTransaction();
 		
-		int orderIdReturned = -1;
+		int orderNoReturned = -1;
 		// Sets up values to be used in prepared statement
 		java.sql.Date startDate = java.sql.Date.valueOf(currentOrder.getStartDate());
 		java.sql.Date deadline = java.sql.Date.valueOf(currentOrder.getDeadLine());
@@ -74,15 +74,15 @@ public class OrderDB implements OrderDBIF {
 			// Gets the auto generated key from DB, So it can be used for Logs
 			ResultSet generatedKeys = insertIntoDatabase.getGeneratedKeys();
 			if (generatedKeys.next()) {
-				orderIdReturned = generatedKeys.getInt(1);
+				orderNoReturned = generatedKeys.getInt(1);
 			}
 			insertIntoDatabase.close();
 			// Saves the material and hour logs to DB by calling their DB classes
 			for (MaterialLog materialLog : currentOrder.getMaterialLogs()) {
-				materialLogDB.saveMaterialLog(materialLog, orderIdReturned);
+				materialLogDB.saveMaterialLog(materialLog, orderNoReturned);
 			}
 			for (HourLog hourLog : currentOrder.getHourLogs()) {
-				hourLogDB.saveHourLog(hourLog, orderIdReturned);
+				hourLogDB.saveHourLog(hourLog, orderNoReturned);
 			}
 
 			DBConnection.getInstance().commitTransaction();
@@ -90,7 +90,7 @@ public class OrderDB implements OrderDBIF {
 			e.printStackTrace();
 			DBConnection.getInstance().rollbackTransaction();
 		}
-		return orderIdReturned;
+		return orderNoReturned;
 	}
 
 	@Override

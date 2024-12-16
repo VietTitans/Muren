@@ -134,8 +134,8 @@ public class AddHoursDialog extends JDialog {
 
 	public void returnHours(double result) {
 		BigDecimal hours = new BigDecimal(result);
-		if (previousScreen instanceof RegisterOrderV2) {
-		((RegisterOrderV2) previousScreen).addEmployeeAndHours(employee, hours);
+		if (previousScreen instanceof RegisterOrderUI) {
+		((RegisterOrderUI) previousScreen).addEmployeeAndHours(employee, hours);
 		dispose();
 		}
 		else if (previousScreen instanceof LogOrder) {
