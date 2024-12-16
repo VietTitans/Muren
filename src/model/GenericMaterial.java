@@ -45,22 +45,22 @@ public class GenericMaterial extends Material{
 	}
 	
 	@Override
-	public Price getSalesPriceByDate(LocalDateTime date) {
-		return super.getSalesPriceByDateSubClasses(date);
+	public Price getSalesPriceByDate(LocalDateTime timeStamp) {
+		return super.getSalesPriceByDateSubClasses(timeStamp);
 	}
 
 
 
 	@Override
-	public Price getPurchasePriceByDate(LocalDateTime date) {
-		return super.getPurchasePriceByDateSubClasses(date);
+	public Price getPurchasePriceByDate(LocalDateTime timeStamp) {
+		return super.getPurchasePriceByDateSubClasses(timeStamp);
 	}
 
 
 
 	@Override
-	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime date) {
-		return super.getMaterialDescriptionByDateSubClasses(date);
+	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp) {
+		return super.getMaterialDescriptionByDateSubClasses(timeStamp);
 	}
 	
 	public String getMaterialType() {
