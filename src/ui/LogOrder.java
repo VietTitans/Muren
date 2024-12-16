@@ -258,7 +258,7 @@ public class LogOrder extends JFrame {
 										totalPrice};
 								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 								model.addRow(newRow);	
-								addToMaterialTotal(totalPrice);
+								addToMaterialTotal();
 								btnRemoveMaterial.setEnabled(true);
 							}
 							else if (material instanceof GenericMaterial) {
@@ -719,7 +719,7 @@ public class LogOrder extends JFrame {
 				totalPrice};
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		model.addRow(newRow);	
-		addToMaterialTotal(totalPrice);
+		addToMaterialTotal();
 		btnRemoveMaterial.setEnabled(true);
 	}
 
@@ -737,7 +737,7 @@ public class LogOrder extends JFrame {
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
 	}
-	public void addToMaterialTotal(double amount) {
+	public void addToMaterialTotal() {
 		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
 		double totalPrice = price.doubleValue();
 		materialPriceTotal.setText("" + totalPrice);
