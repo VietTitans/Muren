@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -23,14 +24,14 @@ public class RemoveMaterial extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private static JTable table;
-	private static RegisterOrderV2 registerOrderV2;
+	private static JFrame previousScreen;
 	private JList list;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			RemoveMaterial dialog = new RemoveMaterial(registerOrderV2, table);
+			RemoveMaterial dialog = new RemoveMaterial(previousScreen, table);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -42,16 +43,14 @@ public class RemoveMaterial extends JDialog {
 	 * Create the dialog.
 	 * @param registerOrderV2 
 	 */
-	public RemoveMaterial(RegisterOrderV2 registerOrderV2, JTable table) {
+	public RemoveMaterial(JFrame previousScreen, JTable table) {
 		this.table = table;
-		this.registerOrderV2 = registerOrderV2;
+		this.previousScreen = previousScreen;
 		ArrayList<String> listData = new ArrayList<>();
 		for (int row = 0; row < table.getRowCount(); row++) {
             String name = Integer.toString((int) table.getValueAt(row, 0)); // First column (Name)
             listData.add(name); // Add the name to the listData
         }
-		
-		System.out.println(registerOrderV2);
 		String[] listArray = listData.toArray(new String[0]);
 		
 		setBounds(100, 100, 450, 300);
@@ -96,8 +95,14 @@ public class RemoveMaterial extends JDialog {
 			            start++;
 			            end--;
 			        }
-			        registerOrderV2.removeRow(removeList);
+			        if (previousScreen instanceof RegisterOrderV2) {
+			        ((RegisterOrderV2) previousScreen).removeRow(removeList);
 					dispose();
+			        }
+			        else if (previousScreen instanceof LogOrder) {
+			        	((LogOrder) previousScreen).removeRow(removeList);
+						dispose();
+			        }
 					}
 				});
 				okButton.setActionCommand("OK");

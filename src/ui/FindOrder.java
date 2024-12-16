@@ -8,26 +8,24 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import model.Employee;
-
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ConfirmEmployeeDialog extends JDialog {
+public class FindOrder extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
+	private JTextField textField;
 	private static JFrame previousScreen;
-	private static Employee employee;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			ConfirmEmployeeDialog dialog = new ConfirmEmployeeDialog(employee, previousScreen);
+			FindOrder dialog = new FindOrder(previousScreen);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -35,40 +33,38 @@ public class ConfirmEmployeeDialog extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 * @param registerOrderV2 
-	 * @param employee 
-	 */
-	public ConfirmEmployeeDialog(Employee employee, JFrame previousScreen) {
-		this.employee = employee;
-		this.previousScreen = previousScreen;
-		setBounds(100, 100, 450, 300);
+
+	public FindOrder(JFrame previousScreen) {
+		setBounds(100, 100, 266, 122);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
-			JLabel lblNewLabel = new JLabel("Er dette den rigtige medarbejder:");
+			JLabel lblNewLabel = new JLabel("Indtast ordreNo:");
 			contentPanel.add(lblNewLabel);
 		}
 		{
-			JLabel employeelbl = new JLabel(employee.getfName() + " " + employee.getlName() + "?");
-			contentPanel.add(employeelbl);
+			textField = new JTextField();
+			contentPanel.add(textField);
+			textField.setColumns(10);
 		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton cancelButton = new JButton("Bekræft");
-				cancelButton.addActionListener(new ActionListener() {
+				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						AddHoursDialog addHoursDialog = new AddHoursDialog(employee, previousScreen);
-						addHoursDialog.setVisible(true);
-						dispose();
 					}
 				});
+				okButton.setActionCommand("OK");
+				buttonPane.add(okButton);
+				getRootPane().setDefaultButton(okButton);
+			}
+			{
+				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

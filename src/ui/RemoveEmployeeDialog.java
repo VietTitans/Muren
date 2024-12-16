@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -19,7 +20,7 @@ public class RemoveEmployeeDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static RegisterOrderV2 registerOrderV2;
+	private static JFrame previousScreen;
 	private static JTable employeeTable;
 	private JList list;
 
@@ -28,7 +29,7 @@ public class RemoveEmployeeDialog extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			RemoveEmployeeDialog dialog = new RemoveEmployeeDialog(registerOrderV2, employeeTable);
+			RemoveEmployeeDialog dialog = new RemoveEmployeeDialog(previousScreen, employeeTable);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -41,8 +42,8 @@ public class RemoveEmployeeDialog extends JDialog {
 	 * @param employeeTable 
 	 * @param registerOrderV2 
 	 */
-	public RemoveEmployeeDialog(RegisterOrderV2 registerOrderV2, JTable employeeTable) {
-		this.registerOrderV2 = registerOrderV2;
+	public RemoveEmployeeDialog(JFrame previousScreen, JTable employeeTable) {
+		this.previousScreen = previousScreen;
 		this.employeeTable = employeeTable;
 		ArrayList<String> listData = new ArrayList<>();
 		for (int row = 0; row < employeeTable.getRowCount(); row++) {
@@ -95,8 +96,14 @@ public class RemoveEmployeeDialog extends JDialog {
 				            start++;
 				            end--;
 				        }
-				        registerOrderV2.removeRowEmployee(removeList);
-				        dispose();
+				        if(previousScreen instanceof RegisterOrderV2) {
+				        	((RegisterOrderV2) previousScreen).removeRowEmployee(removeList);
+				        	dispose();
+				        }
+				        else if (previousScreen instanceof LogOrder) {
+				        	((LogOrder) previousScreen).removeRowEmployee(removeList);
+				        	dispose();
+				        }
 					}
 					
 				});

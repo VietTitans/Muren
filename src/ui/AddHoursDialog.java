@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -25,14 +26,14 @@ public class AddHoursDialog extends JDialog {
 	private JTextField txtTimer;
 	private JTextField txtMinutter;
 	private static Employee employee;
-	private static RegisterOrderV2 registerOrderV2;
+	private static JFrame previousScreen;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			AddHoursDialog dialog = new AddHoursDialog(employee, registerOrderV2);
+			AddHoursDialog dialog = new AddHoursDialog(employee, previousScreen);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -40,14 +41,10 @@ public class AddHoursDialog extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 * @param registerOrderV2 
-	 * @param employee 
-	 */
-	public AddHoursDialog(Employee employee, RegisterOrderV2 registerOrderV2) {
+
+	public AddHoursDialog(Employee employee, JFrame previousScreen) {
 		this.employee = employee;
-		this.registerOrderV2 = registerOrderV2;
+		this.previousScreen = previousScreen;
 		setBounds(100, 100, 373, 175);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -137,7 +134,13 @@ public class AddHoursDialog extends JDialog {
 
 	public void returnHours(double result) {
 		BigDecimal hours = new BigDecimal(result);
-		registerOrderV2.addEmployeeAndHours(employee, hours);
+		if (previousScreen instanceof RegisterOrderV2) {
+		((RegisterOrderV2) previousScreen).addEmployeeAndHours(employee, hours);
 		dispose();
+		}
+		else if (previousScreen instanceof LogOrder) {
+			((LogOrder) previousScreen).addEmployeeAndHours(employee, hours);
+			dispose();
+		}
 	}
 }

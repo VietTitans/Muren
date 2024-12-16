@@ -27,6 +27,7 @@ import controller.GeneralException;
 import controller.OrderController;
 import model.Customer;
 import model.Employee;
+import model.GenericMaterial;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
@@ -49,6 +50,7 @@ public class LogOrder extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField txtKundeTlf;
 	private JTextField txtProduktno;
 	private JTextField txtMedarbejderid;
 	private JTable materialTable;
@@ -56,22 +58,41 @@ public class LogOrder extends JFrame {
 	private JTextField txtMngde;
 	private OrderController currentOrderController;
 	private Employee placeHolderEmployee;
-
+	private JLabel materialPriceTotal;
+	private JLabel totalOverallPrice;
+	private JLabel hoursTotalPrice;
+	private JLabel priceWithVAT;
+	private JButton btnRemoveMaterial;
+	private JButton btnRemoveHourLog;
+	private JLabel lblCheckConnection;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-					LogOrder frame = new LogOrder();
-					frame.setVisible(true);
+				
+						
+						try {
+							RegisterOrderV2 frame = new RegisterOrderV2();
+							frame.setVisible(true);
+						}
+						 catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+			
+			
+					
 				
 			}
 		});
 	}
 
 
-	public LogOrder() {
+	public LogOrder() throws Exception {
 		try {
 		this.currentOrderController = new OrderController();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
@@ -102,6 +123,48 @@ public class LogOrder extends JFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
+		txtKundeTlf = new JTextField();
+		txtKundeTlf.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtKundeTlf.setText("");
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				String str = txtKundeTlf.getText();
+				int strLenght = str.length();
+				if(strLenght < 1) {
+					txtKundeTlf.setText("Kunde Tlf:");
+				} else {
+					
+				}
+			}
+		});
+		
+		lblCheckConnection = new JLabel("New label");
+		GridBagConstraints gbc_lblCheckConnection = new GridBagConstraints();
+		gbc_lblCheckConnection.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCheckConnection.gridx = 1;
+		gbc_lblCheckConnection.gridy = 0;
+		panel.add(lblCheckConnection, gbc_lblCheckConnection);
+		txtKundeTlf.setHorizontalAlignment(SwingConstants.LEFT);
+		txtKundeTlf.setText("Kunde Tlf:");
+		GridBagConstraints gbc_txtKundeTlf = new GridBagConstraints();
+		gbc_txtKundeTlf.insets = new Insets(0, 0, 5, 0);
+		gbc_txtKundeTlf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtKundeTlf.gridx = 1;
+		gbc_txtKundeTlf.gridy = 1;
+		panel.add(txtKundeTlf, gbc_txtKundeTlf);
+		txtKundeTlf.setColumns(10);
+		
+		JButton addCustomerButton = new JButton("Tilføj kunde");
+		GridBagConstraints gbc_addCustomerButton = new GridBagConstraints();
+		gbc_addCustomerButton.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addCustomerButton.insets = new Insets(0, 0, 5, 0);
+		gbc_addCustomerButton.gridx = 1;
+		gbc_addCustomerButton.gridy = 2;
+		panel.add(addCustomerButton, gbc_addCustomerButton);
+		
 		JLabel customerLabel = new JLabel("Kunde");
 		GridBagConstraints gbc_customerLabel = new GridBagConstraints();
 		gbc_customerLabel.insets = new Insets(0, 0, 5, 0);
@@ -109,16 +172,19 @@ public class LogOrder extends JFrame {
 		gbc_customerLabel.gridy = 3;
 		panel.add(customerLabel, gbc_customerLabel);
 		
-		JButton btnNewButton_5 = new JButton("Fjern medarbejder");
-		btnNewButton_5.addActionListener(new ActionListener() {
+		btnRemoveHourLog = new JButton("Fjern medarbejder");
+		btnRemoveHourLog.setEnabled(false);
+		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Row count: " + employeeTable.getRowCount());
 				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(LogOrder.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
 		});
 		
-		JButton btnNewButton_6 = new JButton("Fjern materiale");
-		btnNewButton_6.addActionListener(new ActionListener() {
+		btnRemoveMaterial = new JButton("Fjern materiale");
+		btnRemoveMaterial.setEnabled(false);
+		btnRemoveMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RemoveMaterial removeMaterialFrame= new RemoveMaterial(LogOrder.this, materialTable);
 				removeMaterialFrame.setVisible(true);
@@ -126,6 +192,7 @@ public class LogOrder extends JFrame {
 		});
 		
 		txtProduktno = new JTextField();
+		txtProduktno.setEnabled(false);
 		txtProduktno.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -153,6 +220,7 @@ public class LogOrder extends JFrame {
 		txtProduktno.setColumns(10);
 		
 		txtMngde = new JTextField();
+		txtMngde.setEnabled(false);
 		txtMngde.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -178,68 +246,64 @@ public class LogOrder extends JFrame {
 		panel.add(txtMngde, gbc_txtMngde);
 		txtMngde.setColumns(10);
 		
-		JButton addMaterialBtn = new JButton("Tilføj materiale");
-		addMaterialBtn.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_addMaterialBtn = new GridBagConstraints();
-		gbc_addMaterialBtn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_addMaterialBtn.insets = new Insets(0, 0, 5, 0);
-		gbc_addMaterialBtn.gridx = 1;
-		gbc_addMaterialBtn.gridy = 7;
-		panel.add(addMaterialBtn, gbc_addMaterialBtn);
+		JButton btnAddMaterial = new JButton("Tilføj materiale");
+		btnAddMaterial.setEnabled(false);
+		btnAddMaterial.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnAddMaterial = new GridBagConstraints();
+		gbc_btnAddMaterial.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnAddMaterial.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddMaterial.gridx = 1;
+		gbc_btnAddMaterial.gridy = 7;
+		panel.add(btnAddMaterial, gbc_btnAddMaterial);
 		
-				addMaterialBtn.addActionListener(new ActionListener() {
+				btnAddMaterial.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						//ArrayList<Price> salesPrices = new ArrayList<>();
-						//BigDecimal priceValue = new BigDecimal(10);
-						//Price salesPrice = new Price(priceValue);
-						//salesPrices.add(salesPrice);
-						
-						//ArrayList<Price> purchasePrices = new ArrayList<>();
-						//BigDecimal purchasePriceValue = new BigDecimal(5);
-						//Price purchasePrice = new Price(purchasePriceValue);
-						//purchasePrices.add(purchasePrice);
-						
-						//ArrayList<MaterialDescription> descriptions = new ArrayList<>();
-						//MaterialDescription materialDescription = new MaterialDescription("en ting");
-						//descriptions.add(materialDescription);
-						
-						//StockMaterial material = new StockMaterial(10, "ting", descriptions, salesPrices, purchasePrices, 1, 100, 55);
 						int materialNo = Integer.parseInt(txtProduktno.getText());
 						int amountNo = Integer.parseInt(txtMngde.getText());
-						
-						
+						SwingWorkerFindAndAddMaterial swingWorker = new SwingWorkerFindAndAddMaterial(currentOrderController,materialNo,placeHolderEmployee,amountNo);
+						Material material;
 						try {
-							Material material = currentOrderController.findAndAddMaterialByMaterialNo(placeHolderEmployee,materialNo,amountNo);
-								if (material == null) {
-									MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
-									materialNotFoundDialog.setVisible(true);
-								}
-								else {
-									int newNr = materialTable.getRowCount() + 1;
-									BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
-									Double totalPrice = totalBDPrice.doubleValue();
-									Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
-									
-									Object[] newRow = {newNr,
-											material.getMaterialNo(),
-											material.getProductName(), 
-											material.getCurrentMaterialDescription().getDescription(),
-											amountNo, 
-											saleprice, 
-											totalPrice};
-									DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
-									model.addRow(newRow);	
-								}
-						}
-					catch (DataAccessException e1) {
+							material = swingWorker.doInBackground();
+							
+							
+							if (material == null) {
+								MaterialNotFoundDialog materialNotFoundDialog = new MaterialNotFoundDialog();
+								materialNotFoundDialog.setVisible(true);
+							}
+							else if (material instanceof StockMaterial) {
+								int newNr = materialTable.getRowCount() + 1;
+								BigDecimal totalBDPrice = material.getCurrentSalesPrice().getPreVATValue().multiply(new BigDecimal(amountNo));
+								Double totalPrice = totalBDPrice.doubleValue();
+								Double saleprice = material.getCurrentSalesPrice().getPreVATValue().doubleValue();
+								
+								Object[] newRow = {newNr,
+										material.getMaterialNo(),
+										material.getProductName(), 
+										material.getCurrentMaterialDescription().getDescription(),
+										amountNo, 
+										(((StockMaterial) material).getAvailableAmount()),
+										saleprice, 
+										totalPrice};
+								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+								model.addRow(newRow);	
+								addToMaterialTotal(totalPrice);
+								btnRemoveMaterial.setEnabled(true);
+							}
+							else if (material instanceof GenericMaterial) {
+								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , LogOrder.this, amountNo);
+								addGenericMaterial.setVisible(true);
+							}
+						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
+
+						
 					}
 				});
 		
 		txtMedarbejderid = new JTextField();
+		txtMedarbejderid.setEnabled(false);
 		txtMedarbejderid.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -265,14 +329,15 @@ public class LogOrder extends JFrame {
 		panel.add(txtMedarbejderid, gbc_txtMedarbejderid);
 		txtMedarbejderid.setColumns(10);
 		
-		JButton btnNewButton_4 = new JButton("Tilføj medarbejder");
-		btnNewButton_4.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_4.gridx = 1;
-		gbc_btnNewButton_4.gridy = 10;
-		panel.add(btnNewButton_4, gbc_btnNewButton_4);
-		btnNewButton_4.addActionListener(new ActionListener() {
+		JButton btnAddEmployee = new JButton("Tilføj medarbejder");
+		btnAddEmployee.setEnabled(false);
+		btnAddEmployee.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnAddEmployee = new GridBagConstraints();
+		gbc_btnAddEmployee.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAddEmployee.gridx = 1;
+		gbc_btnAddEmployee.gridy = 10;
+		panel.add(btnAddEmployee, gbc_btnAddEmployee);
+		btnAddEmployee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
 				try {
@@ -295,17 +360,37 @@ public class LogOrder extends JFrame {
 				}
 			}
 		});
-		btnNewButton_6.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
-		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_6.gridx = 1;
-		gbc_btnNewButton_6.gridy = 13;
-		panel.add(btnNewButton_6, gbc_btnNewButton_6);
-		btnNewButton_5.setForeground(new Color(255, 0, 0));
-		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
-		gbc_btnNewButton_5.gridx = 1;
-		gbc_btnNewButton_5.gridy = 14;
-		panel.add(btnNewButton_5, gbc_btnNewButton_5);
+		
+		JButton btnRemoveCustomer = new JButton("Fjern kunde");
+		btnRemoveCustomer.setEnabled(false);
+		btnRemoveCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentOrderController.removeCustomer();
+				customerLabel.setText("kunde");
+				btnRemoveCustomer.setEnabled(false);;
+				btnAddMaterial.setEnabled(false);
+				btnAddEmployee.setEnabled(false);
+				txtProduktno.setEnabled(false);
+				txtMngde.setEnabled(false);
+				txtMedarbejderid.setEnabled(false);
+			}
+		});
+		GridBagConstraints gbc_btnRemoveCustomer = new GridBagConstraints();
+		gbc_btnRemoveCustomer.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRemoveCustomer.gridx = 1;
+		gbc_btnRemoveCustomer.gridy = 12;
+		panel.add(btnRemoveCustomer, gbc_btnRemoveCustomer);
+		btnRemoveMaterial.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnRemoveMaterial = new GridBagConstraints();
+		gbc_btnRemoveMaterial.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRemoveMaterial.gridx = 1;
+		gbc_btnRemoveMaterial.gridy = 13;
+		panel.add(btnRemoveMaterial, gbc_btnRemoveMaterial);
+		btnRemoveHourLog.setForeground(new Color(0, 0, 0));
+		GridBagConstraints gbc_btnRemoveHourLog = new GridBagConstraints();
+		gbc_btnRemoveHourLog.gridx = 1;
+		gbc_btnRemoveHourLog.gridy = 14;
+		panel.add(btnRemoveHourLog, gbc_btnRemoveHourLog);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -324,24 +409,30 @@ public class LogOrder extends JFrame {
 		gbc_lblNewLabel_6.gridy = 0;
 		panel_1.add(lblNewLabel_6, gbc_lblNewLabel_6);
 		
-		JLabel lblNewLabel_7 = new JLabel("0 KR.");
-		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
-		gbc_lblNewLabel_7.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_7.gridx = 1;
-		gbc_lblNewLabel_7.gridy = 0;
-		panel_1.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		materialPriceTotal = new JLabel("0");
+		GridBagConstraints gbc_MaterialPriceTotal = new GridBagConstraints();
+		gbc_MaterialPriceTotal.insets = new Insets(0, 0, 5, 5);
+		gbc_MaterialPriceTotal.gridx = 1;
+		gbc_MaterialPriceTotal.gridy = 0;
+		panel_1.add(materialPriceTotal, gbc_MaterialPriceTotal);
 		
-		JLabel lblNewLabel_3 = new JLabel("Total Timer:");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 11;
-		gbc_lblNewLabel_3.gridy = 0;
-		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel lblNewLabel_1 = new JLabel("DKK.");
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 2;
+		gbc_lblNewLabel_1.gridy = 0;
+		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JLabel lblNewLabel_4 = new JLabel("0 KR.");
+		hoursTotalPrice = new JLabel("0");
+		GridBagConstraints gbc_hoursTotalPrice = new GridBagConstraints();
+		gbc_hoursTotalPrice.anchor = GridBagConstraints.EAST;
+		gbc_hoursTotalPrice.insets = new Insets(0, 0, 5, 5);
+		gbc_hoursTotalPrice.gridx = 11;
+		gbc_hoursTotalPrice.gridy = 0;
+		panel_1.add(hoursTotalPrice, gbc_hoursTotalPrice);
+		hoursTotalPrice.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		JLabel lblNewLabel_4 = new JLabel("DKK.");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 0);
@@ -358,13 +449,13 @@ public class LogOrder extends JFrame {
 		gbc_lblNewLabel_5.gridy = 1;
 		panel_1.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
-		JLabel lblNewLabel_8 = new JLabel("0 KR.");
-		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
-		gbc_lblNewLabel_8.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_8.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_8.gridx = 1;
-		gbc_lblNewLabel_8.gridy = 1;
-		panel_1.add(lblNewLabel_8, gbc_lblNewLabel_8);
+		totalOverallPrice = new JLabel("0");
+		GridBagConstraints gbc_totalOverallPrice = new GridBagConstraints();
+		gbc_totalOverallPrice.anchor = GridBagConstraints.WEST;
+		gbc_totalOverallPrice.insets = new Insets(0, 0, 0, 5);
+		gbc_totalOverallPrice.gridx = 1;
+		gbc_totalOverallPrice.gridy = 1;
+		panel_1.add(totalOverallPrice, gbc_totalOverallPrice);
 		
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -374,6 +465,34 @@ public class LogOrder extends JFrame {
 			}
 			
 		});
+		
+		JLabel lblNewLabel_7 = new JLabel("DKK.");
+		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
+		gbc_lblNewLabel_7.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_7.gridx = 2;
+		gbc_lblNewLabel_7.gridy = 1;
+		panel_1.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		
+		JLabel lblNewLabel_3 = new JLabel("Inkl. Moms:");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_3.gridx = 4;
+		gbc_lblNewLabel_3.gridy = 1;
+		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		priceWithVAT = new JLabel("0");
+		GridBagConstraints gbc_priceWithVAT = new GridBagConstraints();
+		gbc_priceWithVAT.insets = new Insets(0, 0, 0, 5);
+		gbc_priceWithVAT.gridx = 5;
+		gbc_priceWithVAT.gridy = 1;
+		panel_1.add(priceWithVAT, gbc_priceWithVAT);
+		
+		JLabel lblNewLabel_8 = new JLabel("DKK:");
+		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
+		gbc_lblNewLabel_8.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_8.gridx = 6;
+		gbc_lblNewLabel_8.gridy = 1;
+		panel_1.add(lblNewLabel_8, gbc_lblNewLabel_8);
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
@@ -382,7 +501,7 @@ public class LogOrder extends JFrame {
 		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
 		
 		JButton btnNewButton = new JButton("Gem ordre");
-		btnNewButton.setForeground(new Color(255, 0, 0));
+		btnNewButton.setForeground(new Color(0, 0, 0));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
 		gbc_btnNewButton.gridx = 12;
@@ -427,11 +546,11 @@ public class LogOrder extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:", "Stk pris:", "Total pris:"
+				"NR:", "ID:", "Name:", "Beskrivelse:", "M\u00E6ngde:","Tilgængelig", "Stk pris:", "Total pris:"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, Integer.class, String.class, String.class, Integer.class, Double.class, Double.class
+				Integer.class, Integer.class, String.class, String.class, Integer.class,Integer.class, Double.class, Double.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -470,11 +589,41 @@ public class LogOrder extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		
+		addCustomerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					Customer customer = currentOrderController.findAndAddCustomerByPhoneNo(txtKundeTlf.getText());
+						if (customer == null) {
+							CustomerNotFoundDialog customerNotFoundDialog = new CustomerNotFoundDialog();
+							customerNotFoundDialog.setVisible(true);
+							
+						} 
+						else {
+							String name = "Navn: " + customer.getfName() + " " + customer.getlName();
+							customerLabel.setText(name);
+							txtKundeTlf.setText("Kunde Tlf:");
+							btnRemoveCustomer.setEnabled(true);
+							btnAddMaterial.setEnabled(true);
+							btnAddEmployee.setEnabled(true);
+							txtProduktno.setEnabled(true);
+							txtMngde.setEnabled(true);
+							txtMedarbejderid.setEnabled(true);
+							
+							
+						}
+				} 
+				catch (Exception b) {
+					b.printStackTrace();  // This will print the stack trace of the exception to the console
+				}
+			}
+		});
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					int orderNo = 0;
 					Customer customer = currentOrderController.getCustomer();
-					System.out.println(customer.getfName());
 					if (customer != null && materialTable.getRowCount() > 0) {
 						
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
@@ -482,16 +631,23 @@ public class LogOrder extends JFrame {
 						//for (Material : materiakLogs) {
 							
 						//}
-						currentOrderController.saveOrder();
+						orderNo = currentOrderController.saveOrder();
+						SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
+						saveOrder.setVisible(true);
 					}
 					else if (customer != null && employeeTable.getRowCount() > 0) {
 						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-						currentOrderController.saveOrder();
+						orderNo = currentOrderController.saveOrder();
+						SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
+						saveOrder.setVisible(true);
 					}
 					else {
 						OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
 						orderNotCompleteDialog.setVisible(true);
 					}
+					
+					
+					
 				} catch (GeneralException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -501,28 +657,22 @@ public class LogOrder extends JFrame {
 				}
 			}
 		});
+		updateTableMaterial();
+//		updateConnectionLabel(lblCheckConnection);
+		
 	}
-
-
 	public void removeRow(int[] removeList) {
-		//for (int index : removeList) {
-			//System.out.println("index: " + index);
-			//DefaultTableModel model = (DefaultTableModel) table_1.getModel();
-			//model.removeRow(index);
-			//updateRowNumbers(table_1, index);
-
-		//}
-		// TODO Auto-generated method stub
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		for (int i = removeList.length - 1; i >= 0; i--) {
 	        int index = removeList[i];
-	        System.out.println("index: " + index);
-	        System.out.println(materialTable.getValueAt(index, 1));
 	        model.removeRow(index);
-	        System.out.println(materialTable.getValueAt(index, 1));
 	        updateRowNumbers(model, index);
 			currentOrderController.removeMaterialLog(index);
+			addToHoursTotal();
 			}
+		if (materialTable.getRowCount() < 1) {
+			btnRemoveMaterial.setEnabled(false);
+		}
 	}
 	public void removeRowEmployee (int[] removeList) {
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
@@ -531,11 +681,13 @@ public class LogOrder extends JFrame {
 	        System.out.println("index: " + index);
 	        System.out.println(employeeTable.getValueAt(index, 1));
 	        model.removeRow(index);
-	        System.out.println(employeeTable.getValueAt(index, 1));
 	        updateRowNumbersEmployee(model, index);
 			currentOrderController.removeHourLog(index);
+			addToHoursTotal();
+			if (employeeTable.getRowCount() < 1) {
+				btnRemoveHourLog.setEnabled(false);
 			}
-		
+		}
 	}
 	public void addEmployeeAndHours(Employee employee, BigDecimal hours) {
 		System.out.println("timer: " +hours);
@@ -551,16 +703,43 @@ public class LogOrder extends JFrame {
 		model.addRow(newRow);
 		try {
 			currentOrderController.addWorkHours(employee, hours);
+			addToHoursTotal();
+			btnRemoveHourLog.setEnabled(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+	public void addGenericMaterial(double price, double price2, String description, Material material, int amountNo) {
+		int newNr = materialTable.getRowCount() + 1;
+		BigDecimal totalPriceDB = new BigDecimal(price2).multiply(new BigDecimal(amountNo));
+		double totalPrice = totalPriceDB.doubleValue();
+		
+		BigDecimal purchasePriceBD = new BigDecimal(price);
+		Price purchasePrice = new Price(purchasePriceBD);
+		material.setCurrentPurchasePrice(purchasePrice);
+		
+		BigDecimal salesPriceDB = new BigDecimal(price2);
+		Price salesPrice = new Price(salesPriceDB);
+		material.setCurrentSalesPrice(salesPrice);
+		
+		MaterialDescription materialDescription = new MaterialDescription(description);
+		material.setCurrentMaterialDescription(materialDescription);
+		
+		Object[] newRow = {newNr,
+				material.getMaterialNo(),
+				material.getProductName(), 
+				description,
+				amountNo, 
+				price2, 
+				totalPrice};
+		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+		model.addRow(newRow);	
+		addToMaterialTotal(totalPrice);
+		btnRemoveMaterial.setEnabled(true);
+	}
+
 	public void updateRowNumbers(DefaultTableModel model, int index) {
-		//while (index < table_1.getRowCount()) {
-			//table_1.setValueAt(index, index, 1);
-		//}
 		for (int i = index; i < materialTable.getRowCount(); i++) {
 			System.out.println(materialTable.getValueAt(index, 1));
 	        materialTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
@@ -573,7 +752,39 @@ public class LogOrder extends JFrame {
 	        employeeTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
-		
 	}
+	public void addToMaterialTotal(double amount) {
+		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
+		double totalPrice = price.doubleValue();
+		materialPriceTotal.setText("" + totalPrice);
+		addToTotalPrice();
+	}
+	public void addToTotalPrice() {
+		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
+		double totalPrice = price.doubleValue();
+		totalOverallPrice.setText("" + totalPrice);
+		addPriceWithVAT(price);
+	}
+	public void addToHoursTotal() {
+		BigDecimal price = currentOrderController.calculateTotalHoursPrice();
+		double totalPrice = price.doubleValue();
+		hoursTotalPrice.setText("" + totalPrice);
+		addToTotalPrice();
+	}
+	public void addPriceWithVAT(BigDecimal price) {
+		BigDecimal totalPriceWithVATBD = price.multiply(new BigDecimal(1.25));
+		double totalPriceWithVAT = totalPriceWithVATBD.doubleValue();
+		priceWithVAT.setText("" + totalPriceWithVAT);
+	}
+public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
+	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLable);
+	 checkConnection.doInBackground();
 
+	}
+public void updateTableMaterial() throws Exception {
+	SwingWorkerUpdateMaterial updateWorker = new SwingWorkerUpdateMaterial(materialTable);
+	updateWorker.doInBackground();
+	
 }
+}
+

@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -15,7 +16,7 @@ public class SaveOrder extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static RegisterOrderV2 registerOrderV2;
+	private static JFrame previousScreen;
 	private static int orderNo;
 
 	/**
@@ -23,7 +24,7 @@ public class SaveOrder extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			SaveOrder dialog = new SaveOrder(orderNo, registerOrderV2);
+			SaveOrder dialog = new SaveOrder(orderNo, previousScreen);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -36,7 +37,7 @@ public class SaveOrder extends JDialog {
 	 * @param registerOrderV2 
 	 * @param orderNo 
 	 */
-	public SaveOrder(int orderNo, RegisterOrderV2 registerOrderV2) {
+	public SaveOrder(int orderNo, JFrame previousScreen) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -61,7 +62,7 @@ public class SaveOrder extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						StartScreen startScreen = new StartScreen();
 						startScreen.setVisible(true);
-						registerOrderV2.dispose();
+						previousScreen.dispose();
 						dispose();
 					}
 				});

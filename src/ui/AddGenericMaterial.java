@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -22,7 +23,7 @@ public class AddGenericMaterial extends JDialog {
 	private JTextField txtPris;
 	private JTextField txtSalgsPris;
 	private JTextField txtBeskrivelse;
-	private static RegisterOrderV2 registerOrderV2;
+	private static JFrame previousScreen;
 	private static Material material;
 	private static int amountNo;
 
@@ -31,7 +32,7 @@ public class AddGenericMaterial extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			AddGenericMaterial dialog = new AddGenericMaterial(material, registerOrderV2, amountNo);
+			AddGenericMaterial dialog = new AddGenericMaterial(material, previousScreen, amountNo);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -45,7 +46,7 @@ public class AddGenericMaterial extends JDialog {
 	 * @param material 
 	 * @param amountNo 
 	 */
-	public AddGenericMaterial(Material material, RegisterOrderV2 registerOrderV2, int amountNo) {
+	public AddGenericMaterial(Material material, JFrame previousScreen, int amountNo) {
 		setBounds(100, 100, 207, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -93,8 +94,14 @@ public class AddGenericMaterial extends JDialog {
 						double purchasePrice = Double.parseDouble(txtPris.getText());
 						double salesPrice = Double.parseDouble(txtSalgsPris.getText());
 						String description = txtBeskrivelse.getText(); 
-						registerOrderV2.addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
-						dispose();
+						if (previousScreen instanceof RegisterOrderV2) {
+							((RegisterOrderV2) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
+							dispose();
+						}
+						else if (previousScreen instanceof LogOrder) {
+							((LogOrder) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
+							dispose();
+						}
 					}
 				});
 				cancelButton.setActionCommand("Cancel");

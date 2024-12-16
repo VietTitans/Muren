@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -14,14 +15,14 @@ public class CancelOrderDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private static RegisterOrderV2 registerOrderFrame;
+	private static JFrame previousScreen;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			CancelOrderDialog dialog = new CancelOrderDialog(registerOrderFrame);
+			CancelOrderDialog dialog = new CancelOrderDialog(previousScreen);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -32,8 +33,8 @@ public class CancelOrderDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public CancelOrderDialog(RegisterOrderV2 object) {
-		this.registerOrderFrame = object;
+	public CancelOrderDialog(JFrame previousScreen) {
+		this.previousScreen = previousScreen;
 		setBounds(100, 100, 304, 106);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -53,7 +54,7 @@ public class CancelOrderDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						Orders ordersFrame = new Orders();
 						ordersFrame.setVisible(true);
-						object.dispose();
+						previousScreen.dispose();
 						dispose();
 					}
 				});
