@@ -10,6 +10,7 @@ import db.OrderDBIF;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 import db.OrderDB;
 
@@ -92,11 +93,11 @@ public class OrderController {
 	public BigDecimal calculateTotalHoursPrice() {
 		return currentOrder.calculateTotalHoursPrice();
 	}
-	public BigDecimal calculateTotalMaterialPrice() {
-		return currentOrder.calculateTotalMaterialPrice();
+	public BigDecimal calculateTotalMaterialPrice(LocalDateTime timeDate) {
+		return currentOrder.calculateTotalMaterialPrice(timeDate);
 	}
-	public BigDecimal calculateTotalOrderPrice() {
-		return currentOrder.calculateTotalOrderPrice(); 
+	public BigDecimal calculateTotalOrderPrice(LocalDateTime dateTime) {
+		return currentOrder.calculateTotalOrderPrice(dateTime); 
 	}
 	
 	public Order findOrderByOrderNo(int orderNo) throws DataAccessException, GeneralException {
