@@ -127,7 +127,9 @@ public class OrderDB implements OrderDBIF {
 			
 			if(fullAssociation == true) {
 				employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
+				foundOrder.setOrderMadeBy(employee);
 				customer = customerDB.findCustomerByCustomerNo(resultSet.getInt("CustomerNo"), false);
+				foundOrder.setCustomer(customer);
 				ArrayList<MaterialLog> materialLogs = materialLogDB.findMaterialLogsByOrderNo(orderNo);
 				foundOrder.setMaterialLogs(materialLogs);
 				ArrayList<HourLog> hourLogs = hourLogDB.findHourLogsByOrderNo(orderNo);
