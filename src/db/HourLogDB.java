@@ -50,7 +50,7 @@ public class HourLogDB implements HourLogDBIF {
 				if (generatedLogId.next()) {
 					hourLogKey = generatedLogId.getInt(1);
 					insertHourLogIntoHourLogs.setBigDecimal(1, hourLog.getHoursWorked());
-					insertHourLogIntoLogs.close();
+//					insertHourLogIntoLogs.close();
 					insertHourLogIntoHourLogs.setInt(2, hourLogKey);
 					insertHourLogIntoHourLogs.executeUpdate();
 				}

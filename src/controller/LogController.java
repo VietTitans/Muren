@@ -57,6 +57,8 @@ public class LogController {
 	}
 	public void saveHourLogs(ArrayList<HourLog> logs,int orderId , LocalDateTime orderDate ) throws DataAccessException {
 		for(HourLog log : logs) {
+			System.out.println(log.getTimeStamp());
+			System.out.println(orderDate);
 			if(log.getTimeStamp().isAfter(orderDate)) {
 			hourLogInterface.saveHourLog(log , orderId);
 			
@@ -65,3 +67,4 @@ public class LogController {
 
 }
 }
+

@@ -102,7 +102,7 @@ public class LogOrder extends JFrame {
 
 	public LogOrder(Order currentOrder, OrderController currentOrderController, int orderId) throws Exception {
 		try {
-			LocalDateTime windowMadeAt = LocalDateTime.now();
+			 windowMadeAt = LocalDateTime.now();
 		this.currentOrder = currentOrder;
 		this.currentOrderController = currentOrderController;
 		this.orderId = orderId;
@@ -586,38 +586,8 @@ public class LogOrder extends JFrame {
 			
 
 			public void actionPerformed(ActionEvent e) {
-				try {
-					int orderNo = 0;
-					Customer customer = currentOrderController.getCustomer();
-					LogController logController = new LogController();
-					if (customer != null && materialTable.getRowCount() > 0) {
-						logController.saveHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
-			
-		}
-									
-								
-
-					
-					else if (customer != null && employeeTable.getRowCount() > 0) {
-						currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-						orderNo = currentOrderController.saveOrder();
-						SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
-						saveOrder.setVisible(true);
-					}
-					else {
-						OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
-						orderNotCompleteDialog.setVisible(true);
-					}
-					
-					
-					
-				} catch (GeneralException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataAccessException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				saveNewHourLog();
+				
 			}
 		});
 		updateTableMaterial();
@@ -769,6 +739,40 @@ public void updateTableMaterial() throws Exception {
 	SwingWorkerUpdateMaterial updateWorker = new SwingWorkerUpdateMaterial(materialTable);
 	updateWorker.doInBackground();
 	
+}
+public void saveNewHourLog() {
+	try {
+		int orderNo = 0;
+		Customer customer = currentOrderController.getCustomer();
+		LogController logController = new LogController();
+		if (customer != null && materialTable.getRowCount() > 0) {
+			logController.saveHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
+
+}
+						
+					
+
+		
+		else if (customer != null && employeeTable.getRowCount() > 0) {
+			currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
+			orderNo = currentOrderController.saveOrder();
+			SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
+			saveOrder.setVisible(true);
+		}
+		else {
+			OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
+			orderNotCompleteDialog.setVisible(true);
+		}
+		
+		
+		
+	} catch (GeneralException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} catch (DataAccessException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
 }
 }
 
