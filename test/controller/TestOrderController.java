@@ -238,9 +238,8 @@ class TestOrderController {
 		Order order = orderController.findOrderByOrderNo(1);
 		//Assert
 		Customer result = order.getCustomer();
-		result.getCustomerId();
 		int expectedResult = 1;
-		assertEquals(expectedResult, result);
+		assertEquals(expectedResult, result.getCustomerId());
 	}
 	
 	@Test

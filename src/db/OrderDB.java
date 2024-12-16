@@ -120,7 +120,7 @@ public class OrderDB implements OrderDBIF {
 			customer.setCustomerId(resultSet.getInt("CustomerNo"));
 			foundOrder.setCustomer(customer);
 			foundOrder.setFinished(resultSet.getBoolean("IsFinished"));
-			LocalDate startDate = resultSet.getTimestamp("StartDate").toLocalDateTime().toLocalDate();
+			LocalDateTime startDate = resultSet.getTimestamp("StartDate").toLocalDateTime();
 			foundOrder.setStartDate(startDate);
 			LocalDate deadLine = resultSet.getTimestamp("DeadLine").toLocalDateTime().toLocalDate();
 			foundOrder.setDeadLine(deadLine);
