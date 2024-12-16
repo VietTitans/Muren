@@ -83,6 +83,8 @@ class TestOrderDB {
 		System.out.println(foundOrder.isFinished());
 		System.out.println(foundOrder.getMaterialLogs().size());
 		System.out.println(foundOrder.getHourLogs().size());
+		System.out.println(foundOrder.getCustomer().getPhoneNo());
+		System.out.println(foundOrder.getOrderMadeBy().getfName());
 	}
 
 }
