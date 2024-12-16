@@ -1,6 +1,7 @@
 package model;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -91,6 +92,58 @@ public abstract class Material {
 		return tempSortedPrices.get(0);
 		
 	}
+	
+	public abstract Price getSalesPriceByDate(LocalDateTime date);
+	
+	protected Price getSalesPriceByDateSubClasses(LocalDateTime date) {
+		Price tempPrice = null;
+		boolean found = false;
+		int index = 0;
+		while(!found && index < salesPrices.size()) {
+			if(salesPrices.get(index).getTimeStamp().isEqual(date) || salesPrices.get(index).getTimeStamp().isBefore(date)) {
+				tempPrice = salesPrices.get(index);
+				found = true;
+			} else {
+				index++;
+			}
+		}
+		return tempPrice;
+	}
+	
+	public abstract Price getPurchasePriceByDate(LocalDateTime date);
+	
+	protected Price getPurchasePriceByDateSubClasses(LocalDateTime date) {
+		Price tempPrice = null;
+		boolean found = false;
+		int index = 0;
+		while(!found && index < purchasePrices.size()) {
+			if(purchasePrices.get(index).getTimeStamp().isEqual(date) || purchasePrices.get(index).getTimeStamp().isBefore(date)) {
+				tempPrice = purchasePrices.get(index);
+				found = true;
+			} else {
+				index++;
+			}
+		}
+		return tempPrice;
+	}
+	
+	public abstract MaterialDescription getMaterialDescriptionByDate(LocalDateTime date);
+	
+	protected MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime date) {
+		MaterialDescription tempDescription = null;
+		boolean found = false;
+		int index = 0;
+		while(!found && index < materialDescriptions.size()) {
+			if(materialDescriptions.get(index).getTimeStamp().isEqual(date) || materialDescriptions.get(index).getTimeStamp().isBefore(date)) {
+				tempDescription = materialDescriptions.get(index);
+				found = true;
+			} else {
+				index++;
+			}
+		}
+		return tempDescription;
+	}
+	
 	public ArrayList<Price> getSalesPrices() {
 		ArrayList<Price> tempList = salesPrices;
 		return tempList;

@@ -1,6 +1,7 @@
 package model;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class GenericMaterial extends Material{
@@ -43,6 +44,24 @@ public class GenericMaterial extends Material{
 		return super.getCurrentMaterialDescriptionSubClasses();
 	}
 	
+	@Override
+	public Price getSalesPriceByDate(LocalDateTime date) {
+		return super.getSalesPriceByDateSubClasses(date);
+	}
+
+
+
+	@Override
+	public Price getPurchasePriceByDate(LocalDateTime date) {
+		return super.getPurchasePriceByDateSubClasses(date);
+	}
+
+
+
+	@Override
+	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime date) {
+		return super.getMaterialDescriptionByDateSubClasses(date);
+	}
 	
 	public String getMaterialType() {
 		return materialType;

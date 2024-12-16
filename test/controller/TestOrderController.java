@@ -231,15 +231,29 @@ class TestOrderController {
 	}
 	
 	@Test
-	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException, GeneralException {
 		//Arrange
 		
 		
 		//Act
-		Order order = orderController.findOrderByOrderNo(1, false);
+		Order order = orderController.findOrderByOrderNo(1);
 		
 		//Assert
 		assertNotNull(order);
+	}
+	
+	@Test
+	void testOrderDoesntExist() throws DataAccessException, SQLException {
+		//Arrange
+		
+		
+		//Act
+		DataAccessException exceptionThrown = assertThrows(DataAccessException.class, () -> {
+			orderController.findOrderByOrderNo(47);
+		});
+		String expectedResult = "Order not found";
+		//Assert
+		assertEquals(expectedResult, exceptionThrown.getMessage());
 	}
 	
 }

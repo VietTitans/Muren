@@ -99,16 +99,8 @@ public class OrderController {
 		return currentOrder.calculateTotalOrderPrice(); 
 	}
 	
-	public Order findOrderByOrderNo(int orderNo) {
-		try {
-			currentOrder = orderInterface.findOrderByOrderNo(orderNo, true);
-		} catch (DataAccessException e) {
-			
-			e.printStackTrace();
-		} catch (GeneralException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Order findOrderByOrderNo(int orderNo) throws DataAccessException, GeneralException {
+		currentOrder = orderInterface.findOrderByOrderNo(orderNo, true);
 		return currentOrder;
 	}
 }

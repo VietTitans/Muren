@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -91,6 +92,25 @@ public class StockMaterial extends Material {
 		return super.getCurrentMaterialDescriptionSubClasses();
 	}
 	
+	@Override
+	public Price getSalesPriceByDate(LocalDateTime date) {
+		return super.getSalesPriceByDateSubClasses(date);
+	}
+
+
+
+	@Override
+	public Price getPurchasePriceByDate(LocalDateTime date) {
+		return super.getPurchasePriceByDateSubClasses(date);
+	}
+
+
+
+	@Override
+	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime date) {
+		return super.getMaterialDescriptionByDateSubClasses(date);
+	}
+	
 	//Setters
 	
 	public void setQuantity(int quantity) {
@@ -113,5 +133,9 @@ public class StockMaterial extends Material {
 	public void setCurrentPurchasePrice(Price newPrice) {
 		super.setCurrentPurchasePriceSubClasses(newPrice);
 	}
+
+
+
+	
 	
 }
