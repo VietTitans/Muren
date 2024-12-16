@@ -98,9 +98,10 @@ public class OrderController {
 	public BigDecimal calculateTotalOrderPrice() {
 		return currentOrder.calculateTotalOrderPrice(); 
 	}
-	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) {
+	
+	public Order findOrderByOrderNo(int orderNo) {
 		try {
-			return orderInterface.findOrderByOrderNo(orderNo, true);
+			currentOrder = orderInterface.findOrderByOrderNo(orderNo, true);
 		} catch (DataAccessException e) {
 			
 			e.printStackTrace();
@@ -108,6 +109,6 @@ public class OrderController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return currentOrder;
 	}
 }

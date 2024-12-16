@@ -31,6 +31,7 @@ import model.GenericMaterial;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
+import model.Order;
 import model.Price;
 import model.StockMaterial;
 
@@ -56,7 +57,7 @@ public class LogOrder extends JFrame {
 	private JTable materialTable;
 	private JTable employeeTable;
 	private JTextField txtMngde;
-	private OrderController currentOrderController;
+	private static OrderController currentOrderController;
 	private Employee placeHolderEmployee;
 	private JLabel materialPriceTotal;
 	private JLabel totalOverallPrice;
@@ -65,7 +66,7 @@ public class LogOrder extends JFrame {
 	private JButton btnRemoveMaterial;
 	private JButton btnRemoveHourLog;
 	private JLabel lblCheckConnection;
-	
+	private static Order currentOrder;
 	/**
 	 * Launch the application.
 	 */
@@ -75,7 +76,7 @@ public class LogOrder extends JFrame {
 				
 						
 						try {
-							RegisterOrderV2 frame = new RegisterOrderV2();
+							LogOrder frame = new LogOrder(currentOrder, currentOrderController);
 							frame.setVisible(true);
 						}
 						 catch (Exception e) {
@@ -92,9 +93,9 @@ public class LogOrder extends JFrame {
 	}
 
 
-	public LogOrder() throws Exception {
+	public LogOrder(Order currentOrder, OrderController currentOrderController) throws Exception {
 		try {
-		this.currentOrderController = new OrderController();
+		this.currentOrderController = currentOrderController;
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
 		placeHolderEmployee = new Employee();
 		placeHolderEmployee.setEmployeeId(1);
@@ -165,7 +166,7 @@ public class LogOrder extends JFrame {
 		gbc_addCustomerButton.gridy = 2;
 		panel.add(addCustomerButton, gbc_addCustomerButton);
 		
-		JLabel customerLabel = new JLabel("Kunde");
+		JLabel customerLabel = new JLabel(currentOrder.getCustomer().getfName() + " " + currentOrder.getCustomer().getfName());
 		GridBagConstraints gbc_customerLabel = new GridBagConstraints();
 		gbc_customerLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_customerLabel.gridx = 1;

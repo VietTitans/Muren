@@ -8,9 +8,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.DataAccessException;
+import controller.OrderController;
+import model.Order;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class FindOrder extends JDialog {
@@ -57,6 +63,25 @@ public class FindOrder extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						int orderNo = Integer.parseInt(textField.getText());
+						try {
+							OrderController currentOrderController = new OrderController();
+							Order currentOrder = currentOrderController.findOrderByOrderNo(orderNo);
+							try {
+								LogOrder logOrder = new LogOrder(currentOrder, currentOrderController);
+								previousScreen.dispose();
+								dispose();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						} catch (DataAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
