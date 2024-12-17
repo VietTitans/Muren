@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
 
 public class RemoveEmployeeDialog extends JDialog {
 
@@ -67,6 +68,7 @@ public class RemoveEmployeeDialog extends JDialog {
 			contentPanel.add(scrollPane);
 			{
 				list = new JList();
+				list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				scrollPane.setViewportView(list);
 				list.setListData(listArray);
 			}

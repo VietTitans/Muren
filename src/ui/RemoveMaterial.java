@@ -67,6 +67,7 @@ public class RemoveMaterial extends JDialog {
 			contentPanel.add(scrollPane);
 			{
 				list = new JList();
+				list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				scrollPane.setViewportView(list);
 				list.setListData(listArray);
 			}
