@@ -34,6 +34,11 @@ public SwingWorkerUpdateMaterial(JTable materialTable) {
 	super();
 	this.materialTable = materialTable;
 }
+
+
+//The check for whether or not there have been changes in the DB is disabled, since it doesn't work
+
+// "updateTables" is only meant to run if "checkIfNewChanges" publishes True
 @Override
 protected Object doInBackground() throws Exception {
 	 Timer timer = new Timer();
@@ -95,20 +100,19 @@ protected void process(List<Boolean> chunks) {
 		
 		
 		
-        // Iterate through the ArrayList and update the "Beskrivelse" column for matching rows
+        // Iterate through the ArrayList and update the "Tilgængelig" column 
         for (Material material : updatedMaterials) {
         	if(material instanceof StockMaterial) {
         		StockMaterial Stockmaterial = (StockMaterial) material;
             // Iterate through the table rows and match based on materialNo
             for (int row = 0; row < model.getRowCount(); row++) {
-                int tableMaterialNo = (int) model.getValueAt(row, 1); // Material No is in the first column (index 0)
+                int tableMaterialNo = (int) model.getValueAt(row, 1); 
 
-                // Check if the materialNo matches
                 if (tableMaterialNo == Stockmaterial.getMaterialNo()) {
                    
                     model.setValueAt(Stockmaterial.calculateAvailableAmount(),row,5);
                     
-                    break; // Stop searching once a match is found
+                    
                 }
             }
         }

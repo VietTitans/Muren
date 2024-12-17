@@ -30,7 +30,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	
 	public MaterialLogDB() throws DataAccessException {
 		try {
-			MaterialDB materialDB = new MaterialDB();
+			 materialDB = new MaterialDB();
 		insertMaterialLogIntoLogs = DBConnection.getInstance().getConnection()
 				.prepareStatement(INSERT_MATERIALLOG_INTO_LOG,java.sql.Statement.RETURN_GENERATED_KEYS);
 		insertMaterialLogIntoMaterialLogs = DBConnection.getInstance().getConnection()
@@ -93,8 +93,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	public void addPricesFromGenericMaterial(MaterialLog materialLog) throws SQLException, DataAccessException {
 		if(materialLog.getMaterial() instanceof GenericMaterial) {
 
-			MaterialDB materialDB = new MaterialDB();
-			
+
 			materialDB.insertNewPurchasePrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestPurchasePrice());
 			materialDB.insertNewSalesPrice(materialLog.getMaterial().getMaterialNo(),materialLog.getMaterial().getLastestSalesPrice());
 		}
@@ -122,7 +121,6 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 
 	private MaterialLog buildObject(ResultSet resultSet, boolean fullAssociation) throws DataAccessException {
 		MaterialLog materialLog = null; 
-		MaterialDB materialDB = new MaterialDB();
 		try {
 			Material material = materialDB.findMaterialByMaterialNo(resultSet.getInt("MaterialNo"));
 			Employee employee = new Employee();
@@ -138,7 +136,6 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	}
 public void addNewMaterialDescription(MaterialLog materialLog) throws DataAccessException, SQLException {
 	if(materialLog.getMaterial() instanceof GenericMaterial) {
-		MaterialDB materialDB = new MaterialDB();
 		int materialNo = materialLog.getMaterial().getMaterialNo();
 		MaterialDescription tempDescription = new MaterialDescription(materialLog.getMaterial().getMaterialDescription().getDescription(),materialLog.getTimeStamp());
 		materialDB.insertNewMaterialDescription(materialNo, tempDescription);

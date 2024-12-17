@@ -2,23 +2,21 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import controller.OrderController;
 import model.Order;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.awt.event.ActionEvent;
 
 public class FindOrder extends JDialog {
 
@@ -93,10 +91,7 @@ public class FindOrder extends JDialog {
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						} catch (GeneralException e2) {
-							// TODO Auto-generated catch block
-							e2.printStackTrace();
-						}
+						} 
 					}
 				});
 				okButton.setActionCommand("OK");

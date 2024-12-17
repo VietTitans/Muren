@@ -36,7 +36,7 @@ public class SwingWorkerCheckConnection extends SwingWorker<Void, Boolean> {
                      e.printStackTrace();
                  }
              }
-         }, 0, 10000); // repeat after 10 secounds 
+         }, 0, 10000); 
          return null;
      }
 
