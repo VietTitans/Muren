@@ -38,8 +38,8 @@ public class Order {
 		this.customer = customer;
 	}
 	
-	public BigDecimal calculateTotalOrderPrice(LocalDateTime dateTime) {
-		return calculateTotalHoursPrice().add(calculateTotalMaterialPrice(dateTime));
+	public BigDecimal calculateTotalOrderPrice() {
+		return calculateTotalHoursPrice().add(calculateTotalMaterialPrice());
 	}
 
 	public BigDecimal calculateTotalHoursPrice() {
@@ -72,13 +72,11 @@ public class Order {
 		return sum;
 	}
 	
-	public BigDecimal calculateTotalMaterialPrice(LocalDateTime dateTime) {
+	public BigDecimal calculateTotalMaterialPrice() {
 		BigDecimal sum = new BigDecimal(0);
 		for (MaterialLog ml : materialLogs) {
 			double sumdouble = sum.doubleValue();
-			
-			
-			sum = sum.add(ml.getMaterial().getSalesPriceByDate(dateTime).getPreVATValue().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
+			sum = sum.add(ml.getMaterial().getSalesPriceByDate(ml.getTimeStamp()).getPreVATValue().multiply(BigDecimal.valueOf(ml.getQuantity()))); 
 			sumdouble = sum.doubleValue();
 			sumdouble = sum.doubleValue();
 		}

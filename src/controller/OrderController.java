@@ -93,11 +93,13 @@ public class OrderController {
 	public BigDecimal calculateTotalHoursPrice() {
 		return currentOrder.calculateTotalHoursPrice();
 	}
-	public BigDecimal calculateTotalMaterialPrice(LocalDateTime timeDate) {
-		return currentOrder.calculateTotalMaterialPrice(timeDate);
+	public BigDecimal calculateTotalMaterialPrice() {
+		return currentOrder.calculateTotalMaterialPrice();
 	}
-	public BigDecimal calculateTotalOrderPrice(LocalDateTime dateTime) {
-		return currentOrder.calculateTotalOrderPrice(dateTime); 
+
+	
+	public BigDecimal calculateTotalOrderPrice() {
+		return currentOrder.calculateTotalOrderPrice(); 
 	}
 	
 	public Order findOrderByOrderNo(int orderNo) throws DataAccessException, GeneralException {

@@ -258,7 +258,7 @@ public class LogOrder extends JFrame {
 										totalPrice};
 								DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 								model.addRow(newRow);	
-//								addToMaterialTotal();
+								addToMaterialTotal();
 								btnRemoveMaterial.setEnabled(true);
 							}
 							else if (material instanceof GenericMaterial) {
@@ -529,7 +529,7 @@ public class LogOrder extends JFrame {
 						totalPrice};
 				DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 				model.addRow(newRow);	
-//				addToMaterialTotal();
+				addToMaterialTotal();
 				}
 				else if (material instanceof GenericMaterial) {
 					Object[] newRow = {newNr,
@@ -542,7 +542,7 @@ public class LogOrder extends JFrame {
 							totalPrice};
 					DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 					model.addRow(newRow);	
-//					addToMaterialTotal();
+					addToMaterialTotal();
 				}
 				btnRemoveMaterial.setEnabled(true);
 		}
@@ -695,7 +695,7 @@ public class LogOrder extends JFrame {
 				totalPrice};
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
 		model.addRow(newRow);	
-//		addToMaterialTotal();
+		addToMaterialTotal();
 		btnRemoveMaterial.setEnabled(true);
 	}
 
@@ -713,24 +713,24 @@ public class LogOrder extends JFrame {
 	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
 	}
-//	public void addToMaterialTotal() {
-//		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
-//		double totalPrice = price.doubleValue();
-//		materialPriceTotal.setText("" + totalPrice);
-//		addToTotalPrice();
-//	}
-//
-//	public void addToTotalPrice() {
-//		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
-//		double totalPrice = price.doubleValue();
-//		totalOverallPrice.setText("" + totalPrice);
-//		addPriceWithVAT(price);
-//	}
+	public void addToMaterialTotal() {
+		BigDecimal price =currentOrderController.calculateTotalMaterialPrice();
+		double totalPrice = price.doubleValue();
+		materialPriceTotal.setText("" + totalPrice);
+		addToTotalPrice();
+	}
+
+	public void addToTotalPrice() {
+		BigDecimal price =currentOrderController.calculateTotalOrderPrice();
+		double totalPrice = price.doubleValue();
+		totalOverallPrice.setText("" + totalPrice);
+		addPriceWithVAT(price);
+	}
 	public void addToHoursTotal() {
 		BigDecimal price = currentOrderController.calculateTotalHoursPrice();
 		double totalPrice = price.doubleValue();
 		hoursTotalPrice.setText("" + totalPrice);
-//		addToTotalPrice();
+		addToTotalPrice();
 	}
 	public void addPriceWithVAT(BigDecimal price) {
 		BigDecimal totalPriceWithVATBD = price.multiply(new BigDecimal(1.25));
