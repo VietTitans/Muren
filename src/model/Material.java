@@ -129,7 +129,7 @@ public abstract class Material {
 	
 	public abstract MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp);
 	
-	protected MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime timeStamp) {
+	public MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime timeStamp) {
 		MaterialDescription tempDescription = null;
 		boolean found = false;
 		int index = 0;
@@ -156,6 +156,10 @@ public abstract class Material {
 	
 	//Setters
 	
+
+	public MaterialDescription getMaterialDescription() {
+		return materialDescription;
+	}
 
 	public abstract void setCurrentSalesPrice(Price newPrice);
 	

@@ -13,6 +13,7 @@ import model.Employee;
 import model.GenericMaterial;
 import model.HourLog;
 import model.Material;
+import model.MaterialDescription;
 import model.MaterialLog;
 import model.StockMaterial;
 
@@ -74,6 +75,7 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 					
 					updateMaterialQuantity(materialLog);
 					addPricesFromGenericMaterial(materialLog);
+					addNewMaterialDescription(materialLog);
 				}
 		return materialLogKey;
 		} catch (SQLException e) {
@@ -136,6 +138,14 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 		}
 		return materialLog;
 	}
-
+public void addNewMaterialDescription(MaterialLog materialLog) throws DataAccessException, SQLException {
+	if(materialLog.getMaterial() instanceof GenericMaterial) {
+		MaterialDB materialDB = new MaterialDB();
+		int materialNo = materialLog.getMaterial().getMaterialNo();
+		MaterialDescription tempDescription = new MaterialDescription(materialLog.getMaterial().getMaterialDescription().getDescription(),materialLog.getTimeStamp());
+		materialDB.insertNewMaterialDescription(materialNo, tempDescription);
+	}
+	
+}
 }
 

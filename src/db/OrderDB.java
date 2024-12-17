@@ -76,7 +76,6 @@ public class OrderDB implements OrderDBIF {
 			if (generatedKeys.next()) {
 				orderNoReturned = generatedKeys.getInt(1);
 			}
-			insertIntoDatabase.close();
 			// Saves the material and hour logs to DB by calling their DB classes
 			for (MaterialLog materialLog : currentOrder.getMaterialLogs()) {
 				materialLogDB.saveMaterialLog(materialLog, orderNoReturned);

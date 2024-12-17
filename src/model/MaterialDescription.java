@@ -12,6 +12,10 @@ public class MaterialDescription {
 		materialDescriptionTimeStamp = LocalDateTime.now();
 		this.description = description;
 	}
+	public MaterialDescription(String description, LocalDateTime materialDescriptionTimeStamp) {
+		this.materialDescriptionTimeStamp = materialDescriptionTimeStamp;
+		this.description = description;
+	}
 	
 	/* 
 	 Added a second constructor, with the purpose of being able to create a 

@@ -24,7 +24,7 @@ public abstract class Logs {
 	
 	public abstract LocalDateTime getTimeStamp();
 
-	protected LocalDateTime getTimeStampSubClass() {
+	public LocalDateTime getTimeStampSubClass() {
 		return logtimeStamp;
 	}
 	
