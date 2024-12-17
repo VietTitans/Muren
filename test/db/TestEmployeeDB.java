@@ -53,14 +53,13 @@ class TestEmployeeDB {
 	}
 	
 	@Test
-	void testEmployeeDoesntExists() throws DataAccessException { 
+	void testEmployeeDoesntExists() throws DataAccessException, GeneralException { 
 		//Arrange
-		Exception exceptionThrown = assertThrows(Exception.class, () -> {
 			//Act
-			employeeDB.findEmployeeByEmployeeId(6662236, false); //Input invalid employeeId
-		});
+			Employee foundEmployee = employeeDB.findEmployeeByEmployeeId(6662236, false); //Input invalid employeeId
+		
 		//Assert
-		assertEquals("Can't find Employee by EmployeeId", exceptionThrown.getMessage());
+		assertNull(foundEmployee);
 		
 	}
 
