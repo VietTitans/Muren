@@ -145,11 +145,10 @@ public class TestStockMaterial {
 		StockMaterial stockMaterial = new StockMaterial(1001, "cement", null, salesPrices, purchasePrices, 15, 75, availableAmount);
 		int reserveAmount = 20;
 		StockReservation stockReservation = new StockReservation(reserveAmount, LocalDateTime.now());
-		stockMaterial.addStockReservation(stockReservation);
 		//Act
-		stockMaterial.calculateAvailableAmount();
+		stockMaterial.addStockReservation(stockReservation);
 		//Assert
-		assertEquals(30, stockMaterial.getQuantity());
+		assertEquals(30, stockMaterial.calculateAvailableAmount());
 	}
 
 }
