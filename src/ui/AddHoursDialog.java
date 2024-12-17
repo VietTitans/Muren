@@ -96,31 +96,61 @@ public class AddHoursDialog extends JDialog {
 				JButton cancelButton = new JButton("Bekræft");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						double minutes = Double.parseDouble(txtMinutter.getText());
-						double hours = Double.parseDouble(txtTimer.getText());
-						double conversionNo = minutes / 60;
-						double result = 0;
-	
-						if (conversionNo == 0 ) {
-							returnHours(hours);
-						}
-						else if (conversionNo > 0 && conversionNo <= 0.25) {
-							result = hours + 0.25;
-							returnHours(result);
-						}
-						else if(conversionNo > 0.25 && conversionNo <= 0.50) {
-							result = hours + 0.50;
-							returnHours(result);
-						}
-						else if (conversionNo > 0.50 && conversionNo <= 0.75) {
-							result = hours + 0.75;
-							returnHours(result);
-						}
-						else if (conversionNo > 0.75 && conversionNo <= 1.0) {
-							result = hours + 1;
-							returnHours(result);
-						}
-						else if (conversionNo < 0.0 || conversionNo > 1.0) {
+						boolean containsLetter = false;
+				        
+				        for (int i = 0; i < txtMinutter.getText().length(); i++) {
+				            if (Character.isLetter(txtMinutter.getText().charAt(i))) {
+				                containsLetter = true;
+				                break;
+				            }
+				        }
+				        
+				        for (int i = 0; i < txtTimer.getText().length(); i++) {
+				            if (Character.isLetter(txtTimer.getText().charAt(i))) {
+				                containsLetter = true;
+				                break;
+				            }
+				        }
+				        
+				        if (containsLetter == true) {
+							NoHoursAddedDialog noHoursAdded = new NoHoursAddedDialog();
+							noHoursAdded.setVisible(true);
+				        }
+				        else {
+				        	
+				        	double minutes = Double.parseDouble(txtMinutter.getText());
+				        	double hours = Double.parseDouble(txtTimer.getText());
+				        	if (minutes == 0 && hours == 0) {
+				        		NoHoursAddedDialog noHoursAdded = new NoHoursAddedDialog();
+				        		noHoursAdded.setVisible(true);
+				        	}
+				        	else {
+				        		
+				        		double conversionNo = minutes / 60;
+				        		double result = 0;
+				        		
+				        		if (conversionNo == 0 ) {
+				        			returnHours(hours);
+				        		}
+				        		else if (conversionNo > 0 && conversionNo <= 0.25) {
+				        			result = hours + 0.25;
+				        			returnHours(result);
+				        		}
+				        		else if(conversionNo > 0.25 && conversionNo <= 0.50) {
+				        			result = hours + 0.50;
+				        			returnHours(result);
+				        		}
+				        		else if (conversionNo > 0.50 && conversionNo <= 0.75) {
+				        			result = hours + 0.75;
+				        			returnHours(result);
+				        		}
+				        		else if (conversionNo > 0.75 && conversionNo <= 1.0) {
+				        			result = hours + 1;
+				        			returnHours(result);
+				        		}
+				        		else if (conversionNo < 0.0 || conversionNo > 1.0) {
+				        		}
+				        	}
 						}
 					}
 				});
