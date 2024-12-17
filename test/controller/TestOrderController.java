@@ -7,11 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import db.OrderDBIF;
 import db.ResetDB;
 import model.Customer;
 import model.Employee;
@@ -24,21 +22,15 @@ import model.StockMaterial;
 class TestOrderController {
 	private OrderController orderController;
 	private MaterialController materialController;
-	private EmployeeController employeeController;
-	private LogController logController;
-	private OrderDBIF orderInterface;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		orderController = new OrderController();
 		materialController = new MaterialController();
-		employeeController = new EmployeeController();
 		ResetDB.main(null);
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+
 	
 	@Test
 	void testFindAndAddCustomerByPhoneNo() throws DataAccessException {

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,9 +26,6 @@ public class TestStockMaterial {
 
 	}
 	
-	@AfterEach
-	void tearDown() throws DataAccessException {
-	}
 	
 	@Test
 	public void testAddStockReservation() {

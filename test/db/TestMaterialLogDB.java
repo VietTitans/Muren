@@ -21,9 +21,6 @@ class TestMaterialLogDB {
 
 	static MaterialLogDB materialLogDB;
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
 
 
 	
@@ -87,7 +84,9 @@ class TestMaterialLogDB {
 		material.getPurchasePrices().add(purchasePrice);
 		material.getSalesPrices().add(salesPrice);
 		MaterialLog materialLog = new MaterialLog(employee, material ,1);
-		materialLogDB.saveMaterialLog(materialLog, 2);		
+		int retunredKey = materialLogDB.saveMaterialLog(materialLog, 2);	
+		
+		assertEquals(retunredKey, 6);
 	}
 
 }

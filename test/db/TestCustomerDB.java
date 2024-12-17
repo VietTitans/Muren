@@ -2,7 +2,6 @@ package db;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,16 +10,12 @@ import model.Customer;
 
 class TestCustomerDB {
 	
-	private CustomerDB customerDB;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		ResetDB.main(null);
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
 
 	@Test
 	void testFindCustomerByPhoneNo() throws IllegalArgumentException, DataAccessException {
