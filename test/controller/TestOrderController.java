@@ -1,5 +1,6 @@
 package controller;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -240,13 +241,11 @@ class TestOrderController {
 		//Arrange
 		//No action
 		//Act
-		DataAccessException exceptionThrown = assertThrows(DataAccessException.class, () -> {
-			orderController.findOrderByOrderNo(47);
-		});
+		Order order =orderController.findOrderByOrderNo(47);
 		
-		String expectedResult = "Order not found";
+		
 		//Assert
-		assertEquals(expectedResult, exceptionThrown.getMessage());
+		assertNull(order);
 	}
 	
 }
