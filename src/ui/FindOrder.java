@@ -69,15 +69,24 @@ public class FindOrder extends JDialog {
 						try {
 							OrderController currentOrderController = new OrderController();
 							Order currentOrder = currentOrderController.findOrderByOrderNo(orderNo);
-							try {
-								LogOrder logOrder = new LogOrder(currentOrder, currentOrderController,orderNo);
-								logOrder.setVisible(true);
-								previousScreen.dispose();
-								dispose();
-							} catch (Exception e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
+							if (currentOrder == null) {
+								OrderNotFoundDialog orderNotFound = new OrderNotFoundDialog();
+								orderNotFound.setVisible(true);
 							}
+							
+							else {
+									
+								try {
+									LogOrder logOrder = new LogOrder(currentOrder, currentOrderController,orderNo);
+									logOrder.setVisible(true);
+									previousScreen.dispose();
+									dispose();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}
+							
 						} catch (DataAccessException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

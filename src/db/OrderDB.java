@@ -100,9 +100,7 @@ public class OrderDB implements OrderDBIF {
 			
 			if(resultSet.next()) {
 				foundOrder = buildObject(orderNo, resultSet, fullAssociation);
-			} else {
-				throw new DataAccessException("Order not found", null );
-			}
+			} 
 		} catch(SQLException e) {
 			throw new DataAccessException("Order not found", e);
 		}
