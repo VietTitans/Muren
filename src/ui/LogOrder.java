@@ -517,10 +517,7 @@ public class LogOrder extends JFrame {
 			double materialSalePrice = materialSalePriceBD.doubleValue();
 			BigDecimal totalPriceBD = materialSalePriceBD.multiply(new BigDecimal(materialLog.getQuantity()));
 			double totalPrice = totalPriceBD.doubleValue();
-			String description = material.getMaterialDescriptionByDate(madeAtTime).getDescription();
-=======
 			String description = material.getMaterialDescriptionByDate(materialLog.getTimeStamp()).getDescription();
->>>>>>> Stashed changes
 				int newNr = materialTable.getRowCount() + 1;
 				if (material instanceof StockMaterial) {
 				Object[] newRow = {newNr,
