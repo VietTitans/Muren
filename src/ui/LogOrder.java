@@ -512,11 +512,12 @@ public class LogOrder extends JFrame {
 		
 		for (MaterialLog materialLog : oldMaterialLogs) {
 			Material material = materialLog.getMaterial();
-			BigDecimal materialSalePriceBD = material.getSalesPriceByDate(orderDate).getPreVATValue();
+			LocalDateTime madeAtTime = materialLog.getTimeStamp();
+			BigDecimal materialSalePriceBD = material.getSalesPriceByDate(madeAtTime).getPreVATValue();
 			double materialSalePrice = materialSalePriceBD.doubleValue();
 			BigDecimal totalPriceBD = materialSalePriceBD.multiply(new BigDecimal(materialLog.getQuantity()));
 			double totalPrice = totalPriceBD.doubleValue();
-			String description = material.getMaterialDescriptionByDate(orderDate).getDescription();
+			String description = material.getMaterialDescriptionByDate(madeAtTime).getDescription();
 				int newNr = materialTable.getRowCount() + 1;
 				if (material instanceof StockMaterial) {
 				Object[] newRow = {newNr,

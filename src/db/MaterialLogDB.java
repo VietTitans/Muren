@@ -64,7 +64,6 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 			//If the insert was successfully Insert MaterialLogs into MaterialLogs table, with generated LogId
 				if (generatedLogId.next()) {
 					materialLogKey = generatedLogId.getInt(1);
-					insertMaterialLogIntoLogs.close();
 					
 					int quantity = materialLog.getQuantity();
 					insertMaterialLogIntoMaterialLogs.setInt(1, quantity);

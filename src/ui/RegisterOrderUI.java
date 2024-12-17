@@ -729,7 +729,8 @@ public class RegisterOrderUI extends JFrame {
 				material.getMaterialNo(),
 				material.getProductName(), 
 				description,
-				amountNo, 
+				amountNo,
+				0,
 				price2, 
 				totalPrice};
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
