@@ -673,15 +673,18 @@ public class LogOrder extends JFrame {
 	
 	public void addGenericMaterial(double price, double price2, String description, Material material, int amountNo) {
 		int newNr = materialTable.getRowCount() + 1;
+		ArrayList<MaterialLog> materialLogs = currentOrderController.getCurrentOrder().getMaterialLogs();
+		int index = materialLogs.size() - 1;
+		LocalDateTime timeStamp = materialLogs.get(index).getTimeStamp();
 		BigDecimal totalPriceDB = new BigDecimal(price2).multiply(new BigDecimal(amountNo));
 		double totalPrice = totalPriceDB.doubleValue();
 		
 		BigDecimal purchasePriceBD = new BigDecimal(price);
-		Price purchasePrice = new Price(purchasePriceBD);
+		Price purchasePrice = new Price(timeStamp, purchasePriceBD);
 		material.setCurrentPurchasePrice(purchasePrice);
 		
 		BigDecimal salesPriceDB = new BigDecimal(price2);
-		Price salesPrice = new Price(salesPriceDB);
+		Price salesPrice = new Price(timeStamp, salesPriceDB);
 		material.setCurrentSalesPrice(salesPrice);
 		
 		MaterialDescription materialDescription = new MaterialDescription(description);
@@ -692,6 +695,7 @@ public class LogOrder extends JFrame {
 				material.getProductName(), 
 				description,
 				amountNo, 
+				0,
 				price2, 
 				totalPrice};
 		DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
