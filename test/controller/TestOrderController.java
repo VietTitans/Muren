@@ -1,6 +1,8 @@
 package controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -226,12 +228,11 @@ class TestOrderController {
 		LogController logController = new LogController();
 		//Act
 		logController.addMaterialToLog(employee, invalidInput, 1);
-			System.out.println(order.getMaterialLogs().size());
 		assertTrue(order.getMaterialLogs().size() == 0);
 	}
 	
 	@Test
-	void testFindOrderByOrderNo() throws DataAccessException, SQLException, GeneralException {
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
 		//Arrange
 		//OrderNo with value 1 exists with an customerNo 1 associated
 		//Act

@@ -1,7 +1,7 @@
 package db;
 
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -23,7 +23,6 @@ class TestDBConnection {
 	}
 	@Test
 	void testConnection() throws SQLException, DataAccessException {
-		System.out.println(DBConnection.getInstance().getConnection().isClosed());
 		DatabaseMetaData dma =connection.getConnection().getMetaData();
 		assertTrue(dma != null);
 	}

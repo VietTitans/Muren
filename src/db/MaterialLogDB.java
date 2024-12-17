@@ -1,6 +1,5 @@
 package db;
 
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import controller.DataAccessException;
 import model.Employee;
 import model.GenericMaterial;
-import model.HourLog;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
@@ -47,12 +45,12 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 	}
 
 	@Override
-	public int saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
+	public int saveMaterialLog(MaterialLog materialLog, int orderNo) throws DataAccessException {
 		try {
 			//TODO:TRANSACTION? 
 			//Inserts data for the Logs table
 			int materialLogKey = -1;
-			insertMaterialLogIntoLogs.setInt(1, orderId);
+			insertMaterialLogIntoLogs.setInt(1, orderNo);
 			int EmployeeId = materialLog.getEmployee().getEmployeeId();
 			insertMaterialLogIntoLogs.setInt(2, EmployeeId);
 			Timestamp hourLogTime = Timestamp.valueOf(materialLog.getTimeStamp());

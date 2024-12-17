@@ -2,22 +2,21 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import model.Employee;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.math.BigDecimal;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class AddHoursDialog extends JDialog {
 
@@ -101,7 +100,6 @@ public class AddHoursDialog extends JDialog {
 						double hours = Double.parseDouble(txtTimer.getText());
 						double conversionNo = minutes / 60;
 						double result = 0;
-						System.out.println(conversionNo);
 	
 						if (conversionNo == 0 ) {
 							returnHours(hours);

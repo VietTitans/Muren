@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import controller.DataAccessException;
 import model.Customer;
-import model.Address;
 
 
 public class CustomerDB implements CustomerDBIF {

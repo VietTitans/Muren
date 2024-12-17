@@ -1,6 +1,7 @@
 package db;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.SQLException;
 
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import model.Employee;
 
 class TestEmployeeDB {
@@ -28,7 +28,7 @@ class TestEmployeeDB {
 	}
 	
 	@Test
-	void testFindEmployeeByEmployeeId() throws SQLException, DataAccessException, GeneralException {
+	void testFindEmployeeByEmployeeId() throws SQLException, DataAccessException {
 		//Arrange 
 		Employee expectedEmployee = new Employee();
 		expectedEmployee.setfName("Michael");
@@ -53,7 +53,7 @@ class TestEmployeeDB {
 	}
 	
 	@Test
-	void testEmployeeDoesntExists() throws DataAccessException, GeneralException { 
+	void testEmployeeDoesntExists() throws DataAccessException { 
 		//Arrange
 			//Act
 			Employee foundEmployee = employeeDB.findEmployeeByEmployeeId(6662236, false); //Input invalid employeeId

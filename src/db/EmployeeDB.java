@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import model.Address;
 import model.Employee;
 import model.EmployeeType;
@@ -28,7 +27,7 @@ public class EmployeeDB implements EmployeeDBIF {
 
 	@Override
 	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) 
-			throws GeneralException, DataAccessException {
+			throws  DataAccessException {
 		Employee foundEmployee = null;
 
 		try {

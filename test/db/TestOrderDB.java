@@ -1,30 +1,24 @@
 package db;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
 import model.Material;
-import model.MaterialDescription;
 import model.MaterialLog;
 import model.Order;
 import model.Price;
-import model.StockMaterial;
-import db.MaterialDB;
 
 class TestOrderDB {
 
@@ -37,7 +31,7 @@ class TestOrderDB {
 	}
 
 	@Test
-	void testSaveOrder() throws DataAccessException, SQLException, GeneralException {
+	void testSaveOrder() throws DataAccessException, SQLException {
 		// Arrange
 		Customer customer = new Customer();
 		customer.setCustomerId(1);
@@ -76,15 +70,12 @@ class TestOrderDB {
 	}
 //	
 	@Test
-	void testFindOrderByOrderNo() throws DataAccessException, SQLException, GeneralException {
+	void testFindOrderByOrderNo() throws DataAccessException, SQLException {
 		OrderDB orderDB = new OrderDB();
 		Order foundOrder = orderDB.findOrderByOrderNo(1, true);
-		System.out.println(foundOrder.getStartDate());
-		System.out.println(foundOrder.isFinished());
-		System.out.println(foundOrder.getMaterialLogs().size());
-		System.out.println(foundOrder.getHourLogs().size());
-		System.out.println(foundOrder.getCustomer().getPhoneNo());
-		System.out.println(foundOrder.getOrderMadeBy().getfName());
+		
+		assertNotNull(foundOrder);
+		
 	}
 
 }

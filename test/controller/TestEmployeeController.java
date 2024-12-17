@@ -1,8 +1,8 @@
 package controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class TestEmployeeController {
 
 
 	@Test
-	void testFindEmployeeByEmployeeId() throws GeneralException, DataAccessException {
+	void testFindEmployeeByEmployeeId() throws  DataAccessException {
 		//Arrange
 		String expectedFName = "Michael";
 		String expectedLName = "Scott";
@@ -39,7 +39,7 @@ class TestEmployeeController {
 	}
 	
 	@Test
-	void testEmployeeDoesntExists() throws  GeneralException, DataAccessException {
+	void testEmployeeDoesntExists() throws   DataAccessException {
 		//Arrange
 		int invalidEmployeeId = 9;
 			//Act

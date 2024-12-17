@@ -1,18 +1,16 @@
 package controller;
 
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
+import db.OrderDB;
+import db.OrderDBIF;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
 import model.Material;
 import model.MaterialLog;
 import model.Order;
-import db.OrderDBIF;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-
-import db.OrderDB;
 
 public class OrderController {
 	private Order currentOrder;
@@ -50,7 +48,7 @@ public class OrderController {
 		return foundMaterial;
 	}
 	
-	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws GeneralException, DataAccessException {
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws  DataAccessException {
 		Employee employee = employeeController.findEmployeeByEmployeeId(employeeId, fullAssociation);
 		return employee;
 	}
@@ -78,7 +76,7 @@ public class OrderController {
 		currentOrder.removeHourLog(hourLogIndex);
 	}
 	
-	public int saveOrder() throws GeneralException, DataAccessException {
+	public int saveOrder() throws  DataAccessException {
 		 return orderInterface.saveOrder(currentOrder);
 	}
 	public void removeCustomer() {
@@ -102,7 +100,7 @@ public class OrderController {
 		return currentOrder.calculateTotalOrderPrice(); 
 	}
 	
-	public Order findOrderByOrderNo(int orderNo) throws DataAccessException, GeneralException {
+	public Order findOrderByOrderNo(int orderNo) throws DataAccessException  {
 		currentOrder = orderInterface.findOrderByOrderNo(orderNo, true);
 		return currentOrder;
 	}

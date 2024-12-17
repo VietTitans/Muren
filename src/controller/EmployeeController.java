@@ -1,11 +1,10 @@
 package controller;
 
-import model.Employee;
-import db.EmployeeDBIF;
-
 import java.sql.SQLException;
 
 import db.EmployeeDB;
+import db.EmployeeDBIF;
+import model.Employee;
 
 public class EmployeeController {
 	private EmployeeDBIF employeeDBIF;
@@ -15,7 +14,7 @@ public class EmployeeController {
 	}
 
 	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation)
-			throws GeneralException, DataAccessException {
+			throws  DataAccessException {
 		return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssociation);
 	}
 }

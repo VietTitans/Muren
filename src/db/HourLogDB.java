@@ -1,18 +1,15 @@
 package db;
-import java.sql.ResultSet;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.math.BigDecimal;
-
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import model.Employee;
 import model.HourLog;
-import model.MaterialLog;
 
 public class HourLogDB implements HourLogDBIF {
 
@@ -36,10 +33,10 @@ public class HourLogDB implements HourLogDBIF {
 	}
 
 	@Override
-	public int saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
+	public int saveHourLog(HourLog hourLog, int orderNo) throws DataAccessException {
 		int hourLogKey = -1;
 		try {
-			insertHourLogIntoLogs.setInt(1, orderId);
+			insertHourLogIntoLogs.setInt(1, orderNo);
 			int EmployeeId = hourLog.getEmployee().getEmployeeId();
 			insertHourLogIntoLogs.setInt(2, EmployeeId);
 			
@@ -61,7 +58,7 @@ public class HourLogDB implements HourLogDBIF {
 		}
 		return hourLogKey;
 	}
-	public ArrayList<HourLog> findHourLogsByOrderNo(int orderNo) throws DataAccessException, GeneralException{
+	public ArrayList<HourLog> findHourLogsByOrderNo(int orderNo) throws DataAccessException{
 		
 		ArrayList<HourLog> hourLogs = new ArrayList<HourLog>();
 		try {
@@ -80,7 +77,7 @@ public class HourLogDB implements HourLogDBIF {
 		
 		return hourLogs;
 	}
-public HourLog buildObject(ResultSet resultSet) throws SQLException, GeneralException, DataAccessException {
+public HourLog buildObject(ResultSet resultSet) throws SQLException, DataAccessException {
 	EmployeeDB employeeDB = new EmployeeDB();
 	Employee employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
 	LocalDateTime madeAtTime = resultSet.getTimestamp("LogTimeStamp").toLocalDateTime();

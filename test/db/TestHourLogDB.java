@@ -1,10 +1,10 @@
 package db;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,15 +36,15 @@ class TestHourLogDB {
 		employee.setEmployeeId(1);
 		BigDecimal workedHours = new BigDecimal("3.0");
 		HourLog hourLog = new HourLog(employee, workedHours);
-		int orderId = 1; 
+		int orderNo = 1; 
 		//Act
-		int returnedKey = hourLogDB.saveHourLog(hourLog, orderId);
+		int returnedKey = hourLogDB.saveHourLog(hourLog, orderNo);
 		//Assert
 		assertEquals(expectedHourLogId, returnedKey);
 	}
 	
 	@Test
-	void testSaveHourLogWithInvallidOrderId() throws DataAccessException {
+	void testSaveHourLogWithInvallidorderNo() throws DataAccessException {
 		//Arrange
 		Employee employee = new Employee();
 		employee.setEmployeeId(1);

@@ -3,7 +3,6 @@ package ui;
 import java.awt.Color;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,7 +31,6 @@ public class SwingWorkerCheckConnection extends SwingWorker<Void, Boolean> {
              public void run() {
 
                  try {
-                	 System.out.println(System.currentTimeMillis());
                      CheckDatabaseConnection();
                  } catch (SQLException | DataAccessException e) {
                      e.printStackTrace();

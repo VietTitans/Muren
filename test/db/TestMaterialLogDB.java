@@ -1,20 +1,16 @@
 package db;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import controller.DataAccessException;
 import model.Employee;
-import model.GenericMaterial;
-import model.HourLog;
 import model.Material;
 import model.MaterialDescription;
 import model.MaterialLog;
@@ -49,10 +45,10 @@ class TestMaterialLogDB {
 		ArrayList<Price> purchasePrices = new ArrayList<>();
 
 		StockMaterial stockMaterial = new StockMaterial(1001 , "Spand", materialDescriptions, salesPrices, purchasePrices, 1, 5, 2);
-		int orderId = 1; 
-		MaterialLog expectedResult = new MaterialLog(employee, stockMaterial, orderId);
+		int orderNo = 1; 
+		MaterialLog expectedResult = new MaterialLog(employee, stockMaterial, orderNo);
 		//Act
-		int returnedKey = materialLogDB.saveMaterialLog(expectedResult, orderId);
+		int returnedKey = materialLogDB.saveMaterialLog(expectedResult, orderNo);
 		//Assert		
 		assertEquals(expectedLogId, returnedKey);
 	}

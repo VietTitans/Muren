@@ -1,23 +1,21 @@
 package db;
 
-import model.Material;
-import model.Price;
-import model.StockMaterial;
-import model.GenericMaterial;
-import model.StockReservation;
-import model.MaterialDescription;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import controller.DataAccessException;
+import model.GenericMaterial;
+import model.Material;
+import model.MaterialDescription;
+import model.Price;
+import model.StockMaterial;
+import model.StockReservation;
 
 public class MaterialDB implements MaterialDBIF {
 
@@ -121,9 +119,7 @@ public class MaterialDB implements MaterialDBIF {
 					int stockMaterialId = rsMaterial.getInt("StockMaterialId");
 					foundMaterial = buildObjectStockMaterial(rsMaterial, materialDescriptions, salesPrices, purchasePrices, stockMaterialId);
 					
-				} else {
-					System.out.println("Cant run methods");
-				}
+				} 
 			}	
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -208,9 +204,7 @@ public class MaterialDB implements MaterialDBIF {
 					StockReservation stockReservation = buildObjectStockReservation(rsStockReservation);
 					stockMaterial.addStockReservation(stockReservation);
 				}
-			} else {
-				System.out.println("Cant use method");
-			}
+			} 
 			
 		}catch (SQLException e) {
 			e.printStackTrace();

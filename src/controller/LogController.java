@@ -49,39 +49,42 @@ public class LogController {
 		return currentHourLog;
 	}
 
-	public int saveHourLog(HourLog hourLog, int orderId) throws DataAccessException {
-		int hourLogKey = hourLogInterface.saveHourLog(hourLog, orderId);
+	public int saveHourLog(HourLog hourLog, int orderNo) throws DataAccessException {
+		int hourLogKey = hourLogInterface.saveHourLog(hourLog, orderNo);
 		return hourLogKey;
 	}
 
-	public int saveMaterialLog(MaterialLog materialLog, int orderId) throws DataAccessException {
-		int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderId);
+	public int saveMaterialLog(MaterialLog materialLog, int orderNo) throws DataAccessException {
+		int materialLogKey = materialLogInterface.saveMaterialLog(materialLog, orderNo);
 		return materialLogKey;
 	}
-	public void saveNewHourLogs(ArrayList<HourLog> logs,int orderId , LocalDateTime time ) throws DataAccessException {
+	
+	//Here "new Logs" is used to differentiate between new and "old" Logs from a previously saved Order. So we don't save
+	// allready inserted Logs
+	public void saveNewHourLogs(ArrayList<HourLog> logs,int orderNo , LocalDateTime time ) throws DataAccessException {
 		for(HourLog log : logs) {
 			if(log.getTimeStamp().isAfter(time)) {
-			hourLogInterface.saveHourLog(log , orderId);
+			hourLogInterface.saveHourLog(log , orderNo);
 			
 		}
 	}
 
 }
-	public void saveNewMaterialLogs(ArrayList<MaterialLog>  logs,int orderId, LocalDateTime time) throws DataAccessException {
+	public void saveNewMaterialLogs(ArrayList<MaterialLog>  logs,int orderNo, LocalDateTime time) throws DataAccessException {
 		for(MaterialLog log : logs) {
 			if(log.getTimeStamp().isAfter(time)) {
-				materialLogInterface.saveMaterialLog(log, orderId);
+				materialLogInterface.saveMaterialLog(log, orderNo);
 				
 			}
 		}
 	}
-	public void saveNewLogs(Order order, int orderId, LocalDateTime windowMadeAt) throws DataAccessException {
-	
+	public void saveNewLogs(Order order, int orderNo, LocalDateTime windowMadeAt) throws DataAccessException {
+	//Transaction since it inserts into 2 tables in 2 different querries 
 		try {
 			DBConnection.getInstance().startTransaction();
 			
-			saveNewMaterialLogs(order.getMaterialLogs(), orderId, windowMadeAt);
-			saveNewHourLogs(order.getHourLogs(), orderId, windowMadeAt);
+			saveNewMaterialLogs(order.getMaterialLogs(), orderNo, windowMadeAt);
+			saveNewHourLogs(order.getHourLogs(), orderNo, windowMadeAt);
 			
 			DBConnection.getInstance().commitTransaction();
 		} catch (DataAccessException e) {

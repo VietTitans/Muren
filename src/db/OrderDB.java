@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import model.Customer;
 import model.Employee;
 import model.HourLog;
@@ -93,7 +92,7 @@ public class OrderDB implements OrderDBIF {
 	}
 
 	@Override
-	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) throws DataAccessException, GeneralException {
+	public Order findOrderByOrderNo(int orderNo, boolean fullAssociation) throws DataAccessException {
 		Order foundOrder = null;
 		try {
 			selectOrderByOrderNo.setInt(1, orderNo);
@@ -111,7 +110,7 @@ public class OrderDB implements OrderDBIF {
 		return foundOrder;
 	}
 
-	private Order buildObject(int orderNo, ResultSet resultSet, boolean fullAssociation) throws DataAccessException, GeneralException{
+	private Order buildObject(int orderNo, ResultSet resultSet, boolean fullAssociation) throws DataAccessException{
 		Employee employee = new Employee();
 		Order foundOrder = new Order(employee);
 		Customer customer = new Customer();

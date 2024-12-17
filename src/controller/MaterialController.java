@@ -1,8 +1,8 @@
 package controller;
 
-import model.Material;
-import db.MaterialDBIF;
 import db.MaterialDB;
+import db.MaterialDBIF;
+import model.Material;
 
 public class MaterialController {
 	private MaterialDBIF materialDBIF;

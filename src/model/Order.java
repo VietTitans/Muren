@@ -1,9 +1,9 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.math.BigDecimal;
 public class Order {
 
 	private Employee OrderMadeBy;
@@ -117,22 +117,14 @@ public class Order {
 	}
 	
 	public void removeMaterial(int materialIndex) {
-		for (MaterialLog item : materialLogs) {
-            System.out.println(item.getMaterial().getProductName());
-        }
+	
 		materialLogs.remove(materialIndex);
-		for (MaterialLog item : materialLogs) {
-            System.out.println(item.getMaterial().getProductName());
-        }
+	
 	}
 	public void removeHourLog(int hourLogIndex) {
-		for (HourLog item : hourLogs) {
-			System.out.println(item.getHoursWorked());
-		}
+		
 		hourLogs.remove(hourLogIndex);
-		for (HourLog item : hourLogs) {
-			System.out.println(item.getHoursWorked());
-		}
+		
 	}
 	public void setCustomer(Customer newCustomer) {
 		customer = newCustomer;

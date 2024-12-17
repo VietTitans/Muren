@@ -1,23 +1,21 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.awt.event.ActionEvent;
 
 public class RemoveMaterial extends JDialog {
 

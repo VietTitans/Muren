@@ -1,32 +1,35 @@
 package ui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
-import javax.swing.JButton;
 import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.DataAccessException;
-import controller.GeneralException;
 import controller.LogController;
 import controller.OrderController;
-import model.Customer;
 import model.Employee;
 import model.GenericMaterial;
 import model.HourLog;
@@ -36,19 +39,6 @@ import model.MaterialLog;
 import model.Order;
 import model.Price;
 import model.StockMaterial;
-
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.math.BigDecimal;
-import java.awt.Color;
 
 public class LogOrder extends JFrame {
 
@@ -70,7 +60,7 @@ public class LogOrder extends JFrame {
 	private JLabel lblCheckConnection;
 	private static Order currentOrder;
 	private LocalDateTime orderDate;
-	private static int orderId;
+	private static int orderNo;
 	private LocalDateTime windowMadeAt;
 	/**
 	 * Launch the application.
@@ -82,7 +72,7 @@ public class LogOrder extends JFrame {
 						
 						try {
 
-							LogOrder frame = new LogOrder(currentOrder, currentOrderController,orderId);
+							LogOrder frame = new LogOrder(currentOrder, currentOrderController,orderNo);
 
 							frame.setVisible(true);
 						}
@@ -100,12 +90,12 @@ public class LogOrder extends JFrame {
 	}
 
 
-	public LogOrder(Order currentOrder, OrderController currentOrderController, int orderId) throws Exception {
+	public LogOrder(Order currentOrder, OrderController currentOrderController, int orderNo) throws Exception {
 		try {
 			 windowMadeAt = LocalDateTime.now();
 		this.currentOrder = currentOrder;
 		this.currentOrderController = currentOrderController;
-		this.orderId = orderId;
+		this.orderNo = orderNo;
 		orderDate = currentOrder.getStartDate();
 		currentOrderController.getCurrentOrder().setDeadLine(LocalDate.now());
 		placeHolderEmployee = new Employee();
@@ -152,7 +142,6 @@ public class LogOrder extends JFrame {
 		btnRemoveHourLog = new JButton("Fjern medarbejder");
 		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Row count: " + employeeTable.getRowCount());
 				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(LogOrder.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
@@ -312,7 +301,6 @@ public class LogOrder extends JFrame {
 				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
 				try {
 					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, false);
-					System.out.println(employee.getfName());
 					if(employee.getfName() == null) {
 						
 					}
@@ -321,10 +309,7 @@ public class LogOrder extends JFrame {
 						confirmEmployeeDialog.setVisible(true);
 						
 					}
-				} catch (GeneralException e1) {
-					 //TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (DataAccessException e1) {
+				}  catch (DataAccessException e1) {
 					 //TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -590,7 +575,7 @@ public class LogOrder extends JFrame {
 				if(employeeTable.getRowCount() > 0 && materialTable.getRowCount() > 0) {
 				try {
 					saveNewLogs();
-					SaveOrder saveOrder = new SaveOrder(orderId, LogOrder.this);
+					SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
 					saveOrder.setVisible(true);
 					
 				} catch (DataAccessException e1) {
@@ -625,8 +610,6 @@ public class LogOrder extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
 		for (int i = removeList.length - 1; i >= 0; i--) {
 	        int index = removeList[i];
-	        System.out.println("index: " + index);
-	        System.out.println(employeeTable.getValueAt(index, 1));
 	        model.removeRow(index);
 	        updateRowNumbersEmployee(model, index);
 			currentOrderController.removeHourLog(index);
@@ -713,16 +696,12 @@ public class LogOrder extends JFrame {
 
 	public void updateRowNumbers(DefaultTableModel model, int index) {
 		for (int i = index; i < materialTable.getRowCount(); i++) {
-			System.out.println(materialTable.getValueAt(index, 1));
 	        materialTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
-	        System.out.println(materialTable.getValueAt(index, 1));
 		}
 	}
 	public void updateRowNumbersEmployee(DefaultTableModel model, int index) {
 		for (int i = index; i < employeeTable.getRowCount(); i++) {
-			System.out.println(employeeTable.getValueAt(index, 1));
 	        employeeTable.setValueAt(i + 1, i, 0); // Assuming column 1 is for row numbers
-	        System.out.println(employeeTable.getValueAt(index, 1));
 		}
 	}
 	public void addToMaterialTotal() {
@@ -761,7 +740,7 @@ public void updateTableMaterial() throws Exception {
 
 public void saveNewLogs() throws DataAccessException {
 	LogController logController = new LogController();
-	logController.saveNewLogs(currentOrder,orderId,windowMadeAt);
+	logController.saveNewLogs(currentOrder,orderNo,windowMadeAt);
 }
 }
 

@@ -1,10 +1,8 @@
 package ui;
 
-import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -17,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.DataAccessException;
 import controller.MaterialController;
 import db.DBConnection;
-import db.MaterialDB;
 import model.Material;
 import model.StockMaterial;
 
@@ -45,7 +42,6 @@ protected Object doInBackground() throws Exception {
          @Override
          public void run() {
              try {
-            	 System.out.println(LocalDate.now());
          //   	 checkIfNewChanges();
             	 updateTables(materialTable);
              } catch (DataAccessException e) {
@@ -64,7 +60,6 @@ protected void process(List<Boolean> chunks) {
 	// Updates the JLabel
 	for (boolean status : chunks) {
 		if (status) {
-			System.out.println("Things have chancged");
 			
 		} else {
 		}
@@ -81,17 +76,13 @@ protected void process(List<Boolean> chunks) {
                     ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
                         long currentVersion = rs.getLong("CurrentVersion");
-                        System.out.println(rs.getLong(1));
-                        System.out.println(rs.getLong("CurrentVersion"));
 
                         // Check if changes have occurred
                         if (currentVersion > lastSyncVersion) {
-                        	System.out.println("Changes detected");
                         	lastSyncVersion = currentVersion;
                         	return true;
                           
                         } else {
-                            System.out.println("No changes detected");
                             return false;
                         }
                     }

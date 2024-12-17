@@ -31,7 +31,7 @@ public class MaterialLog extends Logs {
 				}
 			}
 		} catch (NullPointerException e) {
-			System.out.println("Invalid quantity");
+			throw new NullPointerException ("Can't update quantity");
 		}
 	}
 
