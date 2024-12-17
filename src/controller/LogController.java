@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import db.DBConnection;
 import db.HourLogDB;
 import db.HourLogDBIF;
 import db.MaterialLogDB;
@@ -12,6 +13,7 @@ import model.Employee;
 import model.HourLog;
 import model.Material;
 import model.MaterialLog;
+import model.Order;
 import model.StockMaterial;
 
 public class LogController {
@@ -73,7 +75,24 @@ public class LogController {
 			}
 		}
 	}
+	public void saveNewLogs(Order order, int orderId, LocalDateTime windowMadeAt) throws DataAccessException {
+	
+		try {
+			DBConnection.getInstance().startTransaction();
+			
+			saveNewMaterialLogs(order.getMaterialLogs(), orderId, windowMadeAt);
+			saveNewHourLogs(order.getHourLogs(), orderId, windowMadeAt);
+			
+			DBConnection.getInstance().commitTransaction();
+		} catch (DataAccessException e) {
+			DBConnection.getInstance().rollbackTransaction();
+			e.printStackTrace();
+		}
+	
+	
 
 
-}
+
+	}
+	}
 

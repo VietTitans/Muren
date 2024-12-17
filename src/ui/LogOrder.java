@@ -587,12 +587,19 @@ public class LogOrder extends JFrame {
 			
 
 			public void actionPerformed(ActionEvent e) {
+				if(employeeTable.getRowCount() > 0 && materialTable.getRowCount() > 0) {
 				try {
-					saveNewHourLog();
-					saveNewMaterialLog();
+					saveNewLogs();
+					SaveOrder saveOrder = new SaveOrder(orderId, LogOrder.this);
+					saveOrder.setVisible(true);
+					
 				} catch (DataAccessException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}}
+				else {
+					OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
+					orderNotCompleteDialog.setVisible(true);
 				}
 				
 			}
@@ -746,49 +753,11 @@ public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
 public void updateTableMaterial() throws Exception {
 	SwingWorkerUpdateMaterial updateWorker = new SwingWorkerUpdateMaterial(materialTable);
 	updateWorker.doInBackground();
-	
 }
-public void saveNewHourLog() {
-	try {
-		int orderNo = 0;
-		Customer customer = currentOrderController.getCustomer();
-		LogController logController = new LogController();
-		if (customer != null && materialTable.getRowCount() > 0) {
-			logController.saveNewHourLogs(currentOrder.getHourLogs(), orderId, windowMadeAt);
 
-}
-						
-					
-
-		
-		else if (customer != null && employeeTable.getRowCount() > 0) {
-			currentOrderController.getCurrentOrder().setOrderMadeBy(placeHolderEmployee);
-			orderNo = currentOrderController.saveOrder();
-			SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
-			saveOrder.setVisible(true);
-		}
-		else {
-			OrderNotCompleteDialog orderNotCompleteDialog = new OrderNotCompleteDialog();
-			orderNotCompleteDialog.setVisible(true);
-		}
-		
-		
-		
-	} catch (GeneralException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	} catch (DataAccessException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-}
-public void saveNewMaterialLog() throws DataAccessException {
+public void saveNewLogs() throws DataAccessException {
 	LogController logController = new LogController();
-	Customer customer = currentOrderController.getCustomer();
-	
-	if (customer != null && materialTable.getRowCount() > 0) {
-		logController.saveNewMaterialLogs(currentOrder.getMaterialLogs(), orderId, windowMadeAt );
-	}
+	logController.saveNewLogs(currentOrder,orderId,windowMadeAt);
 }
 }
 
