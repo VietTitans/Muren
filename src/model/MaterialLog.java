@@ -14,6 +14,12 @@ public class MaterialLog extends Logs {
 		this.quantity = quantity;
 		updateQuantity(material, quantity);
 	}
+	public MaterialLog(Employee employee, Material material, int quantity, LocalDateTime madeAtTime) {
+		super(employee,madeAtTime);
+		this.material = material;
+		this.quantity = quantity;
+		updateQuantity(material, quantity);
+	}
 	
 	public void updateQuantity(Material material, int quantity) {
 		try {

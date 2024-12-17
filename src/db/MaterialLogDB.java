@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import controller.DataAccessException;
@@ -128,7 +129,8 @@ public class MaterialLogDB  implements MaterialLogDBIF {
 			Employee employee = new Employee();
 			employee.setEmployeeId(resultSet.getInt("EmployeeId"));
 			int quantity = resultSet.getInt("Quantity");
-			materialLog = new MaterialLog(employee, material, quantity);
+			LocalDateTime madeAtTime = resultSet.getTimestamp("LogTimeStamp").toLocalDateTime();;
+			materialLog = new MaterialLog(employee, material, quantity,madeAtTime);
 		
 		} catch (SQLException e) {
 			throw new DataAccessException("Could not build object", e);

@@ -3,6 +3,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 
@@ -82,8 +83,9 @@ public class HourLogDB implements HourLogDBIF {
 public HourLog buildObject(ResultSet resultSet) throws SQLException, GeneralException, DataAccessException {
 	EmployeeDB employeeDB = new EmployeeDB();
 	Employee employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
+	LocalDateTime madeAtTime = resultSet.getTimestamp("LogTimeStamp").toLocalDateTime();
 	BigDecimal hours = resultSet.getBigDecimal("HoursWorked");
-	HourLog hourLog = new HourLog(employee, hours); 
+	HourLog hourLog = new HourLog(employee, hours ,madeAtTime); 
 	
 	
 	

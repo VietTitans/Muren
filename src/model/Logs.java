@@ -5,12 +5,16 @@ import java.time.LocalDateTime;
 public abstract class Logs {
 
 	private Employee employee;
-	private LocalDateTime LogtimeStamp;
+	private LocalDateTime logtimeStamp;
 	
 	public Logs(Employee employee) {
 		this.employee = employee;
-		LogtimeStamp = LocalDateTime.now();
+		logtimeStamp = LocalDateTime.now();
 	}
+	public Logs(Employee employee,LocalDateTime madeAtTime) {
+		this.employee = employee;
+		this.logtimeStamp = madeAtTime; 
+				}
 
 	public abstract Employee getEmployee();
 	
@@ -21,7 +25,7 @@ public abstract class Logs {
 	public abstract LocalDateTime getTimeStamp();
 
 	protected LocalDateTime getTimeStampSubClass() {
-		return LogtimeStamp;
+		return logtimeStamp;
 	}
 	
 }
