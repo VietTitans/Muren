@@ -34,7 +34,7 @@ class TestOrderDB {
 	void testSaveOrder() throws DataAccessException, SQLException {
 		// Arrange
 		Customer customer = new Customer();
-		customer.setCustomerId(1);
+		customer.setCustomerNo(1);
 		
 		Employee emp = new Employee();
 		emp.setEmployeeId(1);

@@ -40,7 +40,7 @@ import model.Order;
 import model.Price;
 import model.StockMaterial;
 
-public class LogOrder extends JFrame {
+public class LogOrderUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -72,7 +72,7 @@ public class LogOrder extends JFrame {
 						
 						try {
 
-							LogOrder frame = new LogOrder(currentOrder, currentOrderController,orderNo);
+							LogOrderUI frame = new LogOrderUI(currentOrder, currentOrderController,orderNo);
 
 							frame.setVisible(true);
 						}
@@ -90,7 +90,7 @@ public class LogOrder extends JFrame {
 	}
 
 
-	public LogOrder(Order currentOrder, OrderController currentOrderController, int orderNo) throws Exception {
+	public LogOrderUI(Order currentOrder, OrderController currentOrderController, int orderNo) throws Exception {
 		try {
 			 windowMadeAt = LocalDateTime.now();
 		this.currentOrder = currentOrder;
@@ -142,7 +142,7 @@ public class LogOrder extends JFrame {
 		btnRemoveHourLog = new JButton("Fjern medarbejder");
 		btnRemoveHourLog.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(LogOrder.this, employeeTable);
+				RemoveEmployeeDialog removeEmployeeDialog = new RemoveEmployeeDialog(LogOrderUI.this, employeeTable);
 				removeEmployeeDialog.setVisible(true);
 			}
 		});
@@ -150,7 +150,7 @@ public class LogOrder extends JFrame {
 		btnRemoveMaterial = new JButton("Fjern materiale");
 		btnRemoveMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RemoveMaterial removeMaterialFrame= new RemoveMaterial(LogOrder.this, materialTable);
+				RemoveMaterial removeMaterialFrame= new RemoveMaterial(LogOrderUI.this, materialTable);
 				removeMaterialFrame.setVisible(true);
 			}
 		});
@@ -251,7 +251,7 @@ public class LogOrder extends JFrame {
 								btnRemoveMaterial.setEnabled(true);
 							}
 							else if (material instanceof GenericMaterial) {
-								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , LogOrder.this, amountNo);
+								AddGenericMaterial addGenericMaterial = new AddGenericMaterial(material , LogOrderUI.this, amountNo);
 								addGenericMaterial.setVisible(true);
 							}
 						} catch (Exception e1) {
@@ -305,7 +305,7 @@ public class LogOrder extends JFrame {
 						
 					}
 					else {
-						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, LogOrder.this);
+						ConfirmEmployeeDialog confirmEmployeeDialog = new ConfirmEmployeeDialog(employee, LogOrderUI.this);
 						confirmEmployeeDialog.setVisible(true);
 						
 					}
@@ -395,7 +395,7 @@ public class LogOrder extends JFrame {
 		JButton btnNewButton_1 = new JButton("Annuler ordre");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(LogOrder.this);
+				CancelOrderDialog cancelOrderFrame= new CancelOrderDialog(LogOrderUI.this);
 					cancelOrderFrame.setVisible(true);
 			}
 			
@@ -575,7 +575,7 @@ public class LogOrder extends JFrame {
 				if(employeeTable.getRowCount() > 0 && materialTable.getRowCount() > 0) {
 				try {
 					saveNewLogs();
-					SaveOrder saveOrder = new SaveOrder(orderNo, LogOrder.this);
+					SaveOrder saveOrder = new SaveOrder(orderNo, LogOrderUI.this);
 					saveOrder.setVisible(true);
 					
 				} catch (DataAccessException e1) {
@@ -728,8 +728,8 @@ public class LogOrder extends JFrame {
 		double totalPriceWithVAT = totalPriceWithVATBD.doubleValue();
 		priceWithVAT.setText("" + totalPriceWithVAT);
 	}
-public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
-	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLable);
+public  void updateConnectionLabel(JLabel connectionLabel) throws Exception {
+	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLabel);
 	 checkConnection.doInBackground();
 
 	}

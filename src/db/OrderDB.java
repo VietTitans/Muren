@@ -48,7 +48,7 @@ public class OrderDB implements OrderDBIF {
 		java.sql.Timestamp startDate = java.sql.Timestamp.valueOf(currentOrder.getStartDate());
 		java.sql.Date deadline = java.sql.Date.valueOf(currentOrder.getDeadLine());
 		int employeeId = currentOrder.getOrderMadeBy().getEmployeeId();
-		int customerNo = currentOrder.getCustomer().getCustomerId();
+		int customerNo = currentOrder.getCustomer().getCustomerNo();
 		boolean isFinished = currentOrder.isFinished();
 		int isFinishedAsBit;
 		if (isFinished) {
@@ -115,7 +115,7 @@ public class OrderDB implements OrderDBIF {
 		try {
 			employee.setEmployeeId(resultSet.getInt("EmployeeId"));
 			foundOrder.setOrderMadeBy(employee);
-			customer.setCustomerId(resultSet.getInt("CustomerNo"));
+			customer.setCustomerNo(resultSet.getInt("CustomerNo"));
 			foundOrder.setCustomer(customer);
 			foundOrder.setFinished(resultSet.getBoolean("IsFinished"));
 			LocalDateTime startDate = resultSet.getTimestamp("StartDate").toLocalDateTime();

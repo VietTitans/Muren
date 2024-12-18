@@ -98,8 +98,8 @@ public class RemoveMaterial extends JDialog {
 			        ((RegisterOrderUI) previousScreen).removeRow(removeList);
 					dispose();
 			        }
-			        else if (previousScreen instanceof LogOrder) {
-			        	((LogOrder) previousScreen).removeRow(removeList);
+			        else if (previousScreen instanceof LogOrderUI) {
+			        	((LogOrderUI) previousScreen).removeRow(removeList);
 						dispose();
 			        }
 					}

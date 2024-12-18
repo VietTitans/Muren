@@ -166,8 +166,8 @@ public class AddHoursDialog extends JDialog {
 		((RegisterOrderUI) previousScreen).addEmployeeAndHours(employee, hours);
 		dispose();
 		}
-		else if (previousScreen instanceof LogOrder) {
-			((LogOrder) previousScreen).addEmployeeAndHours(employee, hours);
+		else if (previousScreen instanceof LogOrderUI) {
+			((LogOrderUI) previousScreen).addEmployeeAndHours(employee, hours);
 			dispose();
 		}
 	}

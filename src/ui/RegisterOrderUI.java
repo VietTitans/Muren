@@ -754,8 +754,8 @@ public class RegisterOrderUI extends JFrame {
 		double totalPriceWithVAT = totalPriceWithVATBD.doubleValue();
 		priceWithVAT.setText("" + totalPriceWithVAT);
 	}
-public  void updateConnectionLabel(JLabel connectionLable) throws Exception {
-	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLable);
+public  void updateConnectionLabel(JLabel connectionLabel) throws Exception {
+	SwingWorkerCheckConnection checkConnection = new SwingWorkerCheckConnection(connectionLabel);
 	 checkConnection.doInBackground();
 
 	}

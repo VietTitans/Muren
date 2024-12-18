@@ -1,11 +1,11 @@
 package model;
 
 public class Customer extends Person {
-private int customerId; 
+private int customerNo; 
 
-	public Customer(String fName, String lName, String phoneNo, String email, Address address, int customerId ) {
+	public Customer(String fName, String lName, String phoneNo, String email, Address address, int customerNo ) {
 		super(fName, lName, phoneNo, email, address);
-		this.customerId=customerId; 
+		this.customerNo=customerNo; 
 	}
 	public Customer(String fName, String lName, String phoneNo, String email, Address address ) {
 		super(fName, lName, phoneNo, email, address);
@@ -13,12 +13,12 @@ private int customerId;
 	public Customer() {
 	}
 
-	public int getCustomerId() {
-		return customerId;
+	public int getCustomerNo() {
+		return customerNo;
 	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setCustomerNo(int customerNo) {
+		this.customerNo = customerNo;
 	}
 	
 	@Override

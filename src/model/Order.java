@@ -116,9 +116,9 @@ public class Order {
 		return hourLogs;
 	}
 	
-	public void removeMaterial(int materialIndex) {
+	public void removeMaterialLog(int materialLogIndex) {
 	
-		materialLogs.remove(materialIndex);
+		materialLogs.remove(materialLogIndex);
 	
 	}
 	public void removeHourLog(int hourLogIndex) {

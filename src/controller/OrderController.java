@@ -70,7 +70,7 @@ public class OrderController {
 
 
 	public void removeMaterialLog(int materialLogIndex) {
-		currentOrder.removeMaterial(materialLogIndex);
+		currentOrder.removeMaterialLog(materialLogIndex);
 	}
 	public void removeHourLog(int hourLogIndex) {
 		currentOrder.removeHourLog(hourLogIndex);

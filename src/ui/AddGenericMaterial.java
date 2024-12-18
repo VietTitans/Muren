@@ -97,8 +97,8 @@ public class AddGenericMaterial extends JDialog {
 							((RegisterOrderUI) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
 							dispose();
 						}
-						else if (previousScreen instanceof LogOrder) {
-							((LogOrder) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
+						else if (previousScreen instanceof LogOrderUI) {
+							((LogOrderUI) previousScreen).addGenericMaterial(purchasePrice, salesPrice, description, material, amountNo);
 							dispose();
 						}
 					}

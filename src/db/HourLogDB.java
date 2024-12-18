@@ -77,14 +77,12 @@ public class HourLogDB implements HourLogDBIF {
 		
 		return hourLogs;
 	}
-public HourLog buildObject(ResultSet resultSet) throws SQLException, DataAccessException {
+	public HourLog buildObject(ResultSet resultSet) throws SQLException, DataAccessException {
 	EmployeeDB employeeDB = new EmployeeDB();
 	Employee employee = employeeDB.findEmployeeByEmployeeId(resultSet.getInt("EmployeeId"), false);
 	LocalDateTime madeAtTime = resultSet.getTimestamp("LogTimeStamp").toLocalDateTime();
 	BigDecimal hours = resultSet.getBigDecimal("HoursWorked");
 	HourLog hourLog = new HourLog(employee, hours ,madeAtTime); 
-	
-	
 	
 	return hourLog;
 	
