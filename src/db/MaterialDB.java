@@ -180,7 +180,7 @@ public class MaterialDB implements MaterialDBIF {
 			Timestamp timeStamp = rs.getTimestamp("MaterialDescriptionTimeStamp");
 			LocalDateTime date = timeStamp.toLocalDateTime();
 			String description = rs.getString("Description");
-			materialDescription = new MaterialDescription(date, description);
+			materialDescription = new MaterialDescription(description, date);
 		}catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException("Cant create MaterialDescription", e);
