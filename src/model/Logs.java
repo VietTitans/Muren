@@ -17,11 +17,11 @@ public abstract class Logs {
 		this.logTimeStamp = madeAtTime; 
 	}
 
-	public Employee getEmployeeSubClass() {
+	public Employee getEmployee() {
 		return employee;
 	}
 	
-	public LocalDateTime getTimeStampSubClass() {
+	public LocalDateTime getTimeStamp() {
 		return logTimeStamp;
 	}
 	
