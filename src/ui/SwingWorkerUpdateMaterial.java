@@ -65,12 +65,17 @@ protected void process(List<Boolean> chunks) {
 	// Updates the JLabel
 	for (boolean status : chunks) {
 		if (status) {
-			
+			try {
+				updateTables(materialTable);
+			} catch (DataAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 		}
 	}
 }//TODO Currently the returned version is always null
-	public boolean checkIfNewChanges() throws DataAccessException, SQLException {
+	public void checkIfNewChanges() throws DataAccessException, SQLException {
        
                     PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement(query);
 
@@ -85,13 +90,12 @@ protected void process(List<Boolean> chunks) {
                         // Check if changes have occurred
                         if (currentVersion > lastSyncVersion) {
                         	lastSyncVersion = currentVersion;
-                        	return true;
+                        	publish(true);
                           
                         } else {
-                            return false;
+                            publish( false);
                         }
                     }
-					return false;
             
             }
 	public void updateTables(JTable materialTable) throws DataAccessException {
