@@ -38,44 +38,26 @@ public abstract class Material {
 	
 	//Getters
 	
-	public abstract int getMaterialNo();
-	
-	protected int getMaterialNoSubClasses() {
+	public int getMaterialNo() {
 		return materialNo;
 	}
 	
-	public abstract String getProductName();
-	
-	protected String getProductNameSubClasses() {
+	public String getProductName() {
 		return productName;
 	}
-	/*
-	 * Called currentSalesPrice because the option to search for a specific Price,
-	 * at a certain time is a different use case.
-	 */
-	public abstract Price getCurrentSalesPrice(); 
+
 	
-	protected Price getCurrentSalesPriceSubClasses() {
+	public Price getCurrentSalesPrice() {
 		salesPrice = salesPrices.get(0);
 		return salesPrice;
 	}
-	
-	/*
-	 * Called currentPurchasePrice because the option to search for a specific Price,
-	 * at a certain time is a different use case.
-	 */
-	
-	public abstract Price getCurrentPurchasePrice(); 
-	
-	protected Price getCurrentPurchasePriceSubClasses() {
+
+	public Price getCurrentPurchasePrice() {
 		purchasePrice = purchasePrices.get(0);
 		return purchasePrice;
 	}
 	
-	
-	public abstract MaterialDescription getCurrentMaterialDescription();
-	
-	protected MaterialDescription getCurrentMaterialDescriptionSubClasses() {
+	public MaterialDescription getCurrentMaterialDescription() {
 		materialDescription = materialDescriptions.get(0);
 		return materialDescription;	
 	}
@@ -93,9 +75,7 @@ public abstract class Material {
 		
 	}
 	
-	public abstract Price getSalesPriceByDate(LocalDateTime timeStamp);
-	
-	protected Price getSalesPriceByDateSubClasses(LocalDateTime timeStamp) {
+	public Price getSalesPriceByDate(LocalDateTime timeStamp) {
 		Price tempPrice = null;
 		boolean found = false;
 		int index = 0;
@@ -110,9 +90,7 @@ public abstract class Material {
 		return tempPrice;
 	}
 	
-	public abstract Price getPurchasePriceByDate(LocalDateTime timeStamp);
-	
-	protected Price getPurchasePriceByDateSubClasses(LocalDateTime timeStamp) {
+	public Price getPurchasePriceByDate(LocalDateTime timeStamp) {
 		Price tempPrice = null;
 		boolean found = false;
 		int index = 0;
@@ -127,9 +105,7 @@ public abstract class Material {
 		return tempPrice;
 	}
 	
-	public abstract MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp);
-	
-	public MaterialDescription getMaterialDescriptionByDateSubClasses(LocalDateTime timeStamp) {
+	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp) {
 		MaterialDescription tempDescription = null;
 		boolean found = false;
 		int index = 0;
@@ -156,50 +132,40 @@ public abstract class Material {
 	
 	//Setters
 	
-
 	public MaterialDescription getMaterialDescription() {
 		return materialDescription;
 	}
-
-	public abstract void setCurrentSalesPrice(Price newPrice);
 	
-	protected void setCurrentSalesPriceSubClasses(Price newPrice) {
+	public void setCurrentSalesPrice(Price newPrice) {
 		salesPrice = newPrice;
 		if(!salesPrices.contains(newPrice)) {
-			addSalesPriceToSalesPricesSubClasses(newPrice);
+			addSalesPriceToSalesPrices(newPrice);
 		}
 	}
 	
-	private void addSalesPriceToSalesPricesSubClasses(Price salesPrice) {
+	private void addSalesPriceToSalesPrices(Price salesPrice) {
 		salesPrices.add(0, salesPrice);
 	}	
 	
-	public abstract void setCurrentPurchasePrice(Price newPrice);
-	
-	protected void setCurrentPurchasePriceSubClasses(Price newPrice) {	
+	public void setCurrentPurchasePrice(Price newPrice) {	
 		purchasePrice = newPrice;
 		if(!purchasePrices.contains(newPrice)) {
-			addPurchasePriceToPurchasePricesSubClasses(newPrice);
+			addPurchasePriceToPurchasePrices(newPrice);
 		}
 	}
 	
-	
-	private void addPurchasePriceToPurchasePricesSubClasses(Price purchasePrice) {
+	private void addPurchasePriceToPurchasePrices(Price purchasePrice) {
 		purchasePrices.add(0, purchasePrice);
 	}
 	
-	public abstract void setCurrentMaterialDescription(MaterialDescription newDescription);
-	
-	protected void setCurrentMaterialDescriptionSubClasses(MaterialDescription newDescription) {
+	public void setCurrentMaterialDescription(MaterialDescription newDescription) {
 		materialDescription = newDescription;
 		if(materialDescriptions.contains(newDescription)) {
-			addMaterialDescriptionToMaterialDescriptionsSubClasses(newDescription);
+			addMaterialDescriptionToMaterialDescriptions(newDescription);
 		}
-		
 	}
 	
-	
-	private void addMaterialDescriptionToMaterialDescriptionsSubClasses(MaterialDescription newDescription) {
+	private void addMaterialDescriptionToMaterialDescriptions(MaterialDescription newDescription) {
 		materialDescriptions.add(0, newDescription);
 	}
 	

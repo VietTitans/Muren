@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 
 
@@ -25,13 +25,10 @@ public class StockMaterial extends Material {
 		stockReservations = new ArrayList<>();
 	}
 	
-
-
 	public void addStockReservation(StockReservation stockReservation) {		
 		stockReservations.add(stockReservation);
 	}
 	
-
 	public int calculateAvailableAmount() {
 		int currentlyReserved = 0;
 		
@@ -65,77 +62,11 @@ public class StockMaterial extends Material {
 	public ArrayList<StockReservation> getStockReservations(){
 		return stockReservations;
 	}
-
-	@Override
-	public int getMaterialNo() {
-		return super.getMaterialNoSubClasses();
-	}
-
-	@Override
-	public String getProductName() {
-	
-		return super.getProductNameSubClasses();
-	}
-
-	@Override
-	public Price getCurrentSalesPrice() {
-		return super.getCurrentSalesPriceSubClasses();
-	}
-
-	@Override
-	public Price getCurrentPurchasePrice() {
-		return super.getCurrentPurchasePriceSubClasses();
-	}
-
-	@Override
-	public MaterialDescription getCurrentMaterialDescription() {
-		return super.getCurrentMaterialDescriptionSubClasses();
-	}
-	
-	@Override
-	public Price getSalesPriceByDate(LocalDateTime timeStamp) {
-		return super.getSalesPriceByDateSubClasses(timeStamp);
-	}
-
-
-
-	@Override
-	public Price getPurchasePriceByDate(LocalDateTime timeStamp) {
-		return super.getPurchasePriceByDateSubClasses(timeStamp);
-	}
-
-
-
-	@Override
-	public MaterialDescription getMaterialDescriptionByDate(LocalDateTime timeStamp) {
-		return super.getMaterialDescriptionByDateSubClasses(timeStamp);
-	}
 	
 	//Setters
 	
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	@Override
-	public void setCurrentMaterialDescription(MaterialDescription newDescription) {
-		super.setCurrentMaterialDescriptionSubClasses(newDescription);
-		
-	}
-
-	@Override
-	public void setCurrentSalesPrice(Price newPrice) {
-		super.setCurrentSalesPriceSubClasses(newPrice);
-	}
-
-	
-	@Override
-	public void setCurrentPurchasePrice(Price newPrice) {
-		super.setCurrentPurchasePriceSubClasses(newPrice);
-	}
-
-
-
-	
 	
 }
