@@ -47,17 +47,4 @@ public class MaterialLog extends Logs {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
-	@Override
-	public Employee getEmployee() {
-		return super.getEmployeeSubClass();
-	}
-
-	@Override
-	public LocalDateTime getTimeStamp() {
-		return super.getTimeStampSubClass();
-	}
-	
-	
-	
 }
