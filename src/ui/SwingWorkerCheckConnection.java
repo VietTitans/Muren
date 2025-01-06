@@ -49,7 +49,7 @@ public class SwingWorkerCheckConnection extends SwingWorker<Void, Boolean> {
             	 lblCheckConnection.setOpaque(true);
             	 lblCheckConnection.setText("Not Connected");
              } else {
-            	 lblCheckConnection.setBackground(new Color(0, 128, 0)); // Green for success
+            	 lblCheckConnection.setBackground(new Color(95, 255, 95)); // Green for success
             	 lblCheckConnection.setText("Connected");
             	 lblCheckConnection.setOpaque(true);
              }
