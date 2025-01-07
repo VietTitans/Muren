@@ -19,7 +19,7 @@ import model.StockReservation;
 
 public class MaterialDB implements MaterialDBIF {
 
-	private static final String PS_SELECT_FROM_MATERIAL = "SELECT Material.*, StockMaterial.MinStock, StockMaterial.MaxStock, StockMaterial.quantity, StockMaterial.StockMaterialId, GenericMaterial.GenericMaterialId, GenericMaterial.ProductType\r\n"
+	private static final String PS_SELECT_FROM_MATERIALNO = "SELECT Material.*, StockMaterial.MinStock, StockMaterial.MaxStock, StockMaterial.quantity, StockMaterial.StockMaterialId, GenericMaterial.GenericMaterialId, GenericMaterial.ProductType\r\n"
 			+ "		FROM Material\r\n"
 			+ "		LEFT JOIN StockMaterial ON Material.MaterialNo = StockMaterial.MaterialNo\r\n"
 			+ "		LEFT JOIN GenericMaterial ON Material.MaterialNo = GenericMaterial.MaterialNo\r\n"
@@ -58,7 +58,7 @@ public class MaterialDB implements MaterialDBIF {
 	
 	private void initPreparedStatements() throws DataAccessException{
 		try {
-			psSelectMaterialNoMaterial = connection.prepareStatement(PS_SELECT_FROM_MATERIAL);
+			psSelectMaterialNoMaterial = connection.prepareStatement(PS_SELECT_FROM_MATERIALNO);
 			psSelectMaterialNoMaterialDescription = connection.prepareStatement(PS_SELECT_FROM_MATERIAL_DESCRIPTION);
 			psSelectMaterialNoSalesPrice = connection.prepareStatement(PS_SELECT_FROM_SALES_PRICE);
 			psSelectMaterialNoPurchasePrice = connection.prepareStatement(PS_SELECT_FROM_PURCHASE_PRICE);
