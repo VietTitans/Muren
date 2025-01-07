@@ -7,6 +7,8 @@ public class StockReservation {
 
 	private int quantity;
 	private LocalDateTime reservationDate;
+	//LocalDateTime er for granudleret. Brug LocalDate. 
+	
 	private static final int duration = 7; /* Duration is there to show how many days before the reservation is needed, 
 	that it will be valid from*/
 	private static final int availabilityLimit = 3; /* availabilityLimit is there to show how long after 

@@ -18,7 +18,8 @@ public class MaterialLog extends Logs {
 		super(employee,madeAtTime);
 		this.material = material;
 		this.quantity = quantity;
-		updateQuantity(material, quantity);
+//		updateQuantity(material, quantity);
+		//Skal fjernes 
 	}
 	
 	public void updateQuantity(Material material, int quantity) {

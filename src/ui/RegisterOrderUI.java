@@ -254,6 +254,7 @@ public class RegisterOrderUI extends JFrame {
 						SwingWorkerFindAndAddMaterial swingWorker = new SwingWorkerFindAndAddMaterial(currentOrderController,materialNo,placeHolderEmployee,amountNo);
 						try {
 							Material material = swingWorker.doInBackground();
+							//Anvend execute for at sikre swingworker er færdig før den fortsætter
 							
 							
 							if (material == null) {
@@ -331,7 +332,7 @@ public class RegisterOrderUI extends JFrame {
 				int employeeID = Integer.parseInt(txtMedarbejderid.getText());
 				try {
 					Employee employee = currentOrderController.findEmployeeByEmployeeId(employeeID, false);
-					if(employee.getfName() == null) {
+					if(employee == null) {//employee name changed to employee
 						
 					}
 					else {

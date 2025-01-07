@@ -128,6 +128,7 @@ public class OrderDB implements OrderDBIF {
 				foundOrder.setOrderMadeBy(employee);
 				customer = customerDB.findCustomerByCustomerNo(resultSet.getInt("CustomerNo"), false);
 				foundOrder.setCustomer(customer);
+				//Logs always has to be made. Move to try clause 
 				ArrayList<MaterialLog> materialLogs = materialLogDB.findMaterialLogsByOrderNo(orderNo);
 				foundOrder.setMaterialLogs(materialLogs);
 				ArrayList<HourLog> hourLogs = hourLogDB.findHourLogsByOrderNo(orderNo);

@@ -88,7 +88,7 @@ public class TestMaterialDB {
 	public void testInsertIntoMaterialDescription() throws DataAccessException, SQLException {
 		//Arrange
 		Material material = materialDB.findMaterialByMaterialNo(1001);
-		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 12, 10, 12, 0), "This is a test");
+		MaterialDescription newMaterialDescription = new MaterialDescription("This is a test",LocalDateTime.of(2024, 12, 10, 12, 0));
 		//Act
 		assertDoesNotThrow(() -> {
 		materialDB.insertNewMaterialDescription(material.getMaterialNo(), newMaterialDescription);	

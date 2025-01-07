@@ -24,7 +24,7 @@ public class LogController {
 		this.hourLogInterface = new HourLogDB();
 		this.materialLogInterface = new MaterialLogDB();
 	}
-
+//Skal rettes så exception bliver thrown korrekt. 
 	public MaterialLog addMaterialToLog(Employee employee, Material material, int quantity) {
 		MaterialLog currentMaterialLog = null;
 		if (quantity >= 1) {

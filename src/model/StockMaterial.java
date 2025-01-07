@@ -11,7 +11,9 @@ public class StockMaterial extends Material {
 	private int maxStock;
 	private int quantity;
 	private ArrayList<StockReservation> stockReservations;
-	private int availableAmount;
+	private int availableAmount; //availableAmount er overflødigt. 
+	
+	
 	
 	public StockMaterial(int materialNo, String productName, ArrayList<MaterialDescription> materialDescriptions, 
 			ArrayList<Price> salesPrices, ArrayList<Price> purchasePrices, int minStock, int maxStock, int quantity) {

@@ -13,8 +13,7 @@ public class EmployeeController {
 		employeeDBIF = new EmployeeDB();
 	}
 
-	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation)
-			throws  DataAccessException {
+	public Employee findEmployeeByEmployeeId(int employeeId, boolean fullAssociation) throws  DataAccessException {
 		return employeeDBIF.findEmployeeByEmployeeId(employeeId, fullAssociation);
 	}
 }

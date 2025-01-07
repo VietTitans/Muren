@@ -61,7 +61,7 @@ public abstract class Material {
 		materialDescription = materialDescriptions.get(0);
 		return materialDescription;	
 	}
-	
+	//Redundent metode. Liste sortes i SQL-scipt
 	public Price getLastestPurchasePrice() {
 		ArrayList<Price> tempSortedPrices = new ArrayList<Price>(purchasePrices);
 		tempSortedPrices.sort(Comparator.comparing(Price::getTimeStamp).reversed());

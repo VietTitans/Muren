@@ -20,7 +20,7 @@ public Employee(String fName, String lName, String phoneNo, String email, Addres
 public Employee(String fName, String lName, String phoneNo, String email, Address address,EmployeeType employeeType) {
 	super(fName, lName, phoneNo, email, address);
 	this.employeeType = employeeType;
-	
+	//this.employeeId = employeeId;
 }
 
 

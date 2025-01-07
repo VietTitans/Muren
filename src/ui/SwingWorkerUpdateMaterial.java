@@ -47,11 +47,14 @@ protected Object doInBackground() throws Exception {
          @Override
          public void run() {
              try {
-         //   	 checkIfNewChanges();
+//            	 checkIfNewChanges();
             	 updateTables(materialTable);
              } catch (DataAccessException e) {
                  e.printStackTrace();
-         }
+//         } catch (SQLException e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+			}
             
             	 
 
@@ -81,12 +84,12 @@ protected void process(List<Boolean> chunks) {
 
                     // Set the last sync version parameter
                     stmt.setLong(1, lastSyncVersion);
-
+//                    "CurrentVersion"
                     // Execute the query
                     ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
-                        long currentVersion = rs.getLong("CurrentVersion");
-
+                        long currentVersion = rs.getLong(1);
+                        System.out.println(currentVersion);
                         // Check if changes have occurred
                         if (currentVersion > lastSyncVersion) {
                         	lastSyncVersion = currentVersion;

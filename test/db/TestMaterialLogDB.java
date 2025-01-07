@@ -74,7 +74,7 @@ class TestMaterialLogDB {
 		employee.setEmployeeId(1);
 		
 		ArrayList<MaterialDescription> materialDescriptions = new ArrayList<>();
-		MaterialDescription newMaterialDescription = new MaterialDescription(LocalDateTime.of(2024, 11, 10, 12, 0), "This is a test");
+		MaterialDescription newMaterialDescription = new MaterialDescription("This is a test",LocalDateTime.of(2024, 12, 10, 12, 0));
 		materialDescriptions.add(newMaterialDescription);
 		
 		Material material = materialDB.findMaterialByMaterialNo(1003);
