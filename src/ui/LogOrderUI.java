@@ -568,6 +568,7 @@ public class LogOrderUI extends JFrame {
 		
 		addHourLogsFromOrder();
 		
+		//Gem ordre knap
 		btnNewButton.addActionListener(new ActionListener() {
 			
 
